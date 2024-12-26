@@ -3,25 +3,25 @@ import type { MenuItemType } from 'src/app/core/models'
 export const bookingHomeMenuItems: MenuItemType[] = [
   {
     key: 'hotel-home',
-    label: 'Hotel',
+    label: 'Stays',
     url: '/hotels/home',
     icon: 'fa-solid fa-hotel',
   },
-  {
+  /* {
     key: 'flight-home',
     label: 'Flight',
     url: '/flights/home',
     icon: 'fa-solid fa-plane',
-  },
+  }, */
   {
     key: 'tour-home',
-    label: 'Tour',
+    label: 'Attractions',
     url: '/tours/home',
     icon: 'fa-solid fa-earth-americas',
   },
   {
     key: 'cabs-home',
-    label: 'Cab',
+    label: 'Car rentals',
     url: '/cabs/home',
     icon: 'fa-solid fa-car',
   },
