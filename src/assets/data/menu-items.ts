@@ -25,6 +25,12 @@ export const bookingHomeMenuItems: MenuItemType[] = [
     url: '/cabs/home',
     icon: 'fa-solid fa-car',
   },
+  {
+    key: 'flight-home',
+    label: 'Airport',
+    url: '/flights/home',
+    icon: 'fa-solid fa-plane',
+  },
 ]
 
 export const USER_PROFILE_MENU_ITEMS: MenuItemType[] = [
