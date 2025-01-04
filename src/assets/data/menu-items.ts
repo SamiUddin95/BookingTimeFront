@@ -15,7 +15,7 @@ export const bookingHomeMenuItems: MenuItemType[] = [
   }, */
   {
     key: 'tour-home',
-    label: 'Attraction & Tour',
+    label: 'Attractions',
     url: '/tours/home',
     icon: 'fa-solid fa-earth-americas',
   },
