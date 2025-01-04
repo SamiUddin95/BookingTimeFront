@@ -15,7 +15,7 @@ export const bookingHomeMenuItems: MenuItemType[] = [
   }, */
   {
     key: 'tour-home',
-    label: 'Attractions',
+    label: 'Attractions and Tour',
     url: '/tours/home',
     icon: 'fa-solid fa-earth-americas',
   },
@@ -27,7 +27,7 @@ export const bookingHomeMenuItems: MenuItemType[] = [
   },
   {
     key: 'flight-home',
-    label: 'Airport',
+    label: 'Airport-Taxi',
     url: '/flights/home',
     icon: 'fa-solid fa-plane',
   },
