@@ -13,6 +13,7 @@ import { TestimonialSliderComponent } from './components/testimonial-slider/test
 import { NearbyComponent } from './components/nearby/nearby.component'
 import { AppsLinkComponent } from './components/apps-link/apps-link.component'
 import { Footer1Component } from './components/footer1/footer1.component'
+import { HomeFeaturePropertiesComponent } from "./components/home-feature-properties/home-feature-properties.component";
 @Component({
   selector: 'hotels-home',
   standalone: true,
@@ -28,7 +29,8 @@ import { Footer1Component } from './components/footer1/footer1.component'
     NearbyComponent,
     AppsLinkComponent,
     Footer1Component,
-  ],
+    HomeFeaturePropertiesComponent
+],
   templateUrl: './home.component.html',
 })
 export class HomeComponent {

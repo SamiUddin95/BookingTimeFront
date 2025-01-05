@@ -1,7 +1,7 @@
 import { Component } from '@angular/core'
 import { featuredHotelsData } from '../../data'
-import { RouterModule } from '@angular/router'
 import { currency } from '@/app/store'
+import { RouterModule } from '@angular/router'
 
 @Component({
   selector: 'home-feture-hotel',
