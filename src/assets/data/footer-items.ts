@@ -44,7 +44,7 @@ const footerLinks: FooterLink[] = [
     ],
   },
   {
-    title: 'Booking',
+    title: 'BookingTimes',
     items: [
       { name: 'Hotel', icon: 'fa-hotel', link: '/hotels/home' },
       { name: 'Flight', icon: 'fa-plane', link: '/flights/home' },
