@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { featuredHotelsData } from '../../data'
+import { featuredHotelsData, featuredPropertiesData } from '../../data'
 import { currency } from '@/app/store'
 
 @Component({

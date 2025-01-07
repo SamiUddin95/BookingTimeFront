@@ -114,6 +114,7 @@ export const featuredHotelsData: FeaturedHotelType[] = [
     price: 665,
     ratings: 4.8,
   },
+
 ]
 
 export const featuredPropertiesData: FeaturedPropertiesType[] = [
