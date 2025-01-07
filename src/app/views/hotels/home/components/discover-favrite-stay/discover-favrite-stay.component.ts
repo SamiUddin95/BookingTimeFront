@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { featuredHotelsData } from '../../data'
+import { discoverStay } from '../../data'
 import { currency } from '@/app/store'
 
 @Component({
@@ -10,6 +10,6 @@ import { currency } from '@/app/store'
   styleUrl: './discover-favrite-stay.component.scss'
 })
 export class DiscoverFavriteStayComponent {
-  properties = featuredHotelsData
+  properties = discoverStay
   currencyType = currency
 }

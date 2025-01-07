@@ -18,3 +18,11 @@ export type FeaturedPropertiesType = {
   price: number
   ratings: number
 }
+
+export type DiscoverStayType = {
+  type: string
+  image: string
+  name: string
+  price: number
+  ratings: number
+}

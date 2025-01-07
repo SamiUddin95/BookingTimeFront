@@ -20,7 +20,7 @@ const property2 = 'assets/images/category/property/02.jpg'
 const property3 = 'assets/images/category/property/03.jpg'
 const property4 = 'assets/images/category/property/04.jpg'
 
-import type { FeaturedHotelType, FeaturedPropertiesType, NearbyPlaceType } from './type'
+import type { FeaturedHotelType, FeaturedPropertiesType, NearbyPlaceType, DiscoverStayType } from './type'
 
 export const nearbyPlacesData: NearbyPlaceType[] = [
   {
@@ -142,6 +142,37 @@ export const featuredPropertiesData: FeaturedPropertiesType[] = [
   {
     location: 'Chicago',
     image: property4,
+    name: 'Helios Beach Resort',
+    price: 665,
+    ratings: 4.8,
+  },
+]
+
+export const discoverStay: DiscoverStayType[] = [
+  {
+    type: '5 Star Hotel',
+    image: hotel1,
+    name: 'Baga Comfort',
+    price: 455,
+    ratings: 4.5,
+  },
+  {
+    type: '4 Star Hotel',
+    image: hotel2,
+    name: 'New Apollo Hotel',
+    price: 585,
+    ratings: 4.8,
+  },
+  {
+    type: '3 Star Hotel',
+    image: hotel3,
+    name: 'New Age Hotel',
+    price: 385,
+    ratings: 4.6,
+  },
+  {
+    type: 'Economy Rating',
+    image: hotel4,
     name: 'Helios Beach Resort',
     price: 665,
     ratings: 4.8,
