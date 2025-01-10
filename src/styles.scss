@@ -42,8 +42,7 @@
   display: none !important;
 }
 
-.ng-otp-input-wrapper[_ngcontent-ng-c1701526001]
-  .otp-input[_ngcontent-ng-c1701526001]:not(:last-child) {
+.ng-otp-input-wrapper[_ngcontent-ng-c1701526001] .otp-input[_ngcontent-ng-c1701526001]:not(:last-child) {
   margin-right: 16px !important;
 }
 
@@ -61,13 +60,16 @@
 #tour {
   margin-bottom: 0px;
 }
+
 [data-bs-theme='dark'] {
   .bs-stepper .line {
     background-color: var(--bs-gray-200);
   }
+
   .ql-toolbar.ql-snow {
     border: 1px solid #5f5f68 !important;
   }
+
   .ql-container.ql-snow {
     border: 1px solid #5f5f68 !important;
   }
@@ -91,11 +93,10 @@
 
 .splide__arrow {
   --bs-bg-opacity: 1 !important;
-  background-color: rgba(
-    var(--bs-primary-rgb),
-    var(--bs-bg-opacity)
-  ) !important;
+  background-color: rgba(var(--bs-primary-rgb),
+      var(--bs-bg-opacity)) !important;
 }
+
 .splide__arrow svg {
   fill: #ffff !important;
   height: 0.9em !important;
