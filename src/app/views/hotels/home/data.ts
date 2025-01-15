@@ -177,4 +177,11 @@ export const discoverStay: DiscoverStayType[] = [
     price: 665,
     ratings: 4.8,
   },
+  {
+    type: 'More Stays',
+    image: hotel1,
+    name: 'Helios Beach Resort',
+    price: 665,
+    ratings: 4.8,
+  },
 ]
