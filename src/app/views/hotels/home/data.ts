@@ -20,7 +20,7 @@ const property2 = 'assets/images/category/property/02.jpg'
 const property3 = 'assets/images/category/property/03.jpg'
 const property4 = 'assets/images/category/property/04.jpg'
 
-import type { FeaturedHotelType, MiddleSectionType, FeaturedPropertiesType, NearbyPlaceType, DiscoverStayType } from './type'
+import type { FeaturedHotelType, VacationPackageType, FeaturedPropertiesType, NearbyPlaceType, DiscoverStayType } from './type'
 
 export const nearbyPlacesData: NearbyPlaceType[] = [
   {
@@ -116,28 +116,37 @@ export const featuredHotelsData: FeaturedHotelType[] = [
   },
 
 ]
-export const middlesctionData: MiddleSectionType[] = [
+export const vacationPackageData: VacationPackageType[] = [
   {
     location: 'New York',
     image: hotel1,
-    name: 'Baga Comfort',
+    title: 'Baga Comfort',
     price: 455,
-    ratings: 4.5,
+    rating: "Five Star Rating",
+    fromDate: new Date('2023-03-01'),
+    toDate: new Date('2023-08-01'),
+    offer: '20% Off',
   },
   {
-    location: 'California',
+    location: 'Paris',
     image: hotel2,
-    name: 'New Apollo Hotel',
-    price: 585,
-    ratings: 4.8,
+    title: 'Eiffel Luxury Suites',
+    price: 520,
+    rating: 'Four Star Rating',
+    fromDate: new Date('2023-04-15'),
+    toDate: new Date('2023-09-15'),
+    offer: '15% Off',
   },
   {
-    location: 'Los Angeles',
+    location: 'Dubai',
     image: hotel3,
-    name: 'New Age Hotel',
-    price: 385,
-    ratings: 4.6,
-  }
+    title: 'Palm Paradise',
+    price: 600,
+    rating: 'Five Star Rating',
+    fromDate: new Date('2023-05-01'),
+    toDate: new Date('2023-10-01'),
+    offer: '25% Off',
+  },
 
 ]
 

@@ -1,52 +1,54 @@
-<section class="pt-0" style="margin-top: -100px;">
-    <div class="container p-4">
-      <!-- <div class="row mb-4">
-        <div class="col-12">
-          <h4 class="mb-0">Featured Properties</h4>
-        </div>
-      </div>
-  
-      <div class="mb-3">
-        @for (data of properties; track $index){
-        <button class="btn btn-primary me-2">{{data.location}}</button>
-        }
-      </div> -->
-  
-      <div class="row g-4">
-        @for (data of properties; track $index) {
-        <div class="col-sm-6 col-xl-4">
-          <div class="card card-img-scale overflow-hidden rounded-4 shadow-sm bg-transparent">
-            <div class="card-img-scale-wrapper" style="height: 200px;">
-              <img src="{{ data.image }}" class="card-img" alt="hotel image" />
-  
-              <div class="position-absolute bottom-0 start-0 p-3">
-                <div class="badge text-bg-dark fs-6 rounded-pill stretched-link">
-                  <!-- <i class="bi bi-geo-alt me-2"></i>{{ data.location }} -->
-                </div>
-              </div>
-            </div>
-  
-            <div class="card-body px-2">
-              <h5 class="card-title">
-                <a routerLink="/hotels/detail" class="stretched-link">{{
-                  data.name
-                  }}</a>
-              </h5>
-  
-              <div class="d-flex justify-content-between align-items-center">
-                <h6 class="text-success mb-0">
-                  {{ currencyType }}{{ data.price }}
-                  <small class="fw-light">/starting at</small>
-                </h6>
-                <h6 class="mb-0">
-                  {{ data.ratings
-                  }}<i class="fa-solid fa-star text-warning ms-1"></i>
+<section class="pt-0 " style="margin-top: -330px;">
+  <div class="container px-4 py-0">
+
+    <p class="text-center fw-bold fs-4 text-white mb-0">Explore vacation packages to popular destinations</p>
+    <p class="text-center text-muted mt-0 mb-4">Discover handpicked deals for unforgettable getaways, tailored to your
+      style
+      and budget!</p>
+
+    <div class="row g-4">
+      @for (data of packages; track $index) {
+      <div class="col-sm-6 col-xl-4">
+        <div class="card card-img-scale overflow-hidden rounded-4 shadow-sm">
+
+          <div class="card-img-scale-wrapper" style="height: 200px;">
+            <img src="{{ data.image }}" class="card-img" alt="hotel image" />
+          </div>
+
+          <div class="card-body px-3">
+
+            <h5 class="card-title m-0">
+              <a routerLink="/hotels/detail" class="stretched-link">{{data.title}}
+              </a>
+            </h5>
+
+            <p class="m-0 text-dark">{{data.location}}</p>
+
+            <p class="m-0 mt-1 text-dark"><i class="fa fa-building me-2"></i>{{data.rating}}</p>
+
+            <div class="d-flex">
+              <div
+                class="bg-success bg-opacity-10 border border-2 border-success border-dashed rounded-2 px-2 py-1 d-inline-block ms-auto">
+                <h6 class="fw-normal mb-0">
+                  {{ data.offer }}
                 </h6>
               </div>
             </div>
+
+            <h4 class="my-1 text-end">
+              {{ currencyType }}{{ data.price }}
+              <small class="fs-6">per traveler</small>
+            </h4>
+
+            <p class="text-end mb-0">
+              {{ data.fromDate | date: 'EEE, MMM d' }} to {{ data.toDate | date: 'EEE, MMM d' }}
+            </p>
+
+
           </div>
         </div>
-        }
       </div>
+      }
     </div>
-  </section>
+  </div>
+</section>

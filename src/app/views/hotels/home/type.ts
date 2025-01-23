@@ -11,12 +11,15 @@ export type FeaturedHotelType = {
   price: number
   ratings: number
 }
-export type MiddleSectionType = {
-  location: string
+export type VacationPackageType = {
+  title: string
   image: string
-  name: string
+  location: string
+  rating: string
+  offer: string
   price: number
-  ratings: number
+  fromDate: Date
+  toDate: Date
 }
 export type FeaturedPropertiesType = {
   location: string
