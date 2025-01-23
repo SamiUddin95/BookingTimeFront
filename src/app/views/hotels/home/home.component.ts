@@ -15,6 +15,7 @@ import { AppsLinkComponent } from './components/apps-link/apps-link.component'
 import { Footer1Component } from './components/footer1/footer1.component'
 import { HomeFeaturePropertiesComponent } from "./components/home-feature-properties/home-feature-properties.component";
 import { DiscoverFavriteStayComponent } from "./components/discover-favrite-stay/discover-favrite-stay.component";
+import { HomeMiddleSectionComponent } from "./components/home-middle-section/home-middle-section.component";
 @Component({
   selector: 'hotels-home',
   standalone: true,
@@ -31,7 +32,8 @@ import { DiscoverFavriteStayComponent } from "./components/discover-favrite-stay
     AppsLinkComponent,
     Footer1Component,
     HomeFeaturePropertiesComponent,
-    DiscoverFavriteStayComponent
+    DiscoverFavriteStayComponent,
+    HomeMiddleSectionComponent
 ],
   templateUrl: './home.component.html',
 })

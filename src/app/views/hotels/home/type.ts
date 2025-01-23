@@ -11,6 +11,13 @@ export type FeaturedHotelType = {
   price: number
   ratings: number
 }
+export type MiddleSectionType = {
+  location: string
+  image: string
+  name: string
+  price: number
+  ratings: number
+}
 export type FeaturedPropertiesType = {
   location: string
   image: string
