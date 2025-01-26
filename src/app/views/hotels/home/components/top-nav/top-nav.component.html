@@ -4,7 +4,7 @@
       <!-- <app-logo-box /> -->
 
       <div class="d-flex align-items-center">
-        <h4 class="me-4">BookingTimes</h4>
+        <h4 class="me-4" routerLink="/">BookingTimes</h4>
 
         <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed" class="navbar-collapse collapse"
           id="navbarCategoryCollapse">
@@ -29,17 +29,17 @@
 
       <!-- <app-menu [showExtraPages]="true" [menuClassName]="'me-auto'" class="navbar-collapse collapse d-contents" /> -->
 
-      <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed" class="navbar-collapse collapse"
+      <!-- <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed" class="navbar-collapse collapse"
         id="navbarCategoryCollapse">
         <ul class="navbar-nav navbar-nav-scroll nav-pills-primary-soft text-center ms-auto p-2 p-xl-0">
 
           <li class="nav-item">
-            <a class="nav-link" [routerLink]="'#'" [class.active]="false">
+            <a class="nav-link" [routerLink]="'/listings/add'" [class.active]="false">
               <i class="fa fa-building me-2"></i>List your property</a>
           </li>
 
         </ul>
-      </div>
+      </div> -->
 
       <ul class="nav flex-row align-items-center list-unstyled ms-xl-auto">
         <app-notification-dropdown className="ms-0 ms-md-3" />

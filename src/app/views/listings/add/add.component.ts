@@ -6,6 +6,7 @@ import { Step3Component } from './components/step-3/step-3.component'
 import { ListingStepperComponent } from '@views/listings/add/components/listing-stepper/listing-stepper.component'
 import { TopbarComponent } from './components/topbar/topbar.component'
 import { FooterComponent } from './components/footer/footer.component'
+import { TopNavComponent } from 'src/app/views/hotels/home/components/top-nav/top-nav.component'
 
 @Component({
   selector: 'listings-add',
@@ -18,8 +19,9 @@ import { FooterComponent } from './components/footer/footer.component'
     ListingStepperComponent,
     TopbarComponent,
     FooterComponent,
+    TopNavComponent
   ],
   templateUrl: './add.component.html',
   styles: ``,
 })
-export class AddComponent {}
+export class AddComponent { }

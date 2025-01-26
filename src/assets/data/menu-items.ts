@@ -31,6 +31,12 @@ export const bookingHomeMenuItems: MenuItemType[] = [
     url: '/flights/home',
     icon: 'fa-solid fa-taxi',
   },
+  {
+    key: 'list-property',
+    label: 'List your property',
+    url: '/listings/add',
+    icon: 'fa-solid fa-building',
+  },
 ]
 
 export const USER_PROFILE_MENU_ITEMS: MenuItemType[] = [
