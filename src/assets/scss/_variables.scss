@@ -69,13 +69,14 @@ $primary: #0d8fd4; // light-mode-primary-color
 $secondary: $gray-500;
 $success: $green;
 $info: $cyan;
-$warning: $yellow;
+//$warning: $yellow;
+$warning: #F7DE0E;
 $danger: $red;
 $light: $gray-100;
 $dark: $gray-800;
 $mode: $white;
+$dark-green: #3e7d0e;
 
-// theme colors map
 $theme-colors: (
   "primary": $primary,
   "white": $white,
@@ -87,7 +88,8 @@ $theme-colors: (
   "light": $light,
   "dark": $dark,
   "orange": $orange,
-  "mode": $mode
+  "mode": $mode,
+  "dark-green": $dark-green,
 );
 // scss-docs-end theme-colors-map
 

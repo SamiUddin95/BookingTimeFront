@@ -27,6 +27,7 @@ import { bookingHomeMenuItems } from 'src/assets/data'
     ProfileDropdownComponent,
   ],
   templateUrl: './top-nav.component.html',
+  styleUrl: './top-nav.component.scss',
 })
 export class TopNavComponent {
   bookingHomeMenuItems = bookingHomeMenuItems
