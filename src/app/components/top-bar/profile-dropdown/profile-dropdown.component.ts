@@ -11,7 +11,7 @@ import { NgbDropdownModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap'
   styles: ``,
 })
 export class ProfileDropdownComponent {
-  @Input() showThemeToggler: boolean = true
+  @Input() showThemeToggler: boolean = false
   @Input() className: string = ''
 
   theme: string = 'light'

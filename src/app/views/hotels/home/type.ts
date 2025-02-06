@@ -10,13 +10,14 @@ export type FeaturedHotelType = {
   name: string
   price: number
   ratings: number
+  reviews?: number
 }
 export type VacationPackageType = {
   title: string
   image: string
   location: string
   rating: string
-  offer: string
+  offer: number
   price: number
   fromDate: Date
   toDate: Date
@@ -35,4 +36,10 @@ export type DiscoverStayType = {
   name: string
   price: number
   ratings: number
+}
+
+export type ClaimType = {
+  icon: string
+  title: string
+  description: string
 }

@@ -17,4 +17,9 @@ export class HomeMiddleSectionComponent {
 
   packages = vacationPackageData
   currencyType = currency
+
+  calculateNights(fromDate: Date, toDate: Date): number {
+    return Math.round((toDate.getTime() - fromDate.getTime()) / (1000 * 60 * 60 * 24));
+  }
+
 }

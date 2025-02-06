@@ -1,0 +1,26 @@
+@import "../../../../../../assets/scss/user-variables";
+
+.card {
+    border-radius: 10px !important;
+    max-width: 30vw;
+    //border: 1px solid $primary;
+    box-shadow: 0 5px 10px rgb(192, 192, 192);
+    background-color: #fff;
+}
+
+.card:hover {
+    cursor: pointer;
+    box-shadow: 0 5px 10px rgb(150, 150, 150);
+}
+
+.card-img {
+    border-radius: 0 !important;
+}
+
+.bg-teal {
+    background-color: $teal;
+}
+
+.text-blue {
+    color: $dark-blue;
+}

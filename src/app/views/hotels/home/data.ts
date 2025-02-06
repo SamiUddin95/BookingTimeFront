@@ -20,7 +20,11 @@ const property2 = 'assets/images/category/property/02.jpg'
 const property3 = 'assets/images/category/property/03.jpg'
 const property4 = 'assets/images/category/property/04.jpg'
 
-import type { FeaturedHotelType, VacationPackageType, FeaturedPropertiesType, NearbyPlaceType, DiscoverStayType } from './type'
+const claimIcon1 = 'assets/images/icons/01.png'
+const claimIcon2 = 'assets/images/icons/02.png'
+const claimIcon3 = 'assets/images/icons/03.png'
+
+import type { FeaturedHotelType, VacationPackageType, FeaturedPropertiesType, NearbyPlaceType, DiscoverStayType, ClaimType } from './type'
 
 export const nearbyPlacesData: NearbyPlaceType[] = [
   {
@@ -89,9 +93,34 @@ export const featuredHotelsData: FeaturedHotelType[] = [
   {
     location: 'New York',
     image: hotel1,
-    name: 'Baga Comfort',
+    name: 'The New York Hotel',
     price: 455,
-    ratings: 4.5,
+    ratings: 3.2,
+    reviews: 128
+  },
+  {
+    location: 'New York',
+    image: hotel2,
+    name: 'Placeholder Hotel',
+    price: 455,
+    ratings: 4.2,
+    reviews: 185
+  },
+  {
+    location: 'New York',
+    image: hotel3,
+    name: 'Four Seasons Hotel',
+    price: 455,
+    ratings: 3.9,
+    reviews: 56
+  },
+  {
+    location: 'New York',
+    image: hotel4,
+    name: 'Kiswah Hotel',
+    price: 455,
+    ratings: 4.8,
+    reviews: 198
   },
   {
     location: 'California',
@@ -99,6 +128,49 @@ export const featuredHotelsData: FeaturedHotelType[] = [
     name: 'New Apollo Hotel',
     price: 585,
     ratings: 4.8,
+    reviews: 204
+  },
+  {
+    location: 'California',
+    image: hotel2,
+    name: 'New Apollo Hotel',
+    price: 585,
+    ratings: 4.8,
+  },
+  {
+    location: 'California',
+    image: hotel2,
+    name: 'New Apollo Hotel',
+    price: 585,
+    ratings: 3.1,
+  },
+  {
+    location: 'California',
+    image: hotel2,
+    name: 'New Apollo Hotel',
+    price: 585,
+    ratings: 4.5,
+  },
+  {
+    location: 'Los Angeles',
+    image: hotel3,
+    name: 'New Age Hotel',
+    price: 385,
+    ratings: 2.6,
+  },
+  {
+    location: 'Los Angeles',
+    image: hotel3,
+    name: 'New Age Hotel',
+    price: 385,
+    ratings: 3.8,
+  },
+  {
+    location: 'Los Angeles',
+    image: hotel3,
+    name: 'New Age Hotel',
+    price: 385,
+    ratings: 4.6,
   },
   {
     location: 'Los Angeles',
@@ -123,9 +195,9 @@ export const vacationPackageData: VacationPackageType[] = [
     title: 'Baga Comfort',
     price: 455,
     rating: "Five Star Rating",
-    fromDate: new Date('2023-03-01'),
-    toDate: new Date('2023-08-01'),
-    offer: '20% Off',
+    fromDate: new Date('2025-02-01'),
+    toDate: new Date('2025-02-08'),
+    offer: 20,
   },
   {
     location: 'Paris',
@@ -133,9 +205,9 @@ export const vacationPackageData: VacationPackageType[] = [
     title: 'Eiffel Luxury Suites',
     price: 520,
     rating: 'Four Star Rating',
-    fromDate: new Date('2023-04-15'),
-    toDate: new Date('2023-09-15'),
-    offer: '15% Off',
+    fromDate: new Date('2025-03-15'),
+    toDate: new Date('2025-03-20'),
+    offer: 15,
   },
   {
     location: 'Dubai',
@@ -143,9 +215,9 @@ export const vacationPackageData: VacationPackageType[] = [
     title: 'Palm Paradise',
     price: 600,
     rating: 'Five Star Rating',
-    fromDate: new Date('2023-05-01'),
-    toDate: new Date('2023-10-01'),
-    offer: '25% Off',
+    fromDate: new Date('2025-05-05'),
+    toDate: new Date('2025-5-09'),
+    offer: 15,
   },
 
 ]
@@ -217,4 +289,23 @@ export const discoverStay: DiscoverStayType[] = [
     price: 665,
     ratings: 4.8,
   },
+]
+
+export const claims: ClaimType[] = [
+  {
+    title: "We Price Match",
+    description: "We aim to offer you the best possible price.",
+    icon: claimIcon2
+  },
+  {
+    title: "Hotel Booking Guartantee",
+    description: "BookingTimes will do best to cordinate your stay.",
+    icon: claimIcon1
+  },
+  {
+    title: "Hotel Stay Gurantee",
+    description: "Hotel Stay is guranteed with refund policies.",
+    icon: claimIcon3
+  },
+
 ]

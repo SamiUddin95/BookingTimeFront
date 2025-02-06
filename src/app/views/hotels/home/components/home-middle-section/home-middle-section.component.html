@@ -1,36 +1,46 @@
-<section class="pt-0 ">
-  <div class="container px-4 py-0">
+<section class="pt-0 bg-transparent" style="margin-top: -150px;">
+  <div class="container px-7 py-0">
 
     <div class="row g-4">
       @for (data of packages; track $index) {
       <div class="col-sm-6 col-xl-4">
-        <div class="card card-img-scale overflow-hidden rounded-4 shadow-sm">
+        <div class="card card-img-scale overflow-hidden py-0">
+
           <div class="card-img-scale-wrapper" style="height: 200px;">
             <img src="{{ data.image }}" class="card-img" alt="hotel image" />
           </div>
-          <div class="card-body px-3">
+
+          <div class="card-body px-3 ">
+
             <h5 class="card-title m-0">
-              <a routerLink="/hotels/detail" class="stretched-link">{{data.title}}
+              <a routerLink="/hotels/detail" class="">{{data.title}}
               </a>
             </h5>
+
             <p class="m-0 text-dark">{{data.location}}</p>
             <p class="m-0 mt-1 text-dark"><i class="fa fa-building me-2"></i>{{data.rating}}</p>
-            <div class="d-flex">
-              <div
-                class="bg-success bg-opacity-10 border border-2 border-success border-dashed rounded-2 px-2 py-1 d-inline-block ms-auto">
-                <h6 class="fw-normal mb-0">
-                  {{ data.offer }}
-                </h6>
+
+            <div class="d-flex mt-5">
+              <div class="bg-teal bg-opacity-10 rounded-2 px-2 py-1 d-inline-block ms-auto">
+                <p class=" mb-0  text-white">
+                  {{ data.offer }}% Off
+                </p>
               </div>
             </div>
+
             <h4 class="my-1 text-end">
-              {{ currencyType }}{{ data.price }}
-              <small class="fs-6">per traveler</small>
+              {{ currencyType }}{{ data.price - (data.price * data.offer / 100) | number:'1.0-2' }}
+              <small class="fs-6 text-decoration-line-through text-danger">{{ currencyType }}{{ data.price }}</small>
             </h4>
-            <p class="text-end mb-0">
-              {{ data.fromDate | date: 'EEE, MMM d' }} to {{ data.toDate | date: 'EEE, MMM d' }}
+            <p class="text-end text-blue fw-bold mb-0">
+              per guest
+            </p>
+            <p class="text-end text-blue fw-bold mb-0">
+              {{ data.fromDate | date: 'EEE, MMM d' }} - {{ data.toDate | date: 'EEE, MMM d' }}
+              ({{ calculateNights(data.fromDate, data.toDate) }} nights)
             </p>
           </div>
+
         </div>
       </div>
       }

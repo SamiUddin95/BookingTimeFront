@@ -8,9 +8,9 @@ import { RouterModule } from '@angular/router'
   standalone: true,
   imports: [RouterModule],
   templateUrl: './feture-hotel.component.html',
-  styles: ``,
+  styleUrl: `./feture-hotel.component.scss`,
 })
 export class FetureHotelComponent {
-  hotels = featuredHotelsData
+  hotels = featuredHotelsData.slice(0, 4)
   currencyType = currency
 }
