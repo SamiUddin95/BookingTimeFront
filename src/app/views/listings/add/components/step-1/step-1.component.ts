@@ -1,82 +1,67 @@
-import { SelectFormInputDirective } from '@/app/components/form/select-form-input.directive'
 import { CommonModule } from '@angular/common'
-import { Component, inject, Input, type OnInit } from '@angular/core'
-import {
-  FormsModule,
-  ReactiveFormsModule,
-  UntypedFormBuilder,
-  Validators,
-  type UntypedFormGroup,
-} from '@angular/forms'
+import { Component, Input } from '@angular/core'
+import { FormsModule } from '@angular/forms'
 import Stepper from 'bs-stepper'
-import type { Options } from 'choices.js'
-import {
-  DROPZONE_CONFIG,
-  DropzoneModule,
-  type DropzoneConfigInterface,
-} from 'ngx-dropzone-wrapper'
-
-type UploadedFile = {
-  name: string
-  size: number
-  type: string
-  dataURL?: string
-}
-
-const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
-  // Change this to your upload POST address:
-  url: 'https://httpbin.org/post',
-  maxFilesize: 5,
-  acceptedFiles: 'image/*',
-}
 
 @Component({
   selector: 'add-listing-step-1',
   standalone: true,
   imports: [
-    SelectFormInputDirective,
-    DropzoneModule,
     CommonModule,
     FormsModule,
-    ReactiveFormsModule,
   ],
   templateUrl: './step-1.component.html',
   styles: ``,
-  providers: [
-    {
-      provide: DROPZONE_CONFIG,
-      useValue: DEFAULT_DROPZONE_CONFIG,
-    },
-  ],
 })
-export class Step1Component implements OnInit {
-  @Input() stepperInstance?: Stepper
+export class Step1Component {
+  @Input() stepperInstance?: Stepper;
+  
+  category = {
+    listingTypeId: 0,
+    name: '',
+    guest: '',
+    description: '',
+    countryId: 0,
+    stateId: 0,
+    city: '',
+    postalNumber: '',
+    street: '',
+    latitude: 0,
+    longitude: 0
+  };
 
-  categoryForm!: UntypedFormGroup
-  submit = false
+  listingTypes = [
+    { id: 1, name: 'Hotel' },
+    { id: 2, name: 'Villa' },
+    { id: 3, name: 'Home Stay' },
+    { id: 4, name: 'Farmhouse' },
+    { id: 5, name: 'House boat' }
+  ];
 
-  private fb = inject(UntypedFormBuilder)
+  guestOptions = [
+    { value: 'entirePlace', label: 'Entire Place', id: 'flexRadioDefault1' },
+    { value: 'forGuest', label: 'For Guest', id: 'flexRadioDefault2' },
+    { value: 'forPersonal', label: 'For Personal', id: 'flexRadioDefault3' }
+  ];
 
-  public dropzoneConfig: DropzoneConfigInterface = {
-    clickable: true,
-    addRemoveLinks: true,
-    maxFiles: 5,
-  }
+  countries = [
+    { id: 1, name: 'Pakistan' },
+    { id: 2, name: 'Saudi Arabia' },
+    { id: 3, name: 'Indonesia' },
+    { id: 4, name: 'India' },
+    { id: 5, name: 'Qatar' }
+  ];
 
-  ngOnInit(): void {
-    this.categoryForm = this.fb.group({
-      name: ['', Validators.required],
-      guest: ['', Validators.required],
-      description: ['', Validators.required],
-    })
-  }
-
-  get form() {
-    return this.categoryForm.controls
-  }
+  states = [
+    { id: 1, name: 'Manama' },
+    { id: 2, name: 'Qallat' },
+    { id: 3, name: 'London' },
+    { id: 4, name: 'Kerala' },
+    { id: 5, name: 'Avenue' }
+  ];
 
   gotoNext() {
-    this.submit = true
-    this.stepperInstance?.next()
+    console.log(this.category);
+    this.stepperInstance?.next();
   }
 }
