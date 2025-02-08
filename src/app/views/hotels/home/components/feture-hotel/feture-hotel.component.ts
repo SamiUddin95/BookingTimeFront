@@ -2,6 +2,7 @@ import { Component } from '@angular/core'
 import { featuredHotelsData } from '../../data'
 import { currency } from '@/app/store'
 import { RouterModule } from '@angular/router'
+import { AppServiceService } from '@/app/services/app-service.service'
 
 @Component({
   selector: 'home-feture-hotel',
@@ -11,6 +12,13 @@ import { RouterModule } from '@angular/router'
   styleUrl: `./feture-hotel.component.scss`,
 })
 export class FetureHotelComponent {
+  constructor(private app: AppServiceService) { }
   hotels = featuredHotelsData.slice(0, 4)
   currencyType = currency
+
+  ngOnInit(){
+    this.app.get("GetListOFProperty").subscribe(res=>{
+      debugger
+    })
+  }
 }
