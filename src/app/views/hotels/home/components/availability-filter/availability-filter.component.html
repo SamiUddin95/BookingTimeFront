@@ -4,11 +4,11 @@
   <form class="bg-white rounded p-3 position-relative">
     <div class="row g-4 align-items-center">
       <div class="col-lg-4">
-        <div class="form-control-border form-control-transparent form-fs-md d-flex">
+        <div class="form-control-border form-control-white form-fs-md d-flex">
           <i class="bi bi-geo-alt fs-4 me-2 mt-3"></i>
 
           <div class="flex-grow-1">
-            <label class="form-label">Location</label>
+            <label class="form-label bg-white">Location</label>
             <select selectFormInput data-search-enabled="true">
               <option value="-1" disabled selected>Select location</option>
               <option>San Jacinto, USA</option>
@@ -23,8 +23,8 @@
         <div class="d-flex">
           <i class="bi bi-calendar fs-4 me-2 mt-3"></i>
 
-          <div class="form-control-border form-control-transparent form-fs-md">
-            <label class="form-label">Check in - out</label>
+          <div class="form-control-border form-control-white form-fs-md">
+            <label class="form-label bg-white">Check in - out</label>
             <input type="text" type="text" mwlFlatpickr [flatpickrOptions]="{ mode: 'range', dateFormat: 'd M' }"
               class="form-control flatpickr" placeholder="Select date" value="19 Sep to 28 Sep" />
           </div>
@@ -33,11 +33,11 @@
 
       <div class="col-lg-4">
 
-        <div class="form-control-border form-control-transparent form-fs-md d-flex">
+        <div class="form-control-border form-control-white form-fs-md d-flex">
           <i class="bi bi-person fs-4 me-2 mt-3"></i>
 
           <div class="w-100">
-            <label class="form-label">Guests & rooms</label>
+            <label class="form-label bg-white">Guests & rooms</label>
             <div ngbDropdown class="dropdown guest-selector me-2">
               <input ngbDropdownToggle type="text" class="form-guest-selector form-control selection-result"
                 [value]="getGuestsValue()" data-bs-auto-close="outside" data-bs-toggle="dropdown" />
@@ -114,13 +114,14 @@
       </div>
 
       <div class="col-lg-1 d-none d-md-none d-lg-block">
-        <a class="icon-lg btn btn-warning mb-0 d-flex align-items-center justify-content-center"
-          href="javascript:void()"><i class="bi bi-search fa-fw fs-5"></i></a>
+        <a class="icon-lg btn btn-secondary mb-0 d-flex align-items-center justify-content-center"
+          href="javascript:void()"><i class="bi bi-search fa-fw fs-5 text-dark-green"></i></a>
       </div>
     </div>
 
     <div class="btn-position-md-middle d-block d-md-block d-lg-none">
-      <a class="icon-lg btn btn-round btn-warning mb-0" href="javascript:void()"><i class="bi bi-search fa-fw"></i></a>
+      <a class="icon-lg btn btn-round btn-secondary mb-0" href="javascript:void()"><i
+          class="bi bi-search fa-fw text-dark-green"></i></a>
     </div>
 
 

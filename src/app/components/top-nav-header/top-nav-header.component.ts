@@ -1,8 +1,8 @@
+import { Component, Input } from '@angular/core';
 import { VerticalMenuButtonComponent } from '@/app/components/app-menu/components/vertical-menu-button.component'
 import { StickyHeaderComponent } from '@/app/components/sticky-header.component'
 import { NotificationDropdownComponent } from '@/app/components/top-bar/notification-dropdown/notification-dropdown.component'
 import { ProfileDropdownComponent } from '@/app/components/top-bar/profile-dropdown/profile-dropdown.component'
-import { Component } from '@angular/core'
 import { RouterLink } from '@angular/router'
 import {
   NgbCollapseModule,
@@ -13,7 +13,7 @@ import { LogoBoxComponent } from 'src/app/components/logo-box/logo-box.component
 import { bookingHomeMenuItems } from 'src/assets/data'
 
 @Component({
-  selector: 'home-top-nav',
+  selector: 'top-nav-header',
   standalone: true,
   imports: [
     StickyHeaderComponent,
@@ -26,10 +26,12 @@ import { bookingHomeMenuItems } from 'src/assets/data'
     NotificationDropdownComponent,
     ProfileDropdownComponent,
   ],
-  templateUrl: './top-nav.component.html',
-  styleUrl: './top-nav.component.scss',
+  templateUrl: './top-nav-header.component.html',
+  styleUrl: './top-nav-header.component.scss'
 })
-export class TopNavComponent {
+export class TopNavHeaderComponent {
   bookingHomeMenuItems = bookingHomeMenuItems
   isCollapsed = true
+  @Input() activeTab: string = "";
+
 }

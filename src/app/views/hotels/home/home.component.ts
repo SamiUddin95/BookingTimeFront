@@ -16,6 +16,8 @@ import { Footer1Component } from './components/footer1/footer1.component'
 import { HomeFeaturePropertiesComponent } from "./components/home-feature-properties/home-feature-properties.component";
 import { DiscoverFavriteStayComponent } from "./components/discover-favrite-stay/discover-favrite-stay.component";
 import { HomeMiddleSectionComponent } from "./components/home-middle-section/home-middle-section.component";
+import { TopNavHeaderComponent } from "../../../components/top-nav-header/top-nav-header.component";
+import { PopularAttractionsComponent } from "./components/popular-attractions/popular-attractions.component";
 @Component({
   selector: 'hotels-home',
   standalone: true,
@@ -33,8 +35,10 @@ import { HomeMiddleSectionComponent } from "./components/home-middle-section/hom
     Footer1Component,
     HomeFeaturePropertiesComponent,
     DiscoverFavriteStayComponent,
-    HomeMiddleSectionComponent
-],
+    HomeMiddleSectionComponent,
+    TopNavHeaderComponent,
+    PopularAttractionsComponent
+  ],
   templateUrl: './home.component.html',
 })
 export class HomeComponent {

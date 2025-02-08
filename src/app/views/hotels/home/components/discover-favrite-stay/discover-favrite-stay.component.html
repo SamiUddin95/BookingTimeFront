@@ -1,10 +1,10 @@
 <section>
   <div class="rounded-2 container bg-primary p-4 d-flex justify-content-between align-items-center">
 
-    <div class="d-flex flex-column justify-content-between">
-      <h3 class="mt-3 text-white">Discover your new<br /> favourite stay</h3>
+    <div class="">
+      <h3 class=" text-white">Discover your new<br /> favourite stay</h3>
 
-      <div>
+      <div class="mt-8">
         <p class="text-white fs-5 fw-bold">Sign-in, Save Money</p>
         <p class="text-white">Lorem ipsum dolor sit amet consectetur, adipisicing elit.</p>
       </div>
@@ -35,15 +35,11 @@
         <ng-tiny-slider [config]="testimonialSliderSettings" #offerSlider>
           @for (data of properties; track $index) {
 
-          <div class="card card-img-scale overflow-hidden bg-transparent me-2 mb-0" style="width: 150px;">
+          <div class="card card-img-scale overflow-hidden bg-transparent me-2 mb-0" style="width: 200px;">
             <div class="card-img-scale-wrapper rounded-3">
               <img src="{{ data.image }}" class="card-img" alt="hotel image" />
-              <div class="position-absolute bottom-0 start-0 p-3 mx-1">
-                <div class="position-absolute bottom-0 start-0 p-3">
-                  <div class="badge text-bg-dark rounded-pill stretched-link">{{ data.type }}
-                  </div>
-                </div>
-              </div>
+              <p class="position-absolute bottom-0 start-50 translate-middle-x p-0 text-white z-3 text-nowrap">
+                {{data.type }}</p>
             </div>
           </div>
           }

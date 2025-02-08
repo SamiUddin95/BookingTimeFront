@@ -1,0 +1,62 @@
+<section class="p-0 mt-5">
+    <div class="container p-4 bg-light rounded-2">
+
+        <div class="d-flex justify-content-between mb-2">
+            <div class="">
+                <h4 class="mb-0">Popular Attractions</h4>
+            </div>
+            <div class="">
+                <button class="mb-0 btn bg-warning mr-1 cursor-pointer text-dark">Explore More <i
+                        class="fa fa-arrow-right"></i></button>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            @for (location of locationFilters; track $index){
+            <button class="btn btn-outline-primary me-2" (click)="filterProperties(location)"
+                [class.active]="selectedLocation === location">{{location}}</button>
+            }
+        </div>
+
+        <div class="row g-4">
+            @for (data of filteredProperties; track $index) {
+            <div class="col-sm-6 col-xl-3">
+                <div class="card card-img-scale overflow-hidden bg-white">
+
+                    <div class="card-img-scale-wrapper" style="height: 200px;">
+                        <img src="{{ data.image }}" class="card-img" alt="hotel image" />
+
+                    </div>
+
+                    <div class="card-body px-2">
+                        <h5 class="card-title">
+                            <a routerLink="/hotels/detail" class="fs-6">{{
+                                data.name
+                                }}</a>
+                        </h5>
+
+
+                        <div class="d-flex gap-2">
+
+                            <p class="mb-0 bg-primary w-auto px-2 text-white rating-tag">
+                                <span class="fs-6">{{ data.ratings}}</span><small class="text-muted">/5</small>
+                            </p>
+
+                            <p class="text-primary fs-6">({{data.reviews}}+ reviews)</p>
+
+                        </div>
+
+                        <p class="mb-0 w-auto px-2 text-white text-end">
+                            <small class="text-dark mr-1">From </small><span class="fs-5 text-blue fw-bold">{{
+                                currencyType }}{{
+                                data.price
+                                }}</span>
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</section>

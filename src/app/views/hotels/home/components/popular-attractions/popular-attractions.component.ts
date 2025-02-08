@@ -1,20 +1,18 @@
 import { Component } from '@angular/core';
-import { featuredHotelsData, featuredPropertiesData, claims } from '../../data'
+import { featuredHotelsData, featuredPropertiesData } from '../../data'
 import { currency } from '@/app/store'
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
-import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'home-feature-properties',
+  selector: 'home-popular-attractions',
   standalone: true,
-  imports: [NgbTooltip, CommonModule],
-  templateUrl: './home-feature-properties.component.html',
-  styleUrl: './home-feature-properties.component.scss'
+  imports: [NgbTooltip],
+  templateUrl: './popular-attractions.component.html',
+  styleUrl: './popular-attractions.component.scss'
 })
-export class HomeFeaturePropertiesComponent {
+export class PopularAttractionsComponent {
   properties = featuredHotelsData
   currencyType = currency
-  claims = claims
 
   filteredProperties = this.properties;
   selectedLocation: string | null = null;
@@ -36,10 +34,4 @@ export class HomeFeaturePropertiesComponent {
   extractUniqueLocations() {
     this.locationFilters = [...new Set(this.properties.map(p => p.location))];
   }
-
-  roundOff(value: number) {
-    return Math.round(value)
-  }
-
-
 }
