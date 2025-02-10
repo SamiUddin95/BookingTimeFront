@@ -86,8 +86,8 @@ export class Step3Component {
     const steeper2 = steeper2Str ? JSON.parse(steeper2Str) : null;
     const steeper3 = steeper3Str ? JSON.parse(steeper3Str) : null;
     let data: any = {
-      ListName: steeper1?.name || "Default Name", // Fallback value
-      BasePrice: steeper2?.basePrice ? Number(steeper2.basePrice) : 0, // Ensure a number
+      ListName: steeper1?.name || "Default Name",
+      BasePrice: steeper2?.basePrice ? Number(steeper2.basePrice) : 0,
     };
     
     this.app.post('AddListingProperty',{data}).subscribe(res=>{
