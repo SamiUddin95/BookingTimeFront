@@ -93,6 +93,9 @@ export class Step3Component {
     this.app.post('AddListingProperty',{data}).subscribe(res=>{
       if(res.code==200){
         this.router.navigate(['listings/added']);
+        localStorage.removeItem("steeper1");
+        localStorage.removeItem("steeper2");
+        localStorage.removeItem("steeper3");
       }
     });
   }
