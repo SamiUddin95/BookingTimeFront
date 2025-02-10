@@ -1,9 +1,10 @@
 import { SelectFormInputDirective } from '@/app/components/form/select-form-input.directive'
 import { Component, Input } from '@angular/core'
 import { FormsModule } from '@angular/forms'
-import { RouterLink } from '@angular/router'
+import { Router, RouterLink } from '@angular/router'
 import Stepper from 'bs-stepper'
 import { QuillEditorComponent } from 'ngx-quill'
+import { AppServiceService } from '@/app/services/app-service.service'
 
 @Component({
   selector: 'add-listing-step-3',
@@ -18,8 +19,17 @@ import { QuillEditorComponent } from 'ngx-quill'
   styles: ``,
 })
 export class Step3Component {
+  constructor(private app: AppServiceService,private router: Router) { }
   @Input() stepperInstance?: Stepper
-
+  category = {
+    basePrice: 0,
+    currencyId: 0,
+    description: '',
+    postalNumber: '',
+    street: '',
+    latitude: 0,
+    longitude: 0
+  };
   editorConfig = {
     toolbar: [
       [{ size: ['small', false, 'large', 'huge'] }],
@@ -65,4 +75,25 @@ export class Step3Component {
   <br>
   <p> Post no so what deal evil rent by real in. But her ready least set lived spite solid. September how men saw tolerably two behavior arranging. She offices for highest and replied one venture pasture. Applauded no discovery in newspaper allowance am northward. Frequently partiality possession resolution at or appearance unaffected me. Engaged its was the evident pleased husband. Ye goodness felicity do disposal dwelling no. First am plate jokes to began to cause a scale. Subjects he prospect elegance followed no overcame possible it on. </p>
 </div>`
+
+  addDataStepThree() {
+    this.stepperInstance?.next();
+    localStorage.setItem("steeper2", JSON.stringify(this.category));
+    const steeper1Str = localStorage.getItem("steeper1");
+    const steeper2Str = localStorage.getItem("steeper2");
+    const steeper3Str = localStorage.getItem("steeper3");
+    const steeper1 = steeper1Str ? JSON.parse(steeper1Str) : null;
+    const steeper2 = steeper2Str ? JSON.parse(steeper2Str) : null;
+    const steeper3 = steeper3Str ? JSON.parse(steeper3Str) : null;
+    let data: any = {
+      ListName: steeper1?.name || "Default Name", // Fallback value
+      BasePrice: steeper2?.basePrice ? Number(steeper2.basePrice) : 0, // Ensure a number
+    };
+    
+    this.app.post('AddListingProperty',{data}).subscribe(res=>{
+      if(res.code==200){
+        this.router.navigate(['listings/added']);
+      }
+    });
+  }
 }

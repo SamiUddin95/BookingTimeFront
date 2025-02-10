@@ -10,16 +10,9 @@
       <div class="row g-4">
         <div class="col-12">
           <label class="form-label">Select amenities *</label>
-          <select
-            selectFormInput
-            [(ngModel)]="category.selectedAmenities"
-            [options]="selectOptions"
-            class="form-select js-choice border-0 z-index-9 bg-transparent"
-            aria-label=".form-select-sm"
-            data-max-item-count="15"
-            data-remove-item-button="true"
-            multiple
-          >
+          <select selectFormInput [(ngModel)]="category.selectedAmenities" [options]="selectOptions"
+            class="form-select js-choice border-0 z-index-9 bg-transparent" aria-label=".form-select-sm"
+            data-max-item-count="15" data-remove-item-button="true" multiple>
             <option *ngFor="let amenity of amenitiesList" [value]="amenity">{{ amenity }}</option>
           </select>
           <small>
@@ -30,14 +23,8 @@
 
         <div class="col-12">
           <label class="form-label">Add description *</label>
-          <quill-editor
-            #quillEditor
-            [(ngModel)]="category.content"
-            theme="snow"
-            class="step-ql-editor"
-            [modules]="editorConfig"
-            style="height: 300px"
-          ></quill-editor>
+          <quill-editor #quillEditor [(ngModel)]="category.content" theme="snow" class="step-ql-editor"
+            [modules]="editorConfig" style="height: 300px"></quill-editor>
         </div>
       </div>
     </div>
@@ -52,29 +39,17 @@
       <div class="row g-4">
         <div class="col-md-4">
           <label class="form-label">Total Floor *</label>
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Enter total floors"
-          />
+          <input type="text" class="form-control" placeholder="Enter total floors" />
         </div>
 
         <div class="col-md-4">
           <label class="form-label">Total Room *</label>
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Enter total rooms"
-          />
+          <input type="text" class="form-control" placeholder="Enter total rooms" />
         </div>
 
         <div class="col-md-4">
           <label class="form-label">Room area *</label>
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Enter area in sq.ft"
-          />
+          <input type="text" class="form-control" placeholder="Enter area in sq.ft" />
         </div>
       </div>
     </div>
@@ -94,36 +69,24 @@
 
         <div class="col-md-6">
           <label class="form-label">Room thumbnail image *</label>
-          <input
-            class="form-control"
-            type="file"
-            name="my-image"
-            id="image-2"
-            accept="image/gif, image/jpeg, image/png"
-          />
+          <input class="form-control" type="file" name="my-image" id="image-2"
+            accept="image/gif, image/jpeg, image/png" />
         </div>
 
         <div class="col-md-6">
           <label class="form-label">Room Price *</label>
-          <input type="text" class="form-control" placeholder="Enter price" />
+          <input type="number" class="form-control" placeholder="Enter price" />
         </div>
 
         <div class="col-md-6">
           <label class="form-label">Discount *</label>
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Enter discount"
-          />
+          <input type="text" class="form-control" placeholder="Enter discount" />
         </div>
 
         <div class="col-md-6">
           <label class="form-label">Additional info</label>
-          <select
-            selectFormInput
-            [options]="{ searchEnabled: false }"
-            class="form-select js-choice border-0 z-index-9 bg-transparent"
-          >
+          <select selectFormInput [options]="{ searchEnabled: false }"
+            class="form-select js-choice border-0 z-index-9 bg-transparent">
             <option value="">Select item</option>
             <option>Non Refundable</option>
             <option>Free Cancellation</option>
@@ -131,27 +94,18 @@
         </div>
 
         <div class="col-12">
-          <a href="javascript:void(0);" class="btn btn-sm btn-primary-soft mb-0"
-            ><i class="bi bi-plus-circle me-2"></i>Add New Room</a
-          >
+          <a href="javascript:void(0);" class="btn btn-sm btn-primary-soft mb-0"><i
+              class="bi bi-plus-circle me-2"></i>Add New Room</a>
         </div>
       </div>
     </div>
   </div>
 
   <div class="hstack gap-2 flex-wrap justify-content-between">
-    <button
-      (click)="stepperInstance?.previous()"
-      type="button"
-      class="btn btn-secondary prev-btn mb-0"
-    >
+    <button (click)="stepperInstance?.previous()" type="button" class="btn btn-secondary prev-btn mb-0">
       Previous
     </button>
-    <button
-      (click)="stepperInstance?.next()"
-      type="button"
-      class="btn btn-primary next-btn mb-0"
-    >
+    <button (click)="addDataStepTwo()" type="button" class="btn btn-primary next-btn mb-0">
       Next
     </button>
   </div>

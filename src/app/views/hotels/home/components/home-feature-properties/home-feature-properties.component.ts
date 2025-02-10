@@ -3,6 +3,8 @@ import { featuredHotelsData, featuredPropertiesData, claims } from '../../data'
 import { currency } from '@/app/store'
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
+import { AppServiceService } from '@/app/services/app-service.service'
+
 
 @Component({
   selector: 'home-feature-properties',
@@ -12,18 +14,34 @@ import { CommonModule } from '@angular/common';
   styleUrl: './home-feature-properties.component.scss'
 })
 export class HomeFeaturePropertiesComponent {
-  properties = featuredHotelsData
+  constructor(private app: AppServiceService) { }
+  properties:any[]=[];
+  // properties = featuredHotelsData
   currencyType = currency
   claims = claims
 
   filteredProperties = this.properties;
-  selectedLocation: string | null = null;
+  selectedLocation: string = '';
   locationFilters: string[] = [];
 
   ngOnInit() {
-    this.selectedLocation = this.properties[0].location;
-    this.filterProperties(this.selectedLocation)
-    this.extractUniqueLocations()
+    if (this.properties.length > 0 && this.properties[0].location) {
+      this.selectedLocation = this.properties[0].location;
+      this.filterProperties(this.selectedLocation);
+      this.extractUniqueLocations();
+    }
+    this.app.get("GetListOFProperty").subscribe(res => {
+      this.filteredProperties = res.map((e: any) => ({
+        location: 'New York',
+        image: 'assets/images/category/hotel/01.jpg',
+        name: e.listName,
+        price: e.basePrice,
+        ratings: 3.2,
+        reviews: 128
+      }));
+
+      console.log(this.properties);
+    });
   }
 
   filterProperties(location: string) {

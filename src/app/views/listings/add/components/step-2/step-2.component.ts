@@ -70,4 +70,8 @@ export class Step2Component {
 
   // Selected amenities (using ngModel)
   selectedAmenities: string[] = [];
+  addDataStepTwo(){
+    this.stepperInstance?.next();
+    localStorage.setItem("steeper2",JSON.stringify(this.category));
+  }
 }

@@ -62,6 +62,7 @@ export class Step1Component {
 
   gotoNext() {
     console.log(this.category);
+    localStorage.setItem("steeper1",JSON.stringify(this.category));
     this.stepperInstance?.next();
   }
 }
