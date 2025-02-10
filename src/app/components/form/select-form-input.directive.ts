@@ -12,7 +12,7 @@ export class SelectFormInputDirective implements OnInit {
   @Input() onChange?: (text: string) => void
   @Input() options?: SelectOptions
 
-  constructor(private eleRef: ElementRef) {}
+  constructor(private eleRef: ElementRef) { }
 
   ngOnInit(): void {
     const choices = new Choices(this.eleRef.nativeElement, {
@@ -29,5 +29,13 @@ export class SelectFormInputDirective implements OnInit {
         this.onChange(e.target.value)
       }
     })
+
+    /* Ensure the dropdown itself has a white background, This is a workaround to fix transparent dropdown bug */
+    /* setTimeout(() => {
+      const dropdown = document.querySelector('.choices__list--dropdown');
+      if (dropdown) {
+        (dropdown as HTMLElement).style.backgroundColor = 'white';
+      }
+    }, 100); */
   }
 }
