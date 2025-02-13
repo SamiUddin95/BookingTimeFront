@@ -21,6 +21,7 @@ export type VacationPackageType = {
   price: number
   fromDate: Date
   toDate: Date
+  reviews?: number
 }
 export type FeaturedPropertiesType = {
   location: string
