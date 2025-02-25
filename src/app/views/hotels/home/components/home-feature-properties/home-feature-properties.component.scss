@@ -4,8 +4,6 @@
     object-fit: contain;
 }
 
-@import "../../../../../../assets/scss/user-variables";
-
 .card {
     border-radius: 6px !important;
     box-shadow: 0 5px 10px rgb(220, 220, 220);
@@ -18,14 +16,6 @@
 
 .card-img {
     border-radius: 0 !important;
-}
-
-.bg-teal {
-    background-color: $teal;
-}
-
-.text-blue {
-    color: $dark-blue;
 }
 
 .rating-tag {
