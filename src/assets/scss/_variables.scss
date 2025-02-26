@@ -65,19 +65,19 @@ $color-contrast-light: $white;
 
 
 //$primary: #5143d9; // To change dark mode primary color go to user.scss file and follow the instruction
-$primary: #0d8fd4;
-
-//$secondary: $gray-500;
+$primary: #0d8fd4; // light-mode-primary-color
 $secondary: #F7DE0E;
-
 $success: $green;
 $info: $cyan;
-$warning: $yellow;
+//$warning: $yellow;
+$warning: #F7DE0E;
 $danger: $red;
 $light: $gray-100;
 $dark: $gray-800;
 $mode: $white;
 $dark-green: #3e7d0e;
+$teal: #2b8163;
+$dark-blue: #012f47;
 
 $theme-colors: (
   "primary": $primary,
@@ -91,7 +91,9 @@ $theme-colors: (
   "dark": $dark,
   "orange": $orange,
   "mode": $mode,
-  "dark-green": $dark-green
+  "dark-green": $dark-green,
+  "teal": $teal,
+  "dark-blue": $dark-blue
 );
 // scss-docs-end theme-colors-map
 

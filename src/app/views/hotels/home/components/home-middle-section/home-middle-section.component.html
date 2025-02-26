@@ -19,9 +19,10 @@
 
             <p class="m-0 text-dark">{{data.location}}</p>
             <p class="m-0 mt-1 text-dark"><i class="fa fa-building me-2"></i>{{data.rating}}</p>
+            <p class="m-0 mt-1 text-dark"><i class="fa fa-comments me-2"></i>{{data.reviews}}+ reviews</p>
 
-            <div class="d-flex mt-5">
-              <div class="bg-teal bg-opacity-10 rounded-2 px-2 py-1 d-inline-block ms-auto">
+            <div class="d-flex mt-3">
+              <div class="bg-teal rounded-2 px-2 py-1 d-inline-block ms-auto">
                 <p class=" mb-0  text-white">
                   {{ data.offer }}% Off
                 </p>
@@ -32,10 +33,10 @@
               {{ currencyType }}{{ data.price - (data.price * data.offer / 100) | number:'1.0-2' }}
               <small class="fs-6 text-decoration-line-through text-danger">{{ currencyType }}{{ data.price }}</small>
             </h4>
-            <p class="text-end text-blue fw-bold mb-0">
+            <p class="text-end text-dark-blue fw-bold mb-0">
               per guest
             </p>
-            <p class="text-end text-blue fw-bold mb-0">
+            <p class="text-end text-dark-blue fw-bold mb-0">
               {{ data.fromDate | date: 'EEE, MMM d' }} - {{ data.toDate | date: 'EEE, MMM d' }}
               ({{ calculateNights(data.fromDate, data.toDate) }} nights)
             </p>

@@ -198,6 +198,7 @@ export const vacationPackageData: VacationPackageType[] = [
     fromDate: new Date('2025-02-01'),
     toDate: new Date('2025-02-08'),
     offer: 20,
+    reviews: 100
   },
   {
     location: 'Paris',
@@ -208,6 +209,7 @@ export const vacationPackageData: VacationPackageType[] = [
     fromDate: new Date('2025-03-15'),
     toDate: new Date('2025-03-20'),
     offer: 15,
+    reviews: 250
   },
   {
     location: 'Dubai',
@@ -218,6 +220,7 @@ export const vacationPackageData: VacationPackageType[] = [
     fromDate: new Date('2025-05-05'),
     toDate: new Date('2025-5-09'),
     offer: 15,
+    reviews: 140
   },
 
 ]
