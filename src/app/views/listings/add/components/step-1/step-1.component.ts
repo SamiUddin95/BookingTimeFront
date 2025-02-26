@@ -15,22 +15,23 @@ import Stepper from 'bs-stepper'
 })
 export class Step1Component {
   @Input() stepperInstance?: Stepper;
-  
+
   category = {
     listingTypeId: 0,
     name: '',
     guest: '',
     description: '',
-    countryId: 0,
-    stateId: 0,
+    countryId:0,
+    stateId:0,
     city: '',
     postalNumber: '',
     street: '',
-    latitude: 0,
-    longitude: 0
+    latitude: '',
+    longitude: ''
   };
 
   listingTypes = [
+    { id: 0, name: 'Select Type' },
     { id: 1, name: 'Hotel' },
     { id: 2, name: 'Villa' },
     { id: 3, name: 'Home Stay' },
@@ -60,9 +61,30 @@ export class Step1Component {
     { id: 5, name: 'Avenue' }
   ];
 
-  gotoNext() {
+  gotoNext(event?: Event) {
+    debugger
+    event?.preventDefault();
     console.log(this.category);
-    localStorage.setItem("steeper1",JSON.stringify(this.category));
+    localStorage.setItem("steeper1", JSON.stringify(this.category));
     this.stepperInstance?.next();
   }
+
+  isFormValid: boolean = false;
+
+  formValid() {
+    this.isFormValid =
+      this.category.listingTypeId !== 0 &&
+      !!this.category.name &&
+      !!this.category.guest &&
+      !!this.category.description &&
+      this.category.countryId !== 0 &&
+      this.category.stateId !== 0 &&
+      !!this.category.city &&
+      !!this.category.postalNumber &&
+      !!this.category.street &&
+      !!this.category.latitude &&
+      !!this.category.longitude;
+  }
+  
 }
+

@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AppServiceService {
-  private urlBase = "https://localhost:7087/api/";
+  private urlBase = "http://45.59.163.15:4100/api/";
   private auth: string = '';
 
   constructor(private http: HttpClient) {}

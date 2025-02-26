@@ -6,11 +6,12 @@ import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import Stepper from 'bs-stepper';
 import { QuillEditorComponent } from 'ngx-quill';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'add-listing-step-2',
   standalone: true,
-  imports: [SelectFormInputDirective, QuillEditorComponent, FormsModule],
+  imports: [SelectFormInputDirective, QuillEditorComponent, FormsModule,CommonModule],
   templateUrl: './step-2.component.html',
 })
 export class Step2Component {
@@ -71,6 +72,7 @@ export class Step2Component {
   // Selected amenities (using ngModel)
   selectedAmenities: string[] = [];
   addDataStepTwo(){
+    console.log("Done");
     this.stepperInstance?.next();
     localStorage.setItem("steeper2",JSON.stringify(this.category));
   }
