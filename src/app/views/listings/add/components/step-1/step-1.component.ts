@@ -38,7 +38,6 @@ export class Step1Component {
     { id: 4, name: 'Farmhouse' },
     { id: 5, name: 'House boat' }
   ];
-
   guestOptions = [
     { value: 'entirePlace', label: 'Entire Place', id: 'flexRadioDefault1' },
     { value: 'forGuest', label: 'For Guest', id: 'flexRadioDefault2' },
@@ -62,7 +61,6 @@ export class Step1Component {
   ];
 
   gotoNext(event?: Event) {
-    debugger
     event?.preventDefault();
     console.log(this.category);
     localStorage.setItem("steeper1", JSON.stringify(this.category));

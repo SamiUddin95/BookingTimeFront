@@ -11,45 +11,63 @@
         <div class="col-md-6">
           <label class="form-label">Currency</label>
           <select
-            selectFormInput
-            [options]="{ searchEnabled: false }"
-            class="form-select js-choice border-0 z-index-9 bg-transparent"
+            class="form-select"
+            [(ngModel)]="category.currencyId"
+            (change)="validateForm()"
+            required
+            [ngClass]="{'is-invalid': category.currencyId === 0}"
           >
-            <option value="">Select item</option>
-            <option>USD</option>
-            <option>EURRO</option>
-            <option>VND</option>
+            <option *ngFor="let type of currencies" [ngValue]="type.id">{{ type.name }}</option>
           </select>
+          <div *ngIf="category.currencyId === 0" class="invalid-feedback">Please select a Currency.</div>
         </div>
 
         <div class="col-md-6">
           <label class="form-label">Base Price *</label>
-          <input type="text" class="form-control" [(ngModel)]="category.basePrice"  placeholder="Enter price" />
+          <input
+            type="number"
+            class="form-control"
+            [(ngModel)]="category.basePrice"
+            (input)="validateForm()"
+            required
+            [ngClass]="{'is-invalid': category.basePrice === null || category.basePrice <= 0}"
+            placeholder="Enter price"
+          />
+          <div *ngIf="category.basePrice === null || category.basePrice <= 0" class="invalid-feedback">
+            Please enter a valid base price.
+          </div>
         </div>
 
         <div class="col-md-6">
           <label class="form-label">Discount *</label>
           <input
-            type="text"
+            type="number"
             class="form-control"
+            [(ngModel)]="category.discount"
+            (input)="validateForm()"
+            required
+            [ngClass]="{'is-invalid': category.discount === null || category.discount < 0}"
             placeholder="Enter discount"
           />
+          <div *ngIf="category.discount === null || category.discount < 0" class="invalid-feedback">
+            Discount cannot be negative.
+          </div>
         </div>
 
         <div class="col-md-6">
           <label class="form-label">Rating</label>
           <select
-            selectFormInput
-            [options]="{ searchEnabled: false }"
-            class="form-select js-choice border-0 z-index-9 bg-transparent"
+            class="form-select"
+            [(ngModel)]="category.ratingId"
+            (change)="validateForm()"
+            required
+            [ngClass]="{'is-invalid': !category.ratingId || category.ratingId.trim() === ''}"
           >
-            <option value="">Select item</option>
-            <option>★★★★★</option>
-            <option>★★★★☆</option>
-            <option>★★★☆☆</option>
-            <option>★★☆☆☆</option>
-            <option>★☆☆☆☆</option>
+            <option *ngFor="let type of rating" [ngValue]="type.id">{{ type.name }}</option>
           </select>
+          <div *ngIf="!category.ratingId || category.ratingId.trim() === ''" class="invalid-feedback">
+            Please select a rating.
+          </div>
         </div>
       </div>
     </div>
@@ -66,46 +84,25 @@
           <label class="form-label">Add description *</label>
           <quill-editor
             #quillEditor
-            [(ngModel)]="content"
+            [(ngModel)]="category.description"
+            (ngModelChange)="validateForm()"
             theme="snow"
             [modules]="editorConfig"
             style="height: 300px"
           ></quill-editor>
-        </div>
-
-        <div class="col-md-6">
-          <label class="form-label">Cancellation options</label>
-          <select
-            selectFormInput
-            [options]="{ searchEnabled: false }"
-            class="form-select js-choice border-0 z-index-9 bg-transparent"
-            data-position="top"
-          >
-            <option value="">Select item</option>
-            <option>Non Refundable</option>
-            <option>Refundable</option>
-          </select>
-        </div>
-
-        <div class="col-md-6">
-          <label class="form-label">Charges *</label>
-          <input type="text" class="form-control" placeholder="Enter charges" />
+          <div *ngIf="category.description.trim() === ''" class="invalid-feedback">Description is required.</div>
         </div>
       </div>
     </div>
   </div>
 
   <div class="d-flex justify-content-between">
-    <button
-      (click)="stepperInstance?.previous()"
-      type="button"
-      class="btn btn-secondary prev-btn mb-0"
-    >
+    <button (click)="stepperInstance?.previous()" type="button" class="btn btn-secondary prev-btn mb-0">
       Previous
     </button>
-    <!-- [routerLink]="'/listings/added'" -->
-    <a (click)="addDataStepThree()"  class="btn btn-success mb-0"
-      >Add Listing</a
-    >
+
+    <button type="button" (click)="addDataStepThree()" [disabled]="!isFormValid" class="btn btn-success mb-0">
+      Add Listing
+    </button>
   </div>
 </div>
