@@ -6,42 +6,50 @@
       <h5 class="mb-0">Choose Listing Category</h5>
     </div>
 
-    <div class="card-body">
-      <form #categoryForm="ngForm">
+    <div class="card-body"> 
         <div class="row g-4">
           <div class="col-12">
             <label class="form-label">Choose listing type *</label>
-            <select class="form-select js-choice" [(ngModel)]="category.listingTypeId" name="listingTypeId" required>
-              <option value="">Select type</option>
-              <option *ngFor="let type of listingTypes" [value]="type.id">{{ type.name }}</option>
+            <select class="form-select js-choice" (ngModelChange)="formValid()" [(ngModel)]="category.listingTypeId" name="listingTypeId" required [ngClass]="{'is-invalid': !category.listingTypeId}" >
+              <option *ngFor="let type of listingTypes" [ngValue]="type.id">{{ type.name }}</option>
             </select>
-            <small>Hotel: Professional hospitality businesses that usually have a unique style or theme defining their
-              brand and decor</small>
+            <div *ngIf="category.listingTypeId" class="invalid-feedback">
+              Please select a listing type.
+            </div>
           </div>
+          
 
           <div class="col-12">
             <label class="form-label">Listing name *</label>
-            <input class="form-control" type="text" [(ngModel)]="category.name" name="name" placeholder="Enter place name" required />
+            <input class="form-control" type="text" (ngModelChange)="formValid()" [(ngModel)]="category.name" name="name" placeholder="Enter place name" required [ngClass]="{'is-invalid': !category.name}">
+            <div *ngIf="!category.name" class="invalid-feedback">
+              Please enter a listing name.
+            </div>
           </div>
 
           <div class="col-12">
             <label class="form-label">Is your listing set as a personal or guest use *</label>
             <div class="d-sm-flex">
               <div class="form-check radio-bg-light me-4" *ngFor="let option of guestOptions">
-                <input class="form-check-input" type="radio" [(ngModel)]="category.guest" name="guest" [value]="option.value" id="{{ option.id }}" required />
+                <input class="form-check-input" type="radio" (ngModelChange)="formValid()" [(ngModel)]="category.guest" name="guest" [value]="option.value" id="{{ option.id }}" required [ngClass]="{'is-invalid': !category.guest}">
                 <label class="form-check-label" [for]="option.id">
                   {{ option.label }}
                 </label>
               </div>
             </div>
+            <div *ngIf="!category.guest" class="invalid-feedback">
+              Please select guest option.
+            </div>
           </div>
 
           <div class="col-12">
             <label class="form-label">Short description *</label>
-            <textarea class="form-control" rows="2" [(ngModel)]="category.description" name="description" placeholder="Enter keywords" required></textarea>
+            <textarea class="form-control" rows="2" (ngModelChange)="formValid()" [(ngModel)]="category.description" name="description" placeholder="Enter keywords" required [ngClass]="{'is-invalid': !category.description}"></textarea>
+            <div *ngIf="!category.description" class="invalid-feedback">
+              Please enter a short description.
+            </div>
           </div>
-        </div>
-      </form>
+        </div> 
     </div>
   </div>
 
@@ -54,43 +62,64 @@
       <div class="row g-3">
         <div class="col-md-6">
           <label class="form-label">Country/Region *</label>
-          <select class="form-select js-choice" [(ngModel)]="category.countryId" name="countryId" required>
+          <select class="form-select js-choice" (ngModelChange)="formValid()" [(ngModel)]="category.countryId" name="countryId" required [ngClass]="{'is-invalid': category.countryId === 0}">
             <option value="">Select Country</option>
-            <option *ngFor="let country of countries" [value]="country.id">{{ country.name }}</option>
+            <option *ngFor="let country of countries" [ngValue]="country.id">{{ country.name }}</option>
           </select>
+          <div *ngIf="category.countryId === 0" class="invalid-feedback">
+            Please select a country.
+          </div>
         </div>
 
         <div class="col-md-6">
           <label class="form-label">State *</label>
-          <select class="form-select js-choice" [(ngModel)]="category.stateId" name="stateId" required>
+          <select class="form-select js-choice" (ngModelChange)="formValid()" [(ngModel)]="category.stateId" name="stateId" required [ngClass]="{'is-invalid': category.stateId === 0}">
             <option value="">Select State</option>
-            <option *ngFor="let state of states" [value]="state.id">{{ state.name }}</option>
+            <option *ngFor="let state of states" [ngValue]="state.id">{{ state.name }}</option>
           </select>
+          <div *ngIf="category.stateId === 0" class="invalid-feedback">
+            Please select a state.
+          </div>
         </div>
 
         <div class="col-md-6">
           <label class="form-label">City *</label>
-          <input class="form-control" type="text" [(ngModel)]="category.city" name="city" placeholder="Enter city" required />
+          <input class="form-control" type="text" (ngModelChange)="formValid()" [(ngModel)]="category.city" name="city" placeholder="Enter city" required [ngClass]="{'is-invalid': !category.city}">
+          <div *ngIf="!category.city" class="invalid-feedback">
+            Please enter a city.
+          </div>
         </div>
 
         <div class="col-md-6">
           <label class="form-label">Postal number *</label>
-          <input class="form-control" type="text" [(ngModel)]="category.postalNumber" name="postalNumber" placeholder="Enter postal number" required />
+          <input class="form-control" type="text" (ngModelChange)="formValid()" [(ngModel)]="category.postalNumber" name="postalNumber" placeholder="Enter postal number" required [ngClass]="{'is-invalid': !category.postalNumber}">
+          <div *ngIf="!category.postalNumber" class="invalid-feedback">
+            Please enter a postal number.
+          </div>
         </div>
 
         <div class="col-12">
           <label class="form-label">Street *</label>
-          <input class="form-control" type="text" [(ngModel)]="category.street" name="street" placeholder="Enter street" required />
+          <input class="form-control" type="text" (ngModelChange)="formValid()" [(ngModel)]="category.street" name="street" placeholder="Enter street" required [ngClass]="{'is-invalid': !category.street}">
+          <div *ngIf="!category.street" class="invalid-feedback">
+            Please enter a street.
+          </div>
         </div>
 
         <div class="col-md-6">
           <label class="form-label">Latitude *</label>
-          <input class="form-control" type="text" [(ngModel)]="category.latitude" name="latitude" placeholder="Enter latitude" required />
+          <input class="form-control" type="text" (ngModelChange)="formValid()" [(ngModel)]="category.latitude" name="latitude" placeholder="Enter latitude" required [ngClass]="{'is-invalid': !category.latitude}">
+          <div *ngIf="!category.latitude" class="invalid-feedback">
+            Please enter latitude.
+          </div>
         </div>
 
         <div class="col-md-6">
           <label class="form-label">Longitude *</label>
-          <input class="form-control" type="text" [(ngModel)]="category.longitude" name="longitude" placeholder="Enter longitude" required />
+          <input class="form-control" type="text" (ngModelChange)="formValid()" [(ngModel)]="category.longitude" name="longitude" placeholder="Enter longitude" required [ngClass]="{'is-invalid': !category.longitude}">
+          <div *ngIf="!category.longitude" class="invalid-feedback">
+            Please enter longitude.
+          </div>
         </div>
 
         <div class="col-12">
@@ -103,8 +132,6 @@
   </div>
 
   <div class="text-end">
-    <button (click)="gotoNext()" type="button" class="btn btn-primary next-btn mb-0">
-      Next
-    </button>
+    <button type="button" class="btn btn-primary" (click)="gotoNext()" [disabled]="isFormValid==false">Continue</button>
   </div>
 </div>
