@@ -58,48 +58,36 @@ const cabVehicles: CabVehicleType[] = [
 
 const cabsFeatures: FeatureType[] = [
   {
-    title: 'Advance Booking',
+    title: "Driver running late? We'll compensate you!",
     description:
-      'Happiness prosperous impression had conviction For every delay in they Extremity now.',
-    variant: 'bg-primary text-primary',
-    icon: 'bi bi-lightning-fill',
+      "Happiness prosperous impression had conviction. For every delay in they extremity now.",
+    variant: "bg-primary text-primary",
+    icon: "/assets/images/icons/clock.png",
   },
   {
-    title: 'Economical Trip',
+    title: "Compensation for no service",
     description:
-      'Extremity now strangers contained breakfast him discourse additions Sincerity.',
-    variant: 'bg-success text-success',
-    icon: 'fa-solid fa-leaf',
+      "Extremity now strangers contained breakfast him discourse additions. Sincerity.",
+    variant: "bg-success text-success",
+    icon: "/assets/images/icons/notepad.png",
   },
   {
-    title: 'Secure and Safer',
+    title: "Free cancellation 24 hours before pick-up time",
     description:
-      'Perpetual extremity now strangers contained breakfast him discourse additions.',
-    variant: 'bg-warning text-warning',
-    icon: 'bi bi-life-preserver',
+      "Perpetual extremity now strangers contained breakfast him discourse additions.",
+    variant: "bg-warning text-warning",
+    icon: "/assets/images/icons/shield.png",
   },
   {
-    title: 'Vehicle Options',
+    title: "Flight delayed? We'll wait!",
     description:
-      'The Prosperous impression had conviction For every delay in they Extremity now',
-    variant: 'bg-danger text-danger',
-    icon: 'fa-solid fa-car',
+      "The prosperous impression had conviction. For every delay in they extremity now.",
+    variant: "bg-danger text-danger",
+    icon: "/assets/images/icons/umbrella.png",
   },
-  {
-    title: 'Cab Entertainment',
-    description:
-      'Extremity now strangers contained breakfast him discourse additions Sincerity.',
-    variant: 'bg-orange text-orange',
-    icon: 'fa-solid fa-wifi',
-  },
-  {
-    title: 'Polite Driver',
-    description:
-      'Perpetual extremity now strangers contained breakfast him discourse additions.',
-    variant: 'bg-info text-info',
-    icon: 'fa-solid fa-wheelchair',
-  },
-]
+];
+
+
 
 const faqContents: FAQType[] = [
   {

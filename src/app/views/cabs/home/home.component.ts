@@ -6,7 +6,9 @@ import { WhychooseComponent } from './components/whychoose/whychoose.component'
 import { FaqsComponent } from './components/faqs/faqs.component'
 import { ClientComponent } from './components/client/client.component'
 import { ActionBoxComponent } from './components/action-box/action-box.component'
-import { Footer1Component } from './components/footer1/footer1.component'
+import { Footer1Component } from '../../hotels/home/components/footer1/footer1.component'
+import { TopNavHeaderComponent } from "../../../components/top-nav-header/top-nav-header.component";
+
 
 @Component({
   selector: 'cab-home',
@@ -20,8 +22,9 @@ import { Footer1Component } from './components/footer1/footer1.component'
     ClientComponent,
     ActionBoxComponent,
     Footer1Component,
+    TopNavHeaderComponent
   ],
   templateUrl: './home.component.html',
   styles: ``,
 })
-export class HomeComponent {}
+export class HomeComponent { }
