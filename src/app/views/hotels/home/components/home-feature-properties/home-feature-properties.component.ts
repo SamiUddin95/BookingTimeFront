@@ -4,12 +4,13 @@ import { currency } from '@/app/store'
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
 import { AppServiceService } from '@/app/services/app-service.service'
+import { RouterLink } from '@angular/router';
 
 
 @Component({
   selector: 'home-feature-properties',
   standalone: true,
-  imports: [NgbTooltip, CommonModule],
+  imports: [NgbTooltip, CommonModule, RouterLink],
   templateUrl: './home-feature-properties.component.html',
   styleUrl: './home-feature-properties.component.scss'
 })
