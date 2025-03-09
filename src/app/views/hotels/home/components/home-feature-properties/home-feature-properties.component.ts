@@ -32,7 +32,7 @@ export class HomeFeaturePropertiesComponent {
       this.extractUniqueLocations();
     }
     this.app.get("GetListOFProperty").subscribe(res => {
-      this.filteredProperties = res.map((e: any) => ({
+      this.filteredProperties = res.slice(0, 4).map((e: any) => ({
         location: 'New York',
         image: 'assets/images/category/hotel/01.jpg',
         name: e.listName,
@@ -40,8 +40,6 @@ export class HomeFeaturePropertiesComponent {
         ratings: 3.2,
         reviews: 128
       }));
-
-      console.log(this.properties);
     });
   }
 
