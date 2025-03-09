@@ -16,8 +16,8 @@ import { RouterLink } from '@angular/router';
 })
 export class HomeFeaturePropertiesComponent {
   constructor(private app: AppServiceService) { }
-  //properties: any[] = [];
-  properties = featuredHotelsData
+  properties: any[] = [];
+  //properties = featuredHotelsData
   currencyType = currency
   claims = claims
 
