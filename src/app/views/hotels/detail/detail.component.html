@@ -1,26 +1,10 @@
-<detail-topbar />
+<div class="header-wrapper-hotel-list">
+  <top-nav-header [activeTab]="'Stays'" />
+
+</div>
 
 <main>
-  <section class="py-3 py-sm-0 overflow-hidden">
-    <div class="container">
-      <button
-        class="btn btn-primary d-sm-none w-100 mb-0"
-        type="button"
-        (click)="openSearchFilter(content)"
-        aria-controls="offcanvasEditsearch"
-      >
-        <i class="bi bi-pencil-square me-2"></i>Edit Search
-      </button>
-
-      <div
-        class="offcanvas-sm offcanvas-top"
-        tabindex="-1"
-        id="offcanvasEditsearch"
-        aria-labelledby="offcanvasEditsearchLabel"
-      >
-        <detail-availability-filter />
-      </div>
-    </div>
+  <section class="py-2 py-sm-0 overflow-hidden mt-n7 card">
     <detail-hotel-gallery class="overflow-hidden" />
   </section>
 
@@ -52,12 +36,7 @@
 <ng-template #content let-offcanvas>
   <div class="offcanvas-header">
     <h5 class="offcanvas-title" id="offcanvasEditsearchLabel">Edit search</h5>
-    <button
-      type="button"
-      class="btn-close"
-      (click)="offcanvas.close()"
-      aria-label="Close"
-    ></button>
+    <button type="button" class="btn-close" (click)="offcanvas.close()" aria-label="Close"></button>
   </div>
   <detail-availability-filter />
 </ng-template>
