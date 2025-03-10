@@ -9,11 +9,16 @@
     <div class="card-body"> 
         <div class="row g-4">
           <div class="col-12">
-            <label class="form-label">Choose listing type *</label>
-            <select class="form-select js-choice" (ngModelChange)="formValid()" [(ngModel)]="category.listingTypeId" name="listingTypeId" required [ngClass]="{'is-invalid': !category.listingTypeId}" >
-              <option *ngFor="let type of listingTypes" [ngValue]="type.id">{{ type.name }}</option>
+            <label class="form-label">Listing type *</label>
+            <select class="form-select js-choice" 
+            required 
+            [ngClass]="{'is-invalid': !listingForm.listingTypeId && isSubmitted}"
+            [(ngModel)]="listingForm.listingTypeId" 
+            >
+              <option [value]="null" disabled selected>Select Listing Type</option>
+              <option *ngFor="let type of listingTypes" [value]="type.id">{{ type.name }}</option>
             </select>
-            <div *ngIf="category.listingTypeId" class="invalid-feedback">
+            <div *ngIf="listingForm.listingTypeId" class="invalid-feedback">
               Please select a listing type.
             </div>
           </div>
@@ -21,8 +26,13 @@
 
           <div class="col-12">
             <label class="form-label">Listing name *</label>
-            <input class="form-control" type="text" (ngModelChange)="formValid()" [(ngModel)]="category.name" name="name" placeholder="Enter place name" required [ngClass]="{'is-invalid': !category.name}">
-            <div *ngIf="!category.name" class="invalid-feedback">
+            <input class="form-control" 
+            type="text" 
+            placeholder="Enter place name" 
+            required [ngClass]="{'is-invalid': !listingForm.listingName && isSubmitted}"
+            [(ngModel)]="listingForm.listingName"
+            >
+            <div *ngIf="!listingForm.listingName" class="invalid-feedback">
               Please enter a listing name.
             </div>
           </div>
@@ -31,21 +41,29 @@
             <label class="form-label">Is your listing set as a personal or guest use *</label>
             <div class="d-sm-flex">
               <div class="form-check radio-bg-light me-4" *ngFor="let option of guestOptions">
-                <input class="form-check-input" type="radio" (ngModelChange)="formValid()" [(ngModel)]="category.guest" name="guest" [value]="option.value" id="{{ option.id }}" required [ngClass]="{'is-invalid': !category.guest}">
+                <input class="form-check-input" type="radio" name="guestOption" [value]="option.value" [id]="option.id" required [ngClass]="{'is-invalid': !listingForm.guestOption && isSubmitted}" [(ngModel)]="listingForm.guestOption">
                 <label class="form-check-label" [for]="option.id">
                   {{ option.label }}
                 </label>
               </div>
             </div>
-            <div *ngIf="!category.guest" class="invalid-feedback">
+            <div *ngIf="!listingForm.guestOption" class="invalid-feedback">
               Please select guest option.
             </div>
           </div>
 
           <div class="col-12">
             <label class="form-label">Short description *</label>
-            <textarea class="form-control" rows="2" (ngModelChange)="formValid()" [(ngModel)]="category.description" name="description" placeholder="Enter keywords" required [ngClass]="{'is-invalid': !category.description}"></textarea>
-            <div *ngIf="!category.description" class="invalid-feedback">
+            <textarea 
+            class="form-control" 
+            rows="2"  
+            name="description" 
+            placeholder="Enter keywords" 
+            required 
+            [(ngModel)]="listingForm.description"
+            [ngClass]="{'is-invalid': !listingForm.description && isSubmitted}"
+            ></textarea>
+            <div *ngIf="!listingForm.description" class="invalid-feedback">
               Please enter a short description.
             </div>
           </div>
@@ -62,62 +80,70 @@
       <div class="row g-3">
         <div class="col-md-6">
           <label class="form-label">Country/Region *</label>
-          <select class="form-select js-choice" (ngModelChange)="formValid()" [(ngModel)]="category.countryId" name="countryId" required [ngClass]="{'is-invalid': category.countryId === 0}">
-            <option value="">Select Country</option>
-            <option *ngFor="let country of countries" [ngValue]="country.id">{{ country.name }}</option>
+          <select class="form-select js-choice"  
+          [(ngModel)]="listingForm.countryId"
+          required 
+          [ngClass]="{'is-invalid': listingForm.countryId == null && isSubmitted}"
+          (ngModelChange)="loadCitiesAndStates($event)"
+          >
+            <option [value]="null" disabled selected>Select Country</option>
+            <option *ngFor="let country of countries" [value]="country.countryId">{{ country.countryName }}</option>
           </select>
-          <div *ngIf="category.countryId === 0" class="invalid-feedback">
+          <div *ngIf="listingForm.countryId == null" class="invalid-feedback">
             Please select a country.
           </div>
         </div>
 
         <div class="col-md-6">
           <label class="form-label">State *</label>
-          <select class="form-select js-choice" (ngModelChange)="formValid()" [(ngModel)]="category.stateId" name="stateId" required [ngClass]="{'is-invalid': category.stateId === 0}">
-            <option value="">Select State</option>
-            <option *ngFor="let state of states" [ngValue]="state.id">{{ state.name }}</option>
+          <select class="form-select js-choice" name="stateId" required [ngClass]="{'is-invalid': listingForm.stateId == null && isSubmitted}" [(ngModel)]="listingForm.stateId">
+            <option [value]="null" disabled selected>Select State</option>
+            <option *ngFor="let state of states" [ngValue]="state.stateId">{{ state.stateName }}</option>
           </select>
-          <div *ngIf="category.stateId === 0" class="invalid-feedback">
+          <div *ngIf="listingForm.stateId == null" class="invalid-feedback">
             Please select a state.
           </div>
         </div>
 
         <div class="col-md-6">
           <label class="form-label">City *</label>
-          <input class="form-control" type="text" (ngModelChange)="formValid()" [(ngModel)]="category.city" name="city" placeholder="Enter city" required [ngClass]="{'is-invalid': !category.city}">
-          <div *ngIf="!category.city" class="invalid-feedback">
-            Please enter a city.
+          <select class="form-select js-choice"  name="city" required [ngClass]="{'is-invalid': listingForm.cityId == null && isSubmitted}" [(ngModel)]="listingForm.cityId">
+            <option [value]="null" disabled selected>Select City</option>
+            <option *ngFor="let city of cities" [value]="city.cityId">{{ city.cityName }}</option>
+          </select>
+          <div *ngIf="listingForm.cityId == null" class="invalid-feedback">
+            Please select a city.
           </div>
         </div>
 
         <div class="col-md-6">
           <label class="form-label">Postal number *</label>
-          <input class="form-control" type="text" (ngModelChange)="formValid()" [(ngModel)]="category.postalNumber" name="postalNumber" placeholder="Enter postal number" required [ngClass]="{'is-invalid': !category.postalNumber}">
-          <div *ngIf="!category.postalNumber" class="invalid-feedback">
+          <input class="form-control" type="text"  [(ngModel)]="listingForm.postalNumber" placeholder="Enter postal number" required [ngClass]="{'is-invalid': !listingForm.postalNumber && isSubmitted}">
+          <div *ngIf="!listingForm.postalNumber" class="invalid-feedback">
             Please enter a postal number.
           </div>
         </div>
 
         <div class="col-12">
           <label class="form-label">Street *</label>
-          <input class="form-control" type="text" (ngModelChange)="formValid()" [(ngModel)]="category.street" name="street" placeholder="Enter street" required [ngClass]="{'is-invalid': !category.street}">
-          <div *ngIf="!category.street" class="invalid-feedback">
+          <input class="form-control" type="text"  [(ngModel)]="listingForm.street" placeholder="Enter street" required [ngClass]="{'is-invalid': !listingForm.street && isSubmitted}">
+          <div *ngIf="!listingForm.street" class="invalid-feedback">
             Please enter a street.
           </div>
         </div>
 
         <div class="col-md-6">
           <label class="form-label">Latitude *</label>
-          <input class="form-control" type="text" (ngModelChange)="formValid()" [(ngModel)]="category.latitude" name="latitude" placeholder="Enter latitude" required [ngClass]="{'is-invalid': !category.latitude}">
-          <div *ngIf="!category.latitude" class="invalid-feedback">
+          <input class="form-control" type="text"  [(ngModel)]="listingForm.latitude" name="latitude" placeholder="Enter latitude" required [ngClass]="{'is-invalid': !listingForm.latitude && isSubmitted}">
+          <div *ngIf="!listingForm.latitude" class="invalid-feedback">
             Please enter latitude.
           </div>
         </div>
 
         <div class="col-md-6">
           <label class="form-label">Longitude *</label>
-          <input class="form-control" type="text" (ngModelChange)="formValid()" [(ngModel)]="category.longitude" name="longitude" placeholder="Enter longitude" required [ngClass]="{'is-invalid': !category.longitude}">
-          <div *ngIf="!category.longitude" class="invalid-feedback">
+          <input class="form-control" type="text"  [(ngModel)]="listingForm.longitude" name="longitude" placeholder="Enter longitude" required [ngClass]="{'is-invalid': !listingForm.longitude && isSubmitted}">
+          <div *ngIf="!listingForm.longitude" class="invalid-feedback">
             Please enter longitude.
           </div>
         </div>
@@ -132,6 +158,6 @@
   </div>
 
   <div class="text-end">
-    <button type="button" class="btn btn-primary" (click)="gotoNext()" [disabled]="isFormValid==false">Continue</button>
+    <button type="button" class="btn btn-primary" (click)="gotoNext()">Continue</button>
   </div>
 </div>

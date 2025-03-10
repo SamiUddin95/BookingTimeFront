@@ -1,7 +1,9 @@
+import { CommonService } from '@/app/core/services/api/common.service';
 import { CommonModule } from '@angular/common'
-import { Component, Input } from '@angular/core'
+import { Component, inject, Input, OnInit } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import Stepper from 'bs-stepper'
+import { ListingBasicInfo } from '@/app/core/models/add-listing-form.model';
 
 @Component({
   selector: 'add-listing-step-1',
@@ -13,75 +15,92 @@ import Stepper from 'bs-stepper'
   templateUrl: './step-1.component.html',
   styles: ``,
 })
-export class Step1Component {
+export class Step1Component implements OnInit {
   @Input() stepperInstance?: Stepper;
 
-  category = {
-    listingTypeId: 0,
-    name: '',
-    guest: '',
-    description: '',
-    countryId:0,
-    stateId:0,
-    city: '',
-    postalNumber: '',
-    street: '',
-    latitude: '',
-    longitude: ''
-  };
-
-  listingTypes = [
-    { id: 0, name: 'Select Type' },
-    { id: 1, name: 'Hotel' },
-    { id: 2, name: 'Villa' },
-    { id: 3, name: 'Home Stay' },
-    { id: 4, name: 'Farmhouse' },
-    { id: 5, name: 'House boat' }
-  ];
-  guestOptions = [
-    { value: 'entirePlace', label: 'Entire Place', id: 'flexRadioDefault1' },
-    { value: 'forGuest', label: 'For Guest', id: 'flexRadioDefault2' },
-    { value: 'forPersonal', label: 'For Personal', id: 'flexRadioDefault3' }
-  ];
-
-  countries = [
-    { id: 1, name: 'Pakistan' },
-    { id: 2, name: 'Saudi Arabia' },
-    { id: 3, name: 'Indonesia' },
-    { id: 4, name: 'India' },
-    { id: 5, name: 'Qatar' }
-  ];
-
-  states = [
-    { id: 1, name: 'Manama' },
-    { id: 2, name: 'Qallat' },
-    { id: 3, name: 'London' },
-    { id: 4, name: 'Kerala' },
-    { id: 5, name: 'Avenue' }
-  ];
-
-  gotoNext(event?: Event) {
-    event?.preventDefault();
-    console.log(this.category);
-    localStorage.setItem("steeper1", JSON.stringify(this.category));
-    this.stepperInstance?.next();
+  ngOnInit(): void {
+    this.loadCountries();
+    this.loadListingTypes();
+    this.loadGuestOptions();
   }
 
-  isFormValid: boolean = false;
+  gotoNext() {
+    this.isSubmitted = true;
+    if(this.validateForm()) {
+      this.stepperInstance?.next();
+    }
+  }
 
-  formValid() {
-    this.isFormValid =
-      this.category.listingTypeId !== 0 &&
-      !!this.category.name &&
-      !!this.category.guest &&
-      !!this.category.description &&
-      this.category.countryId !== 0 &&
-      this.category.stateId !== 0 &&
-      !!this.category.city &&
-      !!this.category.postalNumber &&
-      !!this.category.street &&
-      !!this.category.latitude &&
-      !!this.category.longitude;
+  listingForm: ListingBasicInfo = {
+    listingTypeId: null,
+    listingName: '',
+    guestOption: null,
+    description: '',
+    countryId: null,
+    stateId: null,
+    cityId: null,
+    postalNumber: null,
+    street: '',
+    latitude: null,
+    longitude: null
+  };
+
+  isSubmitted: boolean = false;
+
+  private commonService = inject(CommonService);
+
+  //category
+  listingTypes: any[] = [];
+  guestOptions: any[] = [];
+
+  //location
+  countries: any[] = [];
+  cities: any[] = [];
+  states: any[] = [];
+
+  loadCountries() {
+    this.commonService.GetAllCountryList().subscribe((res)=>{
+      this.countries = res;
+    })
+  }
+
+  loadCitiesAndStates(countryId: number) {
+    this.commonService.GetCityByCountryId(countryId).subscribe((res)=>{
+      this.cities = res;
+    })
+
+    this.commonService.GetStateByCountryId(countryId).subscribe((res)=>{
+      this.states = res;
+    })
+  }
+
+  loadListingTypes() {
+    this.commonService.GetAllHotelTypesList().subscribe((res)=>{
+      this.listingTypes = res;
+    })
+  }
+
+  loadGuestOptions() {
+    this.guestOptions = [
+      { value: 'forGuest', label: 'For Guest', id: 'flexRadioDefault2' },
+      { value: 'forPersonal', label: 'For Personal', id: 'flexRadioDefault3' }
+    ];
+  }
+
+  validateForm(): boolean {
+    return (
+      this.listingForm.listingTypeId != 0 &&
+      this.listingForm.listingName != '' &&
+      this.listingForm.guestOption != '' &&
+      this.listingForm.description != '' &&
+      this.listingForm.countryId != 0 &&
+      this.listingForm.stateId != 0 &&
+      this.listingForm.cityId != 0 &&
+      this.listingForm.postalNumber != 0 &&
+      this.listingForm.street != '' &&
+      this.listingForm.latitude != 0 &&
+      this.listingForm.longitude != 0
+    );
   }
   
 }
