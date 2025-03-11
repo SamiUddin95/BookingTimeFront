@@ -4,19 +4,20 @@ import { currency } from '@/app/store'
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
 import { AppServiceService } from '@/app/services/app-service.service'
+import { RouterLink } from '@angular/router';
 
 
 @Component({
   selector: 'home-feature-properties',
   standalone: true,
-  imports: [NgbTooltip, CommonModule],
+  imports: [NgbTooltip, CommonModule, RouterLink],
   templateUrl: './home-feature-properties.component.html',
   styleUrl: './home-feature-properties.component.scss'
 })
 export class HomeFeaturePropertiesComponent {
   constructor(private app: AppServiceService) { }
-  //properties: any[] = [];
-  properties = featuredHotelsData
+  properties: any[] = [];
+  //properties = featuredHotelsData
   currencyType = currency
   claims = claims
 
@@ -31,7 +32,7 @@ export class HomeFeaturePropertiesComponent {
       this.extractUniqueLocations();
     }
     this.app.get("GetListOFProperty").subscribe(res => {
-      this.filteredProperties = res.map((e: any) => ({
+      this.filteredProperties = res.slice(0, 4).map((e: any) => ({
         location: 'New York',
         image: 'assets/images/category/hotel/01.jpg',
         name: e.listName,
@@ -39,8 +40,6 @@ export class HomeFeaturePropertiesComponent {
         ratings: 3.2,
         reviews: 128
       }));
-
-      console.log(this.properties);
     });
   }
 

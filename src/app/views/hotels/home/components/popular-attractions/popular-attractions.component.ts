@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { featuredHotelsData, featuredPropertiesData } from '../../data'
 import { currency } from '@/app/store'
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'home-popular-attractions',
   standalone: true,
-  imports: [NgbTooltip],
+  imports: [NgbTooltip, RouterLink],
   templateUrl: './popular-attractions.component.html',
   styleUrl: './popular-attractions.component.scss'
 })

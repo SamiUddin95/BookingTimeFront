@@ -24,7 +24,27 @@ const claimIcon1 = 'assets/images/icons/01.png'
 const claimIcon2 = 'assets/images/icons/02.png'
 const claimIcon3 = 'assets/images/icons/03.png'
 
+const bestHotelThumbnail1 = 'assets/images/thumbnail/01.jpg'
+const bestHotelThumbnail2 = 'assets/images/thumbnail/02.jpg'
+const bestHotelThumbnail3 = 'assets/images/thumbnail/03.jpg'
+const bestHotelThumbnail4 = 'assets/images/thumbnail/04.jpg'
+
 import type { FeaturedHotelType, VacationPackageType, FeaturedPropertiesType, NearbyPlaceType, DiscoverStayType, ClaimType } from './type'
+
+export const bestHotelProviderThumbnails = [
+  {
+    image: bestHotelThumbnail1,
+  },
+  {
+    image: bestHotelThumbnail2,
+  },
+  {
+    image: bestHotelThumbnail3,
+  },
+  {
+    image: bestHotelThumbnail4,
+  },
+]
 
 export const nearbyPlacesData: NearbyPlaceType[] = [
   {

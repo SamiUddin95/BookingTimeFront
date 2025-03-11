@@ -10,6 +10,7 @@ import { AmenitiesComponent } from './components/amenities/amenities.component'
 import { PriceOverviewComponent } from './components/price-overview/price-overview.component'
 import { NgbOffcanvas, NgbOffcanvasModule } from '@ng-bootstrap/ng-bootstrap'
 import { Footer1Component } from './components/footer1/footer1.component'
+import { TopNavHeaderComponent } from '@/app/components/top-nav-header/top-nav-header.component'
 
 @Component({
   selector: 'app-detail',
@@ -26,6 +27,7 @@ import { Footer1Component } from './components/footer1/footer1.component'
     PriceOverviewComponent,
     NgbOffcanvasModule,
     Footer1Component,
+    TopNavHeaderComponent
   ],
   templateUrl: './detail.component.html',
   styles: `

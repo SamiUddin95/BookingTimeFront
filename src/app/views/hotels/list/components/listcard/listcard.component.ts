@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core'
+import { Component, OnInit, ViewChild, inject } from '@angular/core'
 import { hotels } from '../../data'
 import { TinySliderComponent } from '@/app/components/tiny-slider/tiny-slider.component'
 import type { TinySliderSettings } from 'tiny-slider'
@@ -9,6 +9,9 @@ import {
 } from '@ng-bootstrap/ng-bootstrap'
 import { RouterModule } from '@angular/router'
 import { currency } from '@/app/store'
+
+import { StaysService } from '@/app/core/services/api/stays.service'
+import { PropertyDetail } from '@/app/core/models/property-detail.model'
 
 @Component({
   selector: 'list-card',
@@ -23,8 +26,8 @@ import { currency } from '@/app/store'
   templateUrl: './listcard.component.html',
   styles: ``,
 })
-export class ListcardComponent {
-  hotelList = hotels
+export class ListcardComponent implements OnInit {
+  //hotelList = hotels
   currencyType = currency
   @ViewChild('listSlider', { static: false }) listSlider: any
 
@@ -36,5 +39,20 @@ export class ListcardComponent {
     ],
     controls: true,
     items: 1,
+  }
+
+  ngOnInit(): void {
+    this.loadHotels();
+  }
+
+  private staysService = inject(StaysService);
+
+  hotelList: any[] = [];
+
+  loadHotels() {
+    this.staysService.GetAllProperties().subscribe((res)=> {
+      this.hotelList = res;
+      console.log(res)
+    })
   }
 }
