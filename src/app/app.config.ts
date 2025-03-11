@@ -21,6 +21,8 @@ import { provideStoreDevtools } from '@ngrx/store-devtools'
 import { FakeBackendProvider } from './helpers/fake-backend'
 import { JwtInterceptor } from './helpers/jwt.interceptor'
 import { ErrorInterceptor } from './helpers/error.interceptor'
+import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
+import { provideToastr, ToastrModule } from 'ngx-toastr';
 
 // Scroll
 const scrollConfig: InMemoryScrollingOptions = {
@@ -34,6 +36,8 @@ const inMemoryScrollingFeature: InMemoryScrollingFeature =
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes, inMemoryScrollingFeature),
+    provideAnimations(),
+    provideToastr(),
     {
       provide: IMAGE_CONFIG,
       useValue: {

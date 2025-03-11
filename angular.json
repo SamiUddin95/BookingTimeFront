@@ -36,7 +36,8 @@
               "node_modules/@splidejs/splide/dist/css/themes/splide-default.min.css",
               "src/assets/fonts/bootstrap-icons/bootstrap-icons.css",
               "src/assets/fonts/font-awesome/css/all.min.css",
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": [
               "node_modules/@splidejs/splide/dist/js/splide.js",
