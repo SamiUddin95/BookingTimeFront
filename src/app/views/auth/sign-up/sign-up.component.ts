@@ -1,3 +1,4 @@
+import { AppServiceService } from '@/app/services/app-service.service'
 import { credits, currentYear } from '@/app/store'
 import { CommonModule } from '@angular/common'
 import { Component, inject } from '@angular/core'
@@ -10,6 +11,7 @@ import {
   type UntypedFormGroup,
 } from '@angular/forms'
 import { RouterModule } from '@angular/router'
+import { ToastrService } from 'ngx-toastr'
 
 @Component({
   selector: 'auth-sign-up',
@@ -32,7 +34,7 @@ export class SignUpComponent {
 
   public fb = inject(UntypedFormBuilder)
 
-  constructor() {
+  constructor(private app: AppServiceService, private toastr: ToastrService) {
     this.signupForm = this.fb.group(
       {
         email: ['', [Validators.required, Validators.email]],
@@ -56,6 +58,28 @@ export class SignUpComponent {
   }
 
   onSubmit() {
-    this.submitted = true
+    if (this.signupForm.invalid) {
+      this.submitted = false;
+      return;
+    }
+    const formData = this.signupForm.value;
+    this.app.post('signUp', formData).subscribe(
+      (res) => {
+        if(res.code===200){
+          this.toastr.success("User registered successfully!",'Registration Success');
+          return;
+        }
+        if(res.code===409){
+          this.toastr.warning("User already registered with this email!",'User Exist');
+          return;
+        }
+      },
+      (error) => {
+        this.toastr.error(error,'UnExpected Error');
+      }
+    );
+
+    this.submitted = true;
   }
+
 }
