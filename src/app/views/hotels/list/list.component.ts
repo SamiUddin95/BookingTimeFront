@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'
+import { Component, inject, OnInit } from '@angular/core'
 import { TopbarComponent } from './components/topbar/topbar.component'
 import { BannerComponent } from './components/banner/banner.component'
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap'
@@ -11,6 +11,8 @@ import { RouterModule } from '@angular/router'
 import { TopNavHeaderComponent } from '../../../components/top-nav-header/top-nav-header.component'
 import { AvailabilityFilterComponent } from '../home/components/availability-filter/availability-filter.component'
 import { Footer1Component } from '../home/components/footer1/footer1.component'
+
+import { StaysService } from '@/app/core/services/api/stays.service'
 
 @Component({
   selector: 'app-list',
@@ -30,6 +32,28 @@ import { Footer1Component } from '../home/components/footer1/footer1.component'
   templateUrl: './list.component.html',
   styles: ``,
 })
-export class ListComponent {
-  staticAlertClosed = true
+export class ListComponent implements OnInit {
+  staticAlertClosed = true;
+
+  private staysService = inject(StaysService);
+
+  searchHotel(e: Event) {
+    console.log(e)
+    this.staysService.GetListingPropertyList(e).subscribe((res=> {
+      this.hotelList = res;
+    }))
+  }
+
+  ngOnInit(): void {
+      this.loadHotels();
+  }
+
+  hotelList: any[] = [];
+
+  loadHotels() {
+    this.staysService.GetAllProperties().subscribe((res)=> {
+      this.hotelList = res;
+      console.log(res)
+    })
+  }
 }

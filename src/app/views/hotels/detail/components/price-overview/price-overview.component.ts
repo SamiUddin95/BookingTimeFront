@@ -1,7 +1,7 @@
 import { StickyDirective } from '@/app/directives/sticky.directive'
 import { currency } from '@/app/store'
 import { CommonModule } from '@angular/common'
-import { Component, HostListener } from '@angular/core'
+import { Component, HostListener, Input } from '@angular/core'
 import { RouterModule } from '@angular/router'
 import { ScrollToModule, ScrollToService } from '@nicky-lenaers/ngx-scroll-to'
 
@@ -18,6 +18,9 @@ import { ScrollToModule, ScrollToService } from '@nicky-lenaers/ngx-scroll-to'
   providers: [ScrollToService],
 })
 export class PriceOverviewComponent {
+
+  @Input() data: any = {};
+
   currencyType = currency
   classFlag = true
   isSticky = window.innerWidth >= 1200

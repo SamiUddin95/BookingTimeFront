@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'
+import { Component, Input } from '@angular/core'
 import { amenities } from '../../data'
 import { CommonModule } from '@angular/common'
 
@@ -14,5 +14,6 @@ import { CommonModule } from '@angular/common'
   `,
 })
 export class AmenitiesComponent {
-  amenitiesList = amenities
+
+  @Input() data: any = {}; 
 }

@@ -1,8 +1,8 @@
-import { Component } from '@angular/core'
+import { Component, OnInit, inject } from '@angular/core'
 import { bestHotelProviderThumbnails } from '../../data'
 import { currency } from '@/app/store'
 import { RouterModule } from '@angular/router'
-import { AppServiceService } from '@/app/services/app-service.service'
+import { StaysService } from '@/app/core/services/api/stays.service'
 
 @Component({
   selector: 'home-feture-hotel',
@@ -14,5 +14,4 @@ import { AppServiceService } from '@/app/services/app-service.service'
 export class FetureHotelComponent {
   hotels = bestHotelProviderThumbnails.slice(0, 4)
   currencyType = currency
-
 }

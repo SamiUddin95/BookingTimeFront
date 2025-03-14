@@ -1,4 +1,4 @@
-import { Component, inject, type TemplateRef } from '@angular/core'
+import { Component, inject, OnInit, type TemplateRef } from '@angular/core'
 import { TopbarComponent } from './components/topbar/topbar.component'
 import { AvailabilityFilterComponent } from './components/availability-filter/availability-filter.component'
 import { HotelGalleryComponent } from './components/hotel-gallery/hotel-gallery.component'
@@ -9,8 +9,11 @@ import { AboutComponent } from './components/about/about.component'
 import { AmenitiesComponent } from './components/amenities/amenities.component'
 import { PriceOverviewComponent } from './components/price-overview/price-overview.component'
 import { NgbOffcanvas, NgbOffcanvasModule } from '@ng-bootstrap/ng-bootstrap'
-import { Footer1Component } from './components/footer1/footer1.component'
+//import { Footer1Component } from './components/footer1/footer1.component'
 import { TopNavHeaderComponent } from '@/app/components/top-nav-header/top-nav-header.component'
+import { Footer1Component } from '../home/components/footer1/footer1.component'
+import { StaysService } from '@/app/core/services/api/stays.service'
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-detail',
@@ -27,7 +30,7 @@ import { TopNavHeaderComponent } from '@/app/components/top-nav-header/top-nav-h
     PriceOverviewComponent,
     NgbOffcanvasModule,
     Footer1Component,
-    TopNavHeaderComponent
+    TopNavHeaderComponent,
   ],
   templateUrl: './detail.component.html',
   styles: `
@@ -36,10 +39,27 @@ import { TopNavHeaderComponent } from '@/app/components/top-nav-header/top-nav-h
     }
   `,
 })
-export class DetailComponent {
+export class DetailComponent implements OnInit {
   private offcanvasService = inject(NgbOffcanvas)
+  private staysService = inject(StaysService)
+
+  constructor(private route: ActivatedRoute) {}
+
+  property: any;
 
   openSearchFilter(content: TemplateRef<any>) {
     this.offcanvasService.open(content, { position: 'top' })
+  }
+
+  ngOnInit(): void {
+      this.getPropertyDetailsById();
+  }
+
+  getPropertyDetailsById() {
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.staysService.GetListingPropertyById(id).subscribe((res) => {
+      this.property = res;
+      console.log(res)
+    })
   }
 }
