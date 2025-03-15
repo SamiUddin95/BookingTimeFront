@@ -1,0 +1,308 @@
+<main>
+  <section class="pb-0">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center">
+          <h1 class="fs-2 mb-2">Add New Car</h1>
+          <p class="mb-0">
+            Register Your Car Effortlessly – Add Your Vehicle to the Portal Today!
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+
+      <!-- Step 1 - Location -->
+      <div class="card shadow" *ngIf="currentStep==1">
+        <div class="card-header border-bottom">
+          <h5 class="mb-0">Location</h5>
+        </div>
+
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Country/Region *</label>
+              <select class="form-select js-choice" (ngModelChange)="formValid()">
+                <option value="">Select Country</option>
+                <option></option>
+              </select>
+              <div class="invalid-feedback">
+                Please select a country.
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">State *</label>
+              <select class="form-select js-choice" (ngModelChange)="formValid()" name="stateId" required>
+                <option value="">Select State</option>
+                <option></option>
+              </select>
+              <div class="invalid-feedback">
+                Please select a state.
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">City *</label>
+              <input class="form-control" type="text" (ngModelChange)="formValid()">
+              <div class="invalid-feedback">
+                Please enter a city.
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Postal number *</label>
+              <input class="form-control" type="text" (ngModelChange)="formValid()" name="postalNumber"
+                placeholder="Enter postal number" required>
+              <div class="invalid-feedback">
+                Please enter a postal number.
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label">Street *</label>
+              <input class="form-control" type="text" (ngModelChange)="formValid()" name="street"
+                placeholder="Enter street" required>
+              <div class="invalid-feedback">
+                Please enter a street.
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Latitude *</label>
+              <input class="form-control" type="text" (ngModelChange)="formValid()" name="latitude"
+                placeholder="Enter latitude" required>
+              <div class="invalid-feedback">
+                Please enter latitude.
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Longitude *</label>
+              <input class="form-control" type="text" (ngModelChange)="formValid()" name="longitude"
+                placeholder="Enter longitude" required>
+              <div class="invalid-feedback">
+                Please enter longitude.
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2 - VIN -->
+      <div class="card shadow" *ngIf="currentStep==2">
+        <div class="card-header border-bottom">
+          <h5 class="mb-0">VIN</h5>
+        </div>
+
+        <div class="card-body p-3">
+          <p class="mt-2">We'll use your Vehicle Identification Number (VIN) to identify your specific car.</p>
+
+          <div class="row g-3">
+
+            <div class="col-md-12">
+              <label class="form-label">Enter your VIN</label>
+              <input class="form-control" type="text" name="vehicleIdNumber" placeholder="Enter 17 digit VIN" required>
+              <div class="invalid-feedback">
+                Please enter a your VIN.
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3 - Year Make Model -->
+      <div class="card shadow" *ngIf="currentStep==3">
+        <div class="card-header border-bottom">
+          <h5 class="mb-0">Make and Model</h5>
+        </div>
+
+        <div class="card-body p-3">
+          <div class="row g-3">
+
+            <div class="col-md-12">
+              <label class="form-label">Year</label>
+              <input class="form-control" type="text" name="vehicleIdNumber" placeholder="Enter your vehicle year"
+                required>
+              <div class="invalid-feedback">
+                Please enter year.
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <label class="form-label">Make</label>
+              <input class="form-control" type="text" name="vehicleIdNumber" placeholder="Enter your vehicle make"
+                required>
+              <div class="invalid-feedback">
+                Please enter vehicle make.
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <label class="form-label">Model</label>
+              <input class="form-control" type="text" name="vehicleIdNumber" placeholder="Enter your vehicle model"
+                required>
+              <div class="invalid-feedback">
+                Please enter vehicle model.
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4 - Odometer and Transmission -->
+      <div class="card shadow" *ngIf="currentStep==4">
+        <div class="card-header border-bottom">
+          <h5 class="mb-0">Odometer and Transmission</h5>
+        </div>
+
+        <div class="card-body p-3">
+          <div class="row g-3">
+
+            <div class="col-md-12">
+              <label class="form-label">What is your car's odometer reading?</label>
+              <input class="form-control" type="number" name="odometer"
+                placeholder="Enter your vehicle's odometer reading" required>
+              <div class="invalid-feedback">
+                Please enter odometer reading.
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <label class="form-label">Transmission</label>
+              <div class="d-flex gap-3">
+
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" id="manual" name="transmission" value="manual" />
+                  <label class="form-check-label" for="manual">Manual</label>
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" id="automatic" name="transmission" value="automatic" />
+                  <label class="form-check-label" for="automatic">Automatic</label>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 5 - Vehicle Value -->
+      <div class="card shadow" *ngIf="currentStep==5">
+        <div class="card-header border-bottom">
+          <h5 class="mb-0">Vehicle Value</h5>
+        </div>
+
+        <div class="card-body p-3">
+          <div class="row g-3">
+
+            <div class="col-md-12">
+              <label class="form-label">Market Value (USD)</label>
+              <input class="form-control" type="number" name="value" placeholder="$ Market Value (USD)" required>
+              <div class="invalid-feedback">
+                Please enter vehicle's market value.
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 6 - Vehicle Condition -->
+      <div class="card shadow" *ngIf="currentStep==6">
+        <div class="card-header border-bottom">
+          <h5 class="mb-0">Vehicle Condition</h5>
+        </div>
+
+        <div class="card-body p-3">
+          <div class="row g-3">
+
+            <div class="col-md-12">
+              <label class="form-label">Status</label>
+              <select class="form-select js-choice">
+                <option value="" selected disabled>Select the condition of your vehicle</option>
+                <option value="Excellent">Excellent</option>
+                <option value="Good">Good</option>
+                <option value="Fair">Fair</option>
+                <option value="Not Working">Not Working</option>
+              </select>
+              <div class="invalid-feedback">
+                Please select vehicle condition.
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <label class="form-label">Do all have seatbelts?</label>
+              <div class="d-flex gap-3">
+
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" id="yes" name="seatbelt" value="yes" />
+                  <label class="form-check-label" for="manual">Yes</label>
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" id="no" name="seatbelt" value="no" />
+                  <label class="form-check-label" for="automatic">No</label>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 7 - Additional Information -->
+      <div class="card shadow" *ngIf="currentStep==7">
+        <div class="card-header border-bottom">
+          <h5 class="mb-0">Additional Information</h5>
+        </div>
+
+        <div class="card-body p-3">
+          <div class="row g-3">
+
+            <div class="col-md-12">
+              <label class="form-label">Is there anything else our team should know?</label>
+              <textarea class="form-control" rows="5" name="additionalInfo" placeholder="e.g replica, rebuilt engine" required>
+              </textarea>
+              <div class="invalid-feedback">
+                Please enter a short description.
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+      <div class="mt-4 d-flex justify-content-between align-items-center">
+
+        <div class="text-end" [class.invisible]="currentStep === 1">
+          <button type="button" class="btn btn-primary" (click)="prevStep()">Back</button>
+        </div>
+
+        <div class=" text-end">
+          <button type="button" class="btn btn-primary" (click)="nextStep()"> {{ currentStep === totalSteps ? 'Submit' : 'Continue' }}</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+<home-footer1 />
