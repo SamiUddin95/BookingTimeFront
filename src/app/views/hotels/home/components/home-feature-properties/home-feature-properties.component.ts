@@ -31,7 +31,7 @@ export class HomeFeaturePropertiesComponent {
       this.filterProperties(this.selectedLocation);
       this.extractUniqueLocations();
     }
-    this.app.get("GetListOFProperty").subscribe(res => {
+    this.app.get("GetListingPropertyList").subscribe(res => {
       this.filteredProperties = res.slice(0, 4).map((e: any) => ({
         location: 'New York',
         image: 'assets/images/category/hotel/01.jpg',
