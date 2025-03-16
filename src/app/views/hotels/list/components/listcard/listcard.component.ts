@@ -8,6 +8,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap'
 import { RouterModule } from '@angular/router'
 import { currency } from '@/app/store'
+import { CommonModule } from '@angular/common'
 
 @Component({
   selector: 'list-card',
@@ -17,6 +18,7 @@ import { currency } from '@/app/store'
     NgbDropdownModule,
     NgbPaginationModule,
     RouterModule,
+    CommonModule
   ],
   templateUrl: './listcard.component.html',
   styles: ``,
@@ -36,7 +38,7 @@ export class ListcardComponent {
     items: 1,
   }
   
-  @Input() hotelList: any[] = [];
+  @Input() hotelList: any = {};
 
 
 }

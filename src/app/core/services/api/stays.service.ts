@@ -9,10 +9,6 @@ import { ReviewRequest, AddReviewRequest } from '../../models/requestModels/revi
 })
 export class StaysService extends BaseHttpService{
 
-    GetAllProperties(): Observable<PropertyDetail[]> {
-      return this.get('GetListOFProperty');
-    }
-
     GetListingPropertyById(propertyId: number): Observable<PropertyDetail> {
       return this.get(`GetListingPropertyById?id=${propertyId}`);
     }

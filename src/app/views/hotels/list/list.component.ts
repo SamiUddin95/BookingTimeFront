@@ -35,12 +35,20 @@ import { StaysService } from '@/app/core/services/api/stays.service'
 export class ListComponent implements OnInit {
   staticAlertClosed = true;
 
+  hotelFilter = {
+    details: {
+    },
+    paginationInfo: {
+    }
+  };
+
   private staysService = inject(StaysService);
 
   searchHotel(e: Event) {
     console.log(e)
     this.staysService.GetListingPropertyList(e).subscribe((res=> {
       this.hotelList = res;
+      console.log(res)
     }))
   }
 
@@ -48,10 +56,10 @@ export class ListComponent implements OnInit {
       this.loadHotels();
   }
 
-  hotelList: any[] = [];
+  hotelList: any = {};
 
   loadHotels() {
-    this.staysService.GetAllProperties().subscribe((res)=> {
+    this.staysService.GetListingPropertyList(this.hotelFilter).subscribe((res)=> {
       this.hotelList = res;
       console.log(res)
     })
