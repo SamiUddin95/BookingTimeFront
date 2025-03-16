@@ -40,12 +40,12 @@ export interface CarRegistrationFormIncorrect { //this model is currently inuse 
     vehicleConditionId: number;
     seatbelts: boolean; // Renamed from haveSeatbelts
     seatbeltTypeId?: number; // Nullable
-    mobileNumber1?: string; // Changed to string (nullable)
-    mobileNumber2?: string; // Changed to string (nullable)
-    startDate?: Date; // Nullable
-    endDate?: Date; // Nullable
+    mobileNumber1: string; // Changed to string (nullable)
+    mobileNumber2: string; // Changed to string (nullable)
+    startDate?: string; // Nullable
+    endDate?: string; // Nullable
     mileageLimit: number;
-    fuelTypeId?: number; // Nullable
+    fuelTypeId: number; // Nullable
     features?: string; // Nullable
     image?: File; // Matches IFormFile
     carImages?: File[]; // Matches List<IFormFile>

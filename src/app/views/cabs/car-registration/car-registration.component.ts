@@ -1,8 +1,8 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { Footer1Component } from '../../hotels/home/components/footer1/footer1.component';
 import { TopbarComponent } from './components/topbar/topbar.component';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, NgModel, Validators } from '@angular/forms';
 import { DateFormInputDirective } from '@/app/components/form/date-form-input.directive'
 import { SelectFormInputDirective } from '@/app/components/form/select-form-input.directive'
 import { CarRentalsService } from '@/app/core/services/api/car-rentals.service';
@@ -35,19 +35,21 @@ import { Router } from '@angular/router';
 })
 export class CarRegistrationComponent implements OnInit {
 
+  @ViewChildren(NgModel) formFields!: QueryList<NgModel>;
+
   dropzoneConfig: DropzoneConfigInterface = {
-    url: '#', 
+    url: '#',
     maxFiles: 5,
-    maxFilesize: 5, 
+    maxFilesize: 5,
     acceptedFiles: 'image/jpeg, image/png, image/gif',
-    autoProcessQueue: false 
+    autoProcessQueue: false
   };
 
   carRegistrationForm!: CarRegistrationFormIncorrect;
   currentStep = 1;
   totalSteps = 11;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
 
   initialiseForm() {
@@ -56,8 +58,8 @@ export class CarRegistrationComponent implements OnInit {
       stateId: 0,
       cityId: 0,
       street: '',
-  
-  
+
+
       location: 'temp location',
       vin: 0,
       yearId: 0,
@@ -71,8 +73,8 @@ export class CarRegistrationComponent implements OnInit {
       seatbeltTypeId: 0,
       mobileNumber1: '',
       mobileNumber2: '',
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: new Date().toISOString().split('T')[0],
+      endDate: new Date().toISOString().split('T')[0],
       mileageLimit: 0,
       fuelTypeId: 0,
       features: '',
@@ -92,6 +94,7 @@ export class CarRegistrationComponent implements OnInit {
   vehicleConditions: any;
   vehicleMakes: any;
   vehicleYears: any;
+  isSubmitted: boolean = false;
 
   private carService = inject(CarRentalsService);
   private commonService = inject(CommonService)
@@ -113,12 +116,19 @@ export class CarRegistrationComponent implements OnInit {
 
   submit() {
     console.log(this.carRegistrationForm)
-    this.carService.AddCarDetails(this.carRegistrationForm, this.carRegistrationForm.image , this.carRegistrationForm.carImages).subscribe((res=> {
+
+    if (!this.isFormValid()) {
+      this.isSubmitted = true;
+      return;
+    }
+
+    this.carService.AddCarDetails(this.carRegistrationForm, this.carRegistrationForm.image, this.carRegistrationForm.carImages).subscribe((res => {
       console.log(res);
-      if(res.success) {
+      if (res.success) {
         this.router.navigate(['/register-car/success']);
       }
     }))
+
   }
 
   ngOnInit(): void {
@@ -169,16 +179,42 @@ export class CarRegistrationComponent implements OnInit {
   }
 
   onThumbnailSelected(event: any) {
-    const file = event.target.files[0]; 
+    const file = event.target.files[0];
     if (file) {
-      this.carRegistrationForm.image = file; 
+      this.carRegistrationForm.image = file;
     }
   }
-  
+
   onGalleryImageAdded(file: any) {
 
-    this.carRegistrationForm.carImages = []; 
-    this.carRegistrationForm.carImages.push(file); 
+    this.carRegistrationForm.carImages = [];
+    this.carRegistrationForm.carImages.push(file);
+  }
+
+  isFormValid(): boolean {
+
+    const isValid = this.carRegistrationForm.countryId > 0 &&
+      this.carRegistrationForm.stateId > 0 &&
+      this.carRegistrationForm.cityId > 0 &&
+      this.carRegistrationForm.street.trim() !== '' &&
+      this.carRegistrationForm.vin.toString().length >= 5 &&
+      /^[A-HJ-NPR-Z0-9]{17}$/.test(this.carRegistrationForm.vin.toString()) &&
+      this.carRegistrationForm.yearId > 0 &&
+      this.carRegistrationForm.makeId > 0 &&
+      this.carRegistrationForm.model !== '' &&
+      this.carRegistrationForm.odometerId > 0 &&
+      this.carRegistrationForm.transmission !== '' &&
+      this.carRegistrationForm.vehicleValue !== '' &&
+      this.carRegistrationForm.vehicleConditionId > 0 &&
+      (this.carRegistrationForm.seatbeltTypeId ? this.carRegistrationForm.seatbeltTypeId > 0 : true) &&
+      this.carRegistrationForm.mobileNumber1 !== '' &&
+      (this.carRegistrationForm.mobileNumber2 ? this.carRegistrationForm.mobileNumber2 != '' : true) &&
+      this.carRegistrationForm.startDate !== '' &&
+      this.carRegistrationForm.endDate !== '' &&
+      this.carRegistrationForm.mileageLimit > 0 &&
+      this.carRegistrationForm.fuelTypeId > 0;
+
+    return isValid;
   }
 
 }
