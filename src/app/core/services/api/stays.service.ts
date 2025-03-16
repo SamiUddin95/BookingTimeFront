@@ -21,6 +21,10 @@ export class StaysService extends BaseHttpService{
       return this.post(`AddPropertyReview`, reqBody);
     }
 
+    GetPropertyRatingPercentage(propertyId: number):Observable<any> {
+      return this.get(`GetPropertyRatingPercentage/${propertyId}`);
+    }
+
     GetFeaturedHotel():Observable<any> {
       return this.get(`GetFeaturedHotel`);
     }

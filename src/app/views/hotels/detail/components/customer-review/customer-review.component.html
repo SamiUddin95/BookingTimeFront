@@ -24,45 +24,16 @@
         <div class="col-md-8">
           <div class="card-body p-0">
             <div class="row gx-3 g-2 align-items-center">
+
+              @for(item of reviewProportions; track $index) {
               <div class="col-9 col-sm-10">
-                <ngb-progressbar type="warning" [value]="1" [height]="'5px'" class="" />
+                <ngb-progressbar type="warning" [value]="item.percentage" [height]="'5px'" class="" />
               </div>
 
               <div class="col-3 col-sm-2 text-end">
-                <span class="h6 fw-light mb-0">0%</span>
+                <span class="h6 fw-light mb-0">{{item.percentage | number: '1.0-0'}}%</span>
               </div>
-
-              <div class="col-9 col-sm-10">
-                <ngb-progressbar type="warning" [value]="1" [height]="'5px'" class="" />
-              </div>
-
-              <div class="col-3 col-sm-2 text-end">
-                <span class="h6 fw-light mb-0">0%</span>
-              </div>
-
-              <div class="col-9 col-sm-10">
-                <ngb-progressbar type="warning" [value]="1" [height]="'5px'" class="" />
-              </div>
-
-              <div class="col-3 col-sm-2 text-end">
-                <span class="h6 fw-light mb-0">0%</span>
-              </div>
-
-              <div class="col-9 col-sm-10">
-                <ngb-progressbar type="warning" [value]="1" [height]="'5px'" class="" />
-              </div>
-
-              <div class="col-3 col-sm-2 text-end">
-                <span class="h6 fw-light mb-0">0%</span>
-              </div>
-
-              <div class="col-9 col-sm-10">
-                <ngb-progressbar type="warning" [value]="1" [height]="'5px'" class="" />
-              </div>
-
-              <div class="col-3 col-sm-2 text-end">
-                <span class="h6 fw-light mb-0">0%</span>
-              </div>
+              }
             </div>
           </div>
         </div>

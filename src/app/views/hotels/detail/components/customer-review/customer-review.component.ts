@@ -38,6 +38,7 @@ export class CustomerReviewComponent implements OnInit {
   reqBody: any = {}
   postBody: any = {}
   reviews: any
+  reviewProportions: any;
 
   loadReviews() {
     this.reqBody.propertyId = this.getPropertyIdFromParameter();
@@ -46,13 +47,22 @@ export class CustomerReviewComponent implements OnInit {
       this.reviews = res;
       console.log(res);
     }))
+
+    this.staysService.GetPropertyRatingPercentage(this.getPropertyIdFromParameter()).subscribe((res=> {
+      this.reviewProportions = res;
+      console.log(res);
+    }))
   }
 
   postReview() {
     if (this.reviewForm.valid && this.reviewForm.controls['review'].value.trim() !== '') {
       const reqBody = this.reviewForm.value;
       this.staysService.AddPropertyReview(reqBody).subscribe((res) => {
-        this.reviewForm.reset();
+        this.reviewForm.reset({
+          propertyId: this.getPropertyIdFromParameter(),
+          userId: 10018,
+          ratingId: "5"
+        });
         this.loadReviews();
       })
     }
@@ -61,4 +71,5 @@ export class CustomerReviewComponent implements OnInit {
   getPropertyIdFromParameter() {
     return Number(this.route.snapshot.paramMap.get('id'));
   }
+
 }

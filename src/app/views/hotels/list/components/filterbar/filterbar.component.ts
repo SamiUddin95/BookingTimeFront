@@ -29,8 +29,7 @@ export class FilterbarComponent implements OnInit{
       amenities: [] as { amenitiesId: number }[]
     },
     paginationInfo: {
-      page: 1,
-      rowsPerPage: 10
+
     }
   };
   
