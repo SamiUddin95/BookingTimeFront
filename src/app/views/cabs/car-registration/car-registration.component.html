@@ -1,4 +1,8 @@
-<main>
+<div class="header-wrapper-register-car">
+  <registration-topbar />
+</div>
+
+<main class="mt-n7 card">
   <section class="pb-0">
     <div class="container">
       <div class="row">
@@ -25,9 +29,10 @@
           <div class="row g-3">
             <div class="col-md-6">
               <label class="form-label">Country/Region *</label>
-              <select class="form-select js-choice" (ngModelChange)="formValid()">
-                <option value="">Select Country</option>
-                <option></option>
+              <select class="form-select js-choice" required [(ngModel)]="carRegistrationForm.countryId"
+                (ngModelChange)="loadCitiesAndStates($event)">
+                <option [value]="0" disabled selected>Select Country</option>
+                <option *ngFor="let country of countries" [value]="country.countryId">{{ country.countryName }}</option>
               </select>
               <div class="invalid-feedback">
                 Please select a country.
@@ -36,36 +41,30 @@
 
             <div class="col-md-6">
               <label class="form-label">State *</label>
-              <select class="form-select js-choice" (ngModelChange)="formValid()" name="stateId" required>
-                <option value="">Select State</option>
-                <option></option>
+              <select class="form-select js-choice" name="stateId" required [(ngModel)]="carRegistrationForm.stateId">
+                <option [value]="0" disabled selected>Select State</option>
+                <option *ngFor="let state of states" [ngValue]="state.stateId">{{ state.stateName }}</option>
               </select>
               <div class="invalid-feedback">
                 Please select a state.
               </div>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-12">
               <label class="form-label">City *</label>
-              <input class="form-control" type="text" (ngModelChange)="formValid()">
+              <select class="form-select js-choice" name="city" required [(ngModel)]="carRegistrationForm.cityId">
+                <option [value]="0" disabled selected>Select City</option>
+                <option *ngFor="let city of cities" [value]="city.cityId">{{ city.cityName }}</option>
+              </select>
               <div class="invalid-feedback">
-                Please enter a city.
-              </div>
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">Postal number *</label>
-              <input class="form-control" type="text" (ngModelChange)="formValid()" name="postalNumber"
-                placeholder="Enter postal number" required>
-              <div class="invalid-feedback">
-                Please enter a postal number.
+                Please select a city.
               </div>
             </div>
 
             <div class="col-12">
               <label class="form-label">Street *</label>
-              <input class="form-control" type="text" (ngModelChange)="formValid()" name="street"
-                placeholder="Enter street" required>
+              <input class="form-control" type="text" name="street"
+                [(ngModel)]="carRegistrationForm.street" placeholder="Enter street" required>
               <div class="invalid-feedback">
                 Please enter a street.
               </div>
@@ -88,7 +87,8 @@
 
             <div class="col-md-12">
               <label class="form-label">Enter your VIN</label>
-              <input class="form-control" type="text" name="vehicleIdNumber" placeholder="Enter 17 digit VIN" required>
+              <input class="form-control" type="text" name="vehicleIdNumber" placeholder="Enter 17 digit VIN" required
+                [(ngModel)]="carRegistrationForm.vin">
               <div class="invalid-feedback">
                 Please enter a your VIN.
               </div>
@@ -109,8 +109,10 @@
 
             <div class="col-md-12">
               <label class="form-label">Year</label>
-              <input class="form-control" type="text" name="vehicleIdNumber" placeholder="Enter your vehicle year"
-                required>
+              <select class="form-select js-choice" name="year" required [(ngModel)]="carRegistrationForm.yearId">
+                <option [value]="0" disabled selected>Select vehicle manufacturing year</option>
+                <option *ngFor="let item of vehicleYears" [ngValue]="item.id">{{ item.name }}</option>
+              </select>
               <div class="invalid-feedback">
                 Please enter year.
               </div>
@@ -118,8 +120,10 @@
 
             <div class="col-md-12">
               <label class="form-label">Make</label>
-              <input class="form-control" type="text" name="vehicleIdNumber" placeholder="Enter your vehicle make"
-                required>
+              <select class="form-select js-choice" name="year" required [(ngModel)]="carRegistrationForm.makeId">
+                <option [value]="0" disabled selected>Select vehicle Make</option>
+                <option *ngFor="let item of vehicleMakes" [ngValue]="item.id">{{ item.name }}</option>
+              </select>
               <div class="invalid-feedback">
                 Please enter vehicle make.
               </div>
@@ -128,7 +132,7 @@
             <div class="col-md-12">
               <label class="form-label">Model</label>
               <input class="form-control" type="text" name="vehicleIdNumber" placeholder="Enter your vehicle model"
-                required>
+                [(ngModel)]="carRegistrationForm.model" required>
               <div class="invalid-feedback">
                 Please enter vehicle model.
               </div>
@@ -149,8 +153,11 @@
 
             <div class="col-md-12">
               <label class="form-label">What is your car's odometer reading?</label>
-              <input class="form-control" type="number" name="odometer"
-                placeholder="Enter your vehicle's odometer reading" required>
+              <select class="form-select js-choice" name="odometer" required
+                [(ngModel)]="carRegistrationForm.odometerId">
+                <option [value]="0" disabled selected>Select vehicle odometer reading</option>
+                <option *ngFor="let item of odometerReadings" [ngValue]="item.id">{{ item.name }}</option>
+              </select>
               <div class="invalid-feedback">
                 Please enter odometer reading.
               </div>
@@ -161,12 +168,14 @@
               <div class="d-flex gap-3">
 
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" id="manual" name="transmission" value="manual" />
+                  <input class="form-check-input" type="radio" id="manual" name="transmission" value="manual"
+                    [(ngModel)]="carRegistrationForm.transmission" />
                   <label class="form-check-label" for="manual">Manual</label>
                 </div>
 
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" id="automatic" name="transmission" value="automatic" />
+                  <input class="form-check-input" type="radio" id="automatic" name="transmission" value="automatic"
+                    [(ngModel)]="carRegistrationForm.transmission" />
                   <label class="form-check-label" for="automatic">Automatic</label>
                 </div>
               </div>
@@ -188,7 +197,8 @@
 
             <div class="col-md-12">
               <label class="form-label">Market Value (USD)</label>
-              <input class="form-control" type="number" name="value" placeholder="$ Market Value (USD)" required>
+              <input class="form-control" type="number" name="value" placeholder="$ Market Value (USD)" required
+                [(ngModel)]="carRegistrationForm.vehicleValue">
               <div class="invalid-feedback">
                 Please enter vehicle's market value.
               </div>
@@ -209,12 +219,9 @@
 
             <div class="col-md-12">
               <label class="form-label">Status</label>
-              <select class="form-select js-choice">
-                <option value="" selected disabled>Select the condition of your vehicle</option>
-                <option value="Excellent">Excellent</option>
-                <option value="Good">Good</option>
-                <option value="Fair">Fair</option>
-                <option value="Not Working">Not Working</option>
+              <select class="form-select js-choice" [(ngModel)]="carRegistrationForm.vehicleConditionId">
+                <option [value]="0" selected disabled>Select the condition of your vehicle</option>
+                <option *ngFor="let item of vehicleConditions" [value]="item.id">{{ item.name }}</option>
               </select>
               <div class="invalid-feedback">
                 Please select vehicle condition.
@@ -226,14 +233,28 @@
               <div class="d-flex gap-3">
 
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" id="yes" name="seatbelt" value="yes" />
-                  <label class="form-check-label" for="manual">Yes</label>
+                  <input class="form-check-input" type="radio" id="yes" name="seatbelt" value="1"
+                    [(ngModel)]="carRegistrationForm.seatbelts" />
+                  <label class="form-check-label" for="yes">Yes</label>
                 </div>
 
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" id="no" name="seatbelt" value="no" />
-                  <label class="form-check-label" for="automatic">No</label>
+                  <input class="form-check-input" type="radio" id="no" name="seatbelt" value="0"
+                    [(ngModel)]="carRegistrationForm.seatbelts" />
+                  <label class="form-check-label" for="no">No</label>
                 </div>
+              </div>
+            </div>
+
+            <div class="col-md-12" *ngIf="carRegistrationForm.seatbelts == true">
+              <label class="form-label">Seatbelt Type</label>
+              <select class="form-select js-choice" name="seatbeltType" required
+                [(ngModel)]="carRegistrationForm.seatbeltTypeId">
+                <option [value]="0" disabled selected>Select seatbelt type</option>
+                <option *ngFor="let item of seatBeltTypes" [ngValue]="item.id">{{ item.name }}</option>
+              </select>
+              <div class="invalid-feedback">
+                Please select seatbelt type.
               </div>
             </div>
 
@@ -252,12 +273,9 @@
 
             <div class="col-md-12">
               <label class="form-label">Fuel Type</label>
-              <select class="form-select js-choice">
-                <option value="" selected disabled>Select the fuel type of your vehicle</option>
-                <option value="Gasoline">Gasoline</option>
-                <option value="Diesel">Diesel</option>
-                <option value="Electric">Electric</option>
-                <option value="Hybrid">Hybrid</option>
+              <select class="form-select js-choice" [(ngModel)]="carRegistrationForm.fuelTypeId">
+                <option [value]="0" selected disabled>Select the fuel type of your vehicle</option>
+                <option *ngFor="let item of fuelTypes" [value]="item.id">{{ item.name }}</option>
               </select>
               <div class="invalid-feedback">
                 Please select vehicle fuel type.
@@ -267,27 +285,11 @@
             <div class="col-md-12">
               <label class="form-label">Features</label>
               <div class="d-flex gap-3 flex-wrap">
-
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="airConditioning" />
-                  <label class="form-check-label" for="airConditioning">Air Conditioning</label>
+                <div class="form-check" *ngFor="let feature of features">
+                  <input class="form-check-input" type="checkbox" [id]="feature"
+                    (change)="toggleFeature(feature, $event)" />
+                  <label class="form-check-label" [for]="feature">{{ feature }}</label>
                 </div>
-
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="sunroof" />
-                  <label class="form-check-label" for="sunroof">Sunroof</label>
-                </div>
-
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="gps" />
-                  <label class="form-check-label" for="gps">GPS Navigation</label>
-                </div>
-
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="leatherSeats" />
-                  <label class="form-check-label" for="leatherSeats">Leather Seats</label>
-                </div>
-
               </div>
             </div>
 
@@ -299,7 +301,7 @@
       <!-- Step 8 - Car Availibility -->
       <div class="card shadow" *ngIf="currentStep==8">
         <div class="card-header border-bottom">
-          <h5 class="mb-0">Fuel Type</h5>
+          <h5 class="mb-0">Car Availibility</h5>
         </div>
 
         <div class="card-body p-3">
@@ -308,20 +310,23 @@
             <div class="col-md-6">
               <div class="form-fs-lg form-control-transparent">
                 <label class="form-label small">Start Date</label>
-                <input mwlFlatpickr type="text" class="form-control flatpickr" placeholder="Select date" />
+                <input mwlFlatpickr type="text" class="form-control flatpickr" placeholder="Select date"
+                  [(ngModel)]="carRegistrationForm.startDate" />
               </div>
             </div>
 
             <div class="col-md-6">
               <div class="form-fs-lg form-control-transparent">
                 <label class="form-label small">End Date</label>
-                <input mwlFlatpickr type="text" class="form-control flatpickr" placeholder="Select date" />
+                <input mwlFlatpickr type="text" class="form-control flatpickr" placeholder="Select date"
+                  [(ngModel)]="carRegistrationForm.endDate" />
               </div>
             </div>
 
             <div class="col-md-12">
               <label class="form-label">Mileage Limit (per day)</label>
-              <input class="form-control" type="number" name="value" placeholder="Enter your mileage limit (Km)" required>
+              <input class="form-control" type="number" name="value" placeholder="Enter your mileage limit (Km)"
+                required [(ngModel)]="carRegistrationForm.mileageLimit">
               <div class="invalid-feedback">
                 Please enter mileage limit.
               </div>
@@ -332,8 +337,80 @@
         </div>
       </div>
 
-      <!-- Step 9 - Additional Information -->
+      <!-- Step 9 - Contact Information -->
       <div class="card shadow" *ngIf="currentStep==9">
+        <div class="card-header border-bottom">
+          <h5 class="mb-0">Contact Information</h5>
+        </div>
+
+        <div class="card-body p-3">
+          <div class="row g-3">
+
+            <div class="col-md-12">
+              <label class="form-label">Enter your mobile number *</label>
+              <input class="form-control" type="number" name="mobile1" placeholder="Enter your primary mobile number" required
+                [(ngModel)]="carRegistrationForm.mobileNumber1">
+              <div class="invalid-feedback">
+                Please enter contact number.
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <label class="form-label">Enter your emergency/backup mobile number</label>
+              <input class="form-control" type="number" name="mobile2" placeholder="Enter your secondary mobile number"
+                [(ngModel)]="carRegistrationForm.mobileNumber2">
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 10 - Images -->
+      <div class="card shadow" *ngIf="currentStep==10">
+        <div class="card-header border-bottom">
+          <h5 class="mb-0">Upload Images</h5>
+        </div>
+    
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-12">
+              <label class="form-label">Upload thumbnail image *</label>
+              <input
+                class="form-control"
+                type="file"
+                name="my-image"
+                id="image"
+                accept="image/gif, image/jpeg, image/png"
+                (change)="onThumbnailSelected($event)"
+              />
+              <p class="small mb-0 mt-2">
+                <b>Note:</b> Only JPG, JPEG, and PNG. Our suggested dimensions are
+                600px * 450px. The larger image will be cropped to 4:3 to fit our
+                thumbnails/previews.
+              </p>
+            </div>
+    
+            <div class="col-12">
+              <label class="form-label">Upload image gallery *</label>
+              <dropzone
+                class="dropzone new-listing-drop"
+                [config]="dropzoneConfig"
+                [message]="'Drop files here or click to upload.'"
+                (addedFile)="onGalleryImageAdded($event)"
+              ></dropzone>
+    
+              <p class="small mb-0 mt-2">
+                <b>Note:</b> Only JPG, JPEG, and PNG. Our suggested dimensions are
+                600px * 450px. The larger image will be cropped to 4:3 to fit our
+                thumbnails/previews.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 11 - Additional Information -->
+      <div class="card shadow" *ngIf="currentStep==11">
         <div class="card-header border-bottom">
           <h5 class="mb-0">Additional Information</h5>
         </div>
@@ -344,7 +421,7 @@
             <div class="col-md-12">
               <label class="form-label">Is there anything else our team should know?</label>
               <textarea class="form-control" rows="5" name="additionalInfo" placeholder="e.g replica, rebuilt engine"
-                required>
+                required [(ngModel)]="carRegistrationForm.additionalInfo">
               </textarea>
               <div class="invalid-feedback">
                 Please enter a short description.
@@ -354,14 +431,6 @@
           </div>
         </div>
       </div>
-
-
-
-
-
-
-
-
 
 
 

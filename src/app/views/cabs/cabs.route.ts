@@ -4,6 +4,7 @@ import { ListComponent } from './list/list.component'
 import { DetailComponent } from './detail/detail.component'
 import { BookingComponent } from './booking/booking.component'
 import { CarRegistrationComponent } from './car-registration/car-registration.component'
+import { CarRegistrationSuccessComponent } from './car-registration/components/success/success.component'
 
 export const CABS_ROUTES: Route[] = [
   { path: 'home', component: HomeComponent, data: { title: 'Cab - Home' } },
@@ -22,5 +23,10 @@ export const CABS_ROUTES: Route[] = [
     path: 'register-car',
     component: CarRegistrationComponent,
     data: {title: 'Car - Register'}
-  }
+  },
+  {
+    path: 'register-car/success',
+    component: CarRegistrationSuccessComponent,
+    data: {title: 'Register - Success'}
+  },
 ]

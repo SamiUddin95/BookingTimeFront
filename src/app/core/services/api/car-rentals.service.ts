@@ -32,8 +32,26 @@ export class CarRentalsService extends BaseHttpService {
         return this.get('GetAllVehicleYearList');
     }
 
-    AddCarDetails(postBody: any): Observable<any> {
-        return this.post('AddCarDetails', postBody);
+    AddCarDetails(postBody: any, thumbnailImage: File | undefined, carImages: File[] | undefined): Observable<any> {
+        const formData = new FormData();
+
+        for (const key in postBody) {
+            if (postBody.hasOwnProperty(key)) {
+                formData.append(key, postBody[key]);
+            }
+        }
+
+        if (carImages && carImages.length > 0) {
+            carImages.forEach((file, index) => {
+                formData.append(`carImages`, file); 
+            });
+        }
+
+        if(thumbnailImage) {
+            formData.append('image', thumbnailImage)
+        }
+
+        return this.post('AddCarDetails', formData);
     }
 
     GetCarDetailsList(reqBody: any): Observable<any> {

@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Footer1Component } from '../../hotels/home/components/footer1/footer1.component';
-import { TopbarComponent } from './components/topbar/topbar.component'; 
+import { TopbarComponent } from './components/topbar/topbar.component';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DateFormInputDirective } from '@/app/components/form/date-form-input.directive'
@@ -8,18 +8,80 @@ import { SelectFormInputDirective } from '@/app/components/form/select-form-inpu
 import { CarRentalsService } from '@/app/core/services/api/car-rentals.service';
 import { forkJoin } from 'rxjs';
 import { CommonService } from '@/app/core/services/api/common.service';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { CarRegistrationForm, CarRegistrationFormIncorrect } from '@/app/core/models/requestModels/car-rentals.model';
+import {
+  DROPZONE_CONFIG,
+  DropzoneModule,
+  type DropzoneConfigInterface,
+} from 'ngx-dropzone-wrapper'
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-car-registration',
   standalone: true,
-  imports: [Footer1Component, TopbarComponent, CommonModule, DateFormInputDirective, SelectFormInputDirective],
+  imports: [
+    Footer1Component,
+    TopbarComponent,
+    CommonModule,
+    DateFormInputDirective,
+    SelectFormInputDirective,
+    ReactiveFormsModule,
+    FormsModule,
+    DropzoneModule,
+  ],
   templateUrl: './car-registration.component.html',
-  styleUrl: './car-registration.component.scss'
+  styleUrl: './car-registration.component.scss',
 })
 export class CarRegistrationComponent implements OnInit {
-  form!: FormGroup;
+
+  dropzoneConfig: DropzoneConfigInterface = {
+    url: '#', 
+    maxFiles: 5,
+    maxFilesize: 5, 
+    acceptedFiles: 'image/jpeg, image/png, image/gif',
+    autoProcessQueue: false 
+  };
+
+  carRegistrationForm!: CarRegistrationFormIncorrect;
   currentStep = 1;
-  totalSteps = 9;
+  totalSteps = 11;
+
+  constructor(private router: Router) {}
+
+
+  initialiseForm() {
+    this.carRegistrationForm = {
+      countryId: 0,
+      stateId: 0,
+      cityId: 0,
+      street: '',
+  
+  
+      location: 'temp location',
+      vin: 0,
+      yearId: 0,
+      makeId: 0,
+      model: '',
+      odometerId: 0,
+      transmission: '',
+      vehicleValue: '',
+      vehicleConditionId: 0,
+      seatbelts: false,
+      seatbeltTypeId: 0,
+      mobileNumber1: '',
+      mobileNumber2: '',
+      startDate: new Date(),
+      endDate: new Date(),
+      mileageLimit: 0,
+      fuelTypeId: 0,
+      features: '',
+      additionalInfo: '',
+      carImages: [],
+      image: undefined
+    };
+  }
+
 
   countries: any;
   cities: any;
@@ -34,13 +96,12 @@ export class CarRegistrationComponent implements OnInit {
   private carService = inject(CarRentalsService);
   private commonService = inject(CommonService)
 
-  constructor(private fb: FormBuilder) {
-    this.form = this.fb.group({});
-  }
-
   nextStep() {
     if (this.currentStep < this.totalSteps) {
       this.currentStep++;
+    }
+    else if (this.currentStep == this.totalSteps) {
+      this.submit();
     }
   }
 
@@ -51,18 +112,18 @@ export class CarRegistrationComponent implements OnInit {
   }
 
   submit() {
-    if (this.form.valid) {
-      console.log(this.form.value);
-      alert('Car Registered Successfully!');
-    }
-  }
-
-  formValid() {
-
+    console.log(this.carRegistrationForm)
+    this.carService.AddCarDetails(this.carRegistrationForm, this.carRegistrationForm.image , this.carRegistrationForm.carImages).subscribe((res=> {
+      console.log(res);
+      if(res.success) {
+        this.router.navigate(['/register-car/success']);
+      }
+    }))
   }
 
   ngOnInit(): void {
-      this.loadDropdowns();
+    this.loadDropdowns();
+    this.initialiseForm();
   }
 
   loadDropdowns() {
@@ -85,4 +146,39 @@ export class CarRegistrationComponent implements OnInit {
       console.log(res);
     });
   }
+
+  loadCitiesAndStates(countryId: number) {
+    this.commonService.GetCityByCountryId(countryId).subscribe((res) => {
+      this.cities = res;
+    })
+
+    this.commonService.GetStateByCountryId(countryId).subscribe((res) => {
+      this.states = res;
+    })
+  }
+
+  selectedFeatures: string[] = [];
+  features = ['Air Conditioning', 'Sunroof', 'GPS Navigation', 'Leather Seats'];
+
+  toggleFeature(feature: string, event: any) {
+    event.target.checked
+      ? this.selectedFeatures.push(feature)
+      : this.selectedFeatures = this.selectedFeatures.filter(f => f !== feature);
+
+    this.carRegistrationForm.features = this.selectedFeatures.join(', ');
+  }
+
+  onThumbnailSelected(event: any) {
+    const file = event.target.files[0]; 
+    if (file) {
+      this.carRegistrationForm.image = file; 
+    }
+  }
+  
+  onGalleryImageAdded(file: any) {
+
+    this.carRegistrationForm.carImages = []; 
+    this.carRegistrationForm.carImages.push(file); 
+  }
+
 }
