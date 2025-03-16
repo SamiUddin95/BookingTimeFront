@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'
+import { Component, Input } from '@angular/core'
 import { NgbCollapseModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap'
 
 @Component({
@@ -14,4 +14,6 @@ import { NgbCollapseModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap'
 })
 export class AboutComponent {
   isCollapsed = true
+
+  @Input() data: any = {};
 }

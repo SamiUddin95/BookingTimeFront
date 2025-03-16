@@ -31,19 +31,18 @@
         <div class="card card-img-scale overflow-hidden bg-white">
 
           <div class="card-img-scale-wrapper" style="height: 200px;">
-            <img src="{{ data.image }}" class="card-img" alt="hotel image" />
-
+            <img src="{{ data.thumbnail }}" class="card-img" alt="hotel image" />
           </div>
 
           <div class="card-body px-2">
             <h5 class="card-title d-flex justify-content-between gap-2">
-              <a routerLink="/hotels/detail" class="fs-6">{{
-                data.name
+              <a [routerLink]="['/hotels/detail', data.id]" class="fs-6">{{
+                data.listName
                 }}</a>
 
               <div>
                 <i class="fa fa-star text-warning fs-6"
-                  *ngFor="let _ of [].constructor(roundOff(data.ratings)); let i = index">
+                  *ngFor="let _ of [].constructor(roundOff(data.rating)); let i = index">
                 </i>
               </div>
             </h5>
@@ -52,16 +51,16 @@
             <div class="d-flex gap-2">
 
               <p class="mb-0 bg-primary w-auto px-2 text-white rating-tag">
-                <span class="fs-6">{{ data.ratings}}</span><small class="text-muted">/5</small>
+                <span class="fs-6">{{ data.rating}}</span><small class="text-muted">/5</small>
               </p>
 
-              <p class="text-primary fs-6">{{data.reviews}}+ reviews</p>
+              <p class="text-primary fs-6">{{data.rating}}+ reviews</p>
 
             </div>
 
             <p class="mb-0 w-auto px-2 text-end">
               <small class="text-dark mr-1">From </small><span class="fs-5 text-dark-blue fw-bold">{{ currencyType }}{{
-                data.price
+                data.basePrice
                 }}</span>
             </p>
 

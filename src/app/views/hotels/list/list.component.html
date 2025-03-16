@@ -14,11 +14,11 @@
 
       <div class="row">
         <aside class="col-xl-4 col-xxl-3">
-          <list-filterbar />
+          <list-filterbar (hotelFilterEmit)="searchHotel($event)"/>
         </aside>
 
         <div class="col-xl-8 col-xxl-9">
-          <list-card />
+          <list-card [hotelList]="hotelList" />
         </div>
       </div>
     </div>
