@@ -71,24 +71,6 @@
               </div>
             </div>
 
-            <div class="col-md-6">
-              <label class="form-label">Latitude *</label>
-              <input class="form-control" type="text" (ngModelChange)="formValid()" name="latitude"
-                placeholder="Enter latitude" required>
-              <div class="invalid-feedback">
-                Please enter latitude.
-              </div>
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">Longitude *</label>
-              <input class="form-control" type="text" (ngModelChange)="formValid()" name="longitude"
-                placeholder="Enter longitude" required>
-              <div class="invalid-feedback">
-                Please enter longitude.
-              </div>
-            </div>
-
           </div>
         </div>
       </div>
@@ -259,8 +241,99 @@
         </div>
       </div>
 
-      <!-- Step 7 - Additional Information -->
+      <!-- Step 7 - Fuel Type -->
       <div class="card shadow" *ngIf="currentStep==7">
+        <div class="card-header border-bottom">
+          <h5 class="mb-0">Fuel Type</h5>
+        </div>
+
+        <div class="card-body p-3">
+          <div class="row g-3">
+
+            <div class="col-md-12">
+              <label class="form-label">Fuel Type</label>
+              <select class="form-select js-choice">
+                <option value="" selected disabled>Select the fuel type of your vehicle</option>
+                <option value="Gasoline">Gasoline</option>
+                <option value="Diesel">Diesel</option>
+                <option value="Electric">Electric</option>
+                <option value="Hybrid">Hybrid</option>
+              </select>
+              <div class="invalid-feedback">
+                Please select vehicle fuel type.
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <label class="form-label">Features</label>
+              <div class="d-flex gap-3 flex-wrap">
+
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="airConditioning" />
+                  <label class="form-check-label" for="airConditioning">Air Conditioning</label>
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="sunroof" />
+                  <label class="form-check-label" for="sunroof">Sunroof</label>
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="gps" />
+                  <label class="form-check-label" for="gps">GPS Navigation</label>
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="leatherSeats" />
+                  <label class="form-check-label" for="leatherSeats">Leather Seats</label>
+                </div>
+
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 8 - Car Availibility -->
+      <div class="card shadow" *ngIf="currentStep==8">
+        <div class="card-header border-bottom">
+          <h5 class="mb-0">Fuel Type</h5>
+        </div>
+
+        <div class="card-body p-3">
+          <div class="row g-3">
+
+            <div class="col-md-6">
+              <div class="form-fs-lg form-control-transparent">
+                <label class="form-label small">Start Date</label>
+                <input mwlFlatpickr type="text" class="form-control flatpickr" placeholder="Select date" />
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-fs-lg form-control-transparent">
+                <label class="form-label small">End Date</label>
+                <input mwlFlatpickr type="text" class="form-control flatpickr" placeholder="Select date" />
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <label class="form-label">Mileage Limit (per day)</label>
+              <input class="form-control" type="number" name="value" placeholder="Enter your mileage limit (Km)" required>
+              <div class="invalid-feedback">
+                Please enter mileage limit.
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 9 - Additional Information -->
+      <div class="card shadow" *ngIf="currentStep==9">
         <div class="card-header border-bottom">
           <h5 class="mb-0">Additional Information</h5>
         </div>
@@ -270,7 +343,8 @@
 
             <div class="col-md-12">
               <label class="form-label">Is there anything else our team should know?</label>
-              <textarea class="form-control" rows="5" name="additionalInfo" placeholder="e.g replica, rebuilt engine" required>
+              <textarea class="form-control" rows="5" name="additionalInfo" placeholder="e.g replica, rebuilt engine"
+                required>
               </textarea>
               <div class="invalid-feedback">
                 Please enter a short description.
@@ -298,7 +372,8 @@
         </div>
 
         <div class=" text-end">
-          <button type="button" class="btn btn-primary" (click)="nextStep()"> {{ currentStep === totalSteps ? 'Submit' : 'Continue' }}</button>
+          <button type="button" class="btn btn-primary" (click)="nextStep()"> {{ currentStep === totalSteps ? 'Submit' :
+            'Continue' }}</button>
         </div>
       </div>
 
