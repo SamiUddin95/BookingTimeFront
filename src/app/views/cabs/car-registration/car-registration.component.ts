@@ -16,6 +16,7 @@ import {
   type DropzoneConfigInterface,
 } from 'ngx-dropzone-wrapper'
 import { Router } from '@angular/router';
+import { BsStepperWrapperComponent } from '@/app/components/bs-stepper-wrapper.component';
 
 @Component({
   selector: 'app-car-registration',
@@ -29,6 +30,7 @@ import { Router } from '@angular/router';
     ReactiveFormsModule,
     FormsModule,
     DropzoneModule,
+    BsStepperWrapperComponent
   ],
   templateUrl: './car-registration.component.html',
   styleUrl: './car-registration.component.scss',
@@ -216,5 +218,24 @@ export class CarRegistrationComponent implements OnInit {
 
     return isValid;
   }
+
+  steps = [
+    { id: 1, label: 'Location' },
+    { id: 2, label: 'VIN' },
+    { id: 3, label: 'Make & Model' },
+    { id: 4, label: 'Odometer' },
+    { id: 5, label: 'Market Value' },
+    { id: 6, label: 'Condition' },
+    { id: 7, label: 'Fuel Type' },
+    { id: 8, label: 'Availibility' },
+    { id: 9, label: 'Contact Information' },
+    { id: 10, label: 'Photos' },
+    { id: 11, label: 'Additional Info' },
+  ];
+
+  goToStep(stepId: number): void {
+    this.currentStep = stepId;
+  }
+
 
 }
