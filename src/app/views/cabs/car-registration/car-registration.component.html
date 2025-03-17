@@ -108,9 +108,8 @@
             <div class="col-md-12">
               <label class="form-label">Enter your VIN</label>
               <input class="form-control" type="text" name="vehicleIdNumber" placeholder="Enter 17 digit VIN" required
-                [(ngModel)]="carRegistrationForm.vin" #vin="ngModel"
+                [(ngModel)]="carRegistrationForm.vin" #vin="ngModel" [maxlength]="17"
                 [ngClass]="{'is-invalid': !vin.valid && (vin.touched || isSubmitted)}" pattern="^[A-HJ-NPR-Z0-9]{17}$">
-
               <div class="invalid-feedback" *ngIf="!vin.valid && (vin.touched || isSubmitted)">
                 VIN must be exactly 17 characters long and not contain I, O, or Q.
               </div>

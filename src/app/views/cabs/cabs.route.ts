@@ -21,12 +21,16 @@ export const CABS_ROUTES: Route[] = [
   },
   {
     path: 'register-car',
-    component: CarRegistrationComponent,
-    data: {title: 'Car - Register'}
-  },
-  {
-    path: 'register-car/success',
-    component: CarRegistrationSuccessComponent,
-    data: {title: 'Register - Success'}
-  },
+    data: { title: 'Car - Register' },
+    children: [
+      { path: '', component: CarRegistrationComponent },  // Default component for `/register-car`
+      { path: 'success', component: CarRegistrationSuccessComponent }  // Handles `/register-car/success`
+    ]
+  }
+  ,
+  // {
+  //   path: 'register-car/success',
+  //   component: CarRegistrationSuccessComponent,
+  //   data: {title: 'Register - Success'}
+  // },
 ]

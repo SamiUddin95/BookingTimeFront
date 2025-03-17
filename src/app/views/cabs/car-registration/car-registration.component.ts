@@ -9,13 +9,13 @@ import { CarRentalsService } from '@/app/core/services/api/car-rentals.service';
 import { forkJoin } from 'rxjs';
 import { CommonService } from '@/app/core/services/api/common.service';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { CarRegistrationForm, CarRegistrationFormIncorrect } from '@/app/core/models/requestModels/car-rentals.model';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CarRegistrationForm, CarRegistrationFormIncorrect, CarRegistrationFormUpdated } from '@/app/core/models/requestModels/car-rentals.model';
 import {
   DROPZONE_CONFIG,
   DropzoneModule,
   type DropzoneConfigInterface,
 } from 'ngx-dropzone-wrapper'
-import { Router } from '@angular/router';
 import { BsStepperWrapperComponent } from '@/app/components/bs-stepper-wrapper.component';
 
 @Component({
@@ -23,14 +23,14 @@ import { BsStepperWrapperComponent } from '@/app/components/bs-stepper-wrapper.c
   standalone: true,
   imports: [
     Footer1Component,
-    TopbarComponent,
+    // TopbarComponent,
     CommonModule,
     DateFormInputDirective,
-    SelectFormInputDirective,
+    // SelectFormInputDirective,
     ReactiveFormsModule,
     FormsModule,
     DropzoneModule,
-    BsStepperWrapperComponent
+    // BsStepperWrapperComponent
   ],
   templateUrl: './car-registration.component.html',
   styleUrl: './car-registration.component.scss',
@@ -44,25 +44,25 @@ export class CarRegistrationComponent implements OnInit {
     maxFiles: 5,
     maxFilesize: 5,
     acceptedFiles: 'image/jpeg, image/png, image/gif',
-    autoProcessQueue: false
+    autoProcessQueue: false,
+    addRemoveLinks: true, 
+    dictRemoveFile: 'Remove' 
   };
 
-  carRegistrationForm!: CarRegistrationFormIncorrect;
+
+  carRegistrationForm!: CarRegistrationFormUpdated;
   currentStep = 1;
   totalSteps = 11;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private route: ActivatedRoute) { }
 
 
   initialiseForm() {
-    this.carRegistrationForm = {
+    this.carRegistrationForm= {
       countryId: 0,
       stateId: 0,
       cityId: 0,
       street: '',
-
-
-      location: 'temp location',
       vin: 0,
       yearId: 0,
       makeId: 0,
@@ -127,7 +127,7 @@ export class CarRegistrationComponent implements OnInit {
     this.carService.AddCarDetails(this.carRegistrationForm, this.carRegistrationForm.image, this.carRegistrationForm.carImages).subscribe((res => {
       console.log(res);
       if (res.success) {
-        this.router.navigate(['/register-car/success']);
+        this.router.navigate(['success'], { relativeTo: this.route });
       }
     }))
 
@@ -137,7 +137,8 @@ export class CarRegistrationComponent implements OnInit {
     this.loadDropdowns();
     this.initialiseForm();
   }
-
+  
+  
   loadDropdowns() {
     forkJoin({
       countries: this.commonService.GetAllCountryList(),
@@ -187,11 +188,15 @@ export class CarRegistrationComponent implements OnInit {
     }
   }
 
-  onGalleryImageAdded(file: any) {
-
-    this.carRegistrationForm.carImages = [];
-    this.carRegistrationForm.carImages.push(file);
+  onGalleryImageAdded(file: File) { 
+  
+      if (!this.carRegistrationForm.carImages) {
+        this.carRegistrationForm.carImages = [];
+      }
+  
+      this.carRegistrationForm.carImages.push(file);
   }
+  
 
   isFormValid(): boolean {
 

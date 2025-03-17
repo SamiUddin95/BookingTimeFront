@@ -53,3 +53,30 @@ export interface CarRegistrationFormIncorrect { //this model is currently inuse 
     transmission: string,
     additionalInfo: string
 }
+
+export interface CarRegistrationFormUpdated { 
+    countryId: number;
+  cityId: number;
+  stateId: number;
+  street: string;
+  vin: number;
+  yearId: number;
+  makeId: number;
+  model?: string;
+  odometerId: number;
+  vehicleValue?: string;
+  vehicleConditionId: number;
+  seatbelts: boolean;
+  seatbeltTypeId?: number;
+  mobileNumber1?: string;
+  mobileNumber2?: string;
+  startDate?: string;
+  endDate?: string;
+  mileageLimit: number;
+  fuelTypeId: number;
+  features?: string;
+  transmission: string;
+  additionalInfo: string;
+  image?: File;
+  carImages?: File[];
+}
