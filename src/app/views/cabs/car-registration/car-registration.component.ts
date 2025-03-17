@@ -121,7 +121,7 @@ export class CarRegistrationComponent implements OnInit {
 
     if (!this.isFormValid()) {
       this.isSubmitted = true;
-      return;
+      return; 
     }
 
     this.carService.AddCarDetails(this.carRegistrationForm, this.carRegistrationForm.image, this.carRegistrationForm.carImages).subscribe((res => {
