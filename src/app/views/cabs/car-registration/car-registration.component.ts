@@ -123,7 +123,7 @@ export class CarRegistrationComponent implements OnInit {
       this.isSubmitted = true;
       return; 
     }
-
+ 
     this.carService.AddCarDetails(this.carRegistrationForm, this.carRegistrationForm.image, this.carRegistrationForm.carImages).subscribe((res => {
       console.log(res);
       if (res.success) {
