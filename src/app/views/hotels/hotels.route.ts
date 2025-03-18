@@ -20,10 +20,10 @@ export const HOTEL_ROUTES: Route[] = [
     component: ResortComponent,
     data: { title: 'Hotel - Resort' },
   },
-  { path: 'grid', component: GridComponent, data: { title: 'Hotel - Grid' } },
+  //{ path: 'grid', component: GridComponent, data: { title: 'Hotel - Grid' } },
   { path: 'list', component: ListComponent, data: { title: 'Hotel - List' } },
   {
-    path: 'detail',
+    path: 'detail/:id',
     component: DetailComponent,
     data: { title: 'Hotel - Detail' },
   },

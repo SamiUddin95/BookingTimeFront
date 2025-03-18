@@ -1,4 +1,4 @@
-import { Component, inject, type TemplateRef } from '@angular/core'
+import { Component, inject, Input, type TemplateRef } from '@angular/core'
 import {
   NgbAlertModule,
   NgbDropdownModule,
@@ -24,6 +24,8 @@ export class HotelGalleryComponent {
 
   private modalService = inject(NgbModal)
 
+  @Input() data: any = {};
+
   settings = {
     counter: false,
     download: false,
@@ -34,4 +36,5 @@ export class HotelGalleryComponent {
   open(content: TemplateRef<any>) {
     this.modalService.open(content, { size: 'lg', centered: true })
   }
+  
 }

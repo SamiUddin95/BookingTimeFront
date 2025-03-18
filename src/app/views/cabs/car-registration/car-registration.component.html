@@ -1,0 +1,504 @@
+<main class="card">
+  <section class="container pb-0">
+
+    <div class="row">
+      <div class="col-12 text-center">
+        <h1 class="fs-2 mb-2">Add New Car</h1>
+        <p class="mb-0">
+          Register Your Car Effortlessly – Add Your Vehicle to the Portal Today!
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-4 bs-stepper">
+      <div class="bs-stepper-header" role="tablist">
+
+        @for (item of steps; track $index) {
+        <div class="step" [ngClass]="{'active': currentStep === item.id}" (click)="goToStep(item.id)">
+          <div class="text-center">
+            <button type="button" class="btn btn-link step-trigger mb-0" role="tab">
+              <span class="bs-stepper-circle">{{item.id}}</span>
+            </button>
+            <p class="fs-6 fw-bold d-none d-md-block">{{item.label}}</p>
+          </div>
+        </div>
+        <div class="line"></div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="container pb-0">
+    <div class="">
+
+      <!-- Step 1 - Location -->
+      <div class="card shadow" *ngIf="currentStep==1">
+        <div class="card-header border-bottom">
+          <h5 class="mb-0">Location</h5>
+        </div>
+
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Country/Region *</label>
+              <select class="form-select js-choice" required [(ngModel)]="carRegistrationForm.countryId"
+                [ngClass]="{'is-invalid': carRegistrationForm.countryId === 0 && (country.touched || isSubmitted)}"
+                (ngModelChange)="loadCitiesAndStates($event)" #country="ngModel">
+                <option [value]="0" disabled selected>Select Country</option>
+                <option *ngFor="let country of countries" [value]="country.countryId">{{ country.countryName }}</option>
+              </select>
+              <div class="invalid-feedback"
+                *ngIf="carRegistrationForm.countryId === 0 && (country.touched || isSubmitted)">
+                Please select a country.
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">State *</label>
+              <select class="form-select js-choice" name="stateId" required [(ngModel)]="carRegistrationForm.stateId"
+                [ngClass]="{'is-invalid': carRegistrationForm.stateId === 0 && (state.touched || isSubmitted)}"
+                #state="ngModel">
+                <option [value]="0" disabled selected>Select State</option>
+                <option *ngFor="let state of states" [ngValue]="state.stateId">{{ state.stateName }}</option>
+              </select>
+              <div class="invalid-feedback" *ngIf="carRegistrationForm.stateId === 0 && (state.touched || isSubmitted)">
+                Please select a state.
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <label class="form-label">City *</label>
+              <select class="form-select js-choice" name="city" required [(ngModel)]="carRegistrationForm.cityId"
+                #city="ngModel"
+                [ngClass]="{'is-invalid': carRegistrationForm.cityId === 0 && (city.touched || isSubmitted)}">
+                <option [value]="0" disabled selected>Select City</option>
+                <option *ngFor="let city of cities" [value]="city.cityId">{{ city.cityName }}</option>
+              </select>
+              <div class="invalid-feedback"
+                *ngIf="carRegistrationForm.cityId === 0 && (country.touched || isSubmitted)">
+                Please select a city.
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label">Street *</label>
+              <input class="form-control" type="text" name="street" [(ngModel)]="carRegistrationForm.street"
+                placeholder="Enter street" required #street="ngModel"
+                [ngClass]="{'is-invalid': carRegistrationForm.street == '' && (street.touched || isSubmitted)}">
+              <div class="invalid-feedback" *ngIf="carRegistrationForm.street == '' && (street.touched || isSubmitted)">
+                Please enter a street.
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2 - VIN -->
+      <div class="card shadow" *ngIf="currentStep==2">
+        <div class="card-header border-bottom">
+          <h5 class="mb-0">VIN</h5>
+        </div>
+
+        <div class="card-body p-3">
+          <p class="mt-2">We'll use your Vehicle Identification Number (VIN) to identify your specific car.</p>
+
+          <div class="row g-3">
+
+            <div class="col-md-12">
+              <label class="form-label">Enter your VIN</label>
+              <input class="form-control" type="text" name="vehicleIdNumber" placeholder="Enter 17 digit VIN" required
+                [(ngModel)]="carRegistrationForm.vin" #vin="ngModel" [maxlength]="17"
+                [ngClass]="{'is-invalid': !vin.valid && (vin.touched || isSubmitted)}" pattern="^[A-HJ-NPR-Z0-9]{17}$">
+              <div class="invalid-feedback" *ngIf="!vin.valid && (vin.touched || isSubmitted)">
+                VIN must be exactly 17 characters long and not contain I, O, or Q.
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3 - Year Make Model -->
+      <div class="card shadow" *ngIf="currentStep==3">
+        <div class="card-header border-bottom">
+          <h5 class="mb-0">Make and Model</h5>
+        </div>
+
+        <div class="card-body p-3">
+          <div class="row g-3">
+
+            <div class="col-md-12">
+              <label class="form-label">Year</label>
+              <select class="form-select js-choice" name="year" required [(ngModel)]="carRegistrationForm.yearId"
+                #year="ngModel"
+                [ngClass]="{'is-invalid': carRegistrationForm.yearId === 0 && (year.touched || isSubmitted)}">
+                <option [value]="0" disabled selected>Select vehicle manufacturing year</option>
+                <option *ngFor="let item of vehicleYears" [ngValue]="item.id">{{ item.name }}</option>
+              </select>
+              <div class="invalid-feedback" *ngIf="carRegistrationForm.yearId == 0 && (year.touched || isSubmitted)">
+                Please enter year.
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <label class="form-label">Make</label>
+              <select class="form-select js-choice" name="make" required [(ngModel)]="carRegistrationForm.makeId"
+                #make="ngModel"
+                [ngClass]="{'is-invalid': carRegistrationForm.makeId == 0 && (make.touched || isSubmitted)}">
+                <option [value]="0" disabled selected>Select vehicle Make</option>
+                <option *ngFor="let item of vehicleMakes" [ngValue]="item.id">{{ item.name }}</option>
+              </select>
+              <div class="invalid-feedback" *ngIf="carRegistrationForm.makeId == 0 && (make.touched || isSubmitted)">
+                Please enter vehicle make.
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <label class="form-label">Model</label>
+              <input class="form-control" type="text" name="vehicleIdNumber" placeholder="Enter your vehicle model"
+                [(ngModel)]="carRegistrationForm.model" required #model="ngModel"
+                [ngClass]="{'is-invalid': carRegistrationForm.model == '' && (model.touched || isSubmitted)}">
+              <div class="invalid-feedback" *ngIf="carRegistrationForm.model == '' && (model.touched || isSubmitted)">
+                Please enter vehicle model.
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4 - Odometer and Transmission -->
+      <div class="card shadow" *ngIf="currentStep==4">
+        <div class="card-header border-bottom">
+          <h5 class="mb-0">Odometer and Transmission</h5>
+        </div>
+
+        <div class="card-body p-3">
+          <div class="row g-3">
+
+            <div class="col-md-12">
+              <label class="form-label">What is your car's odometer reading?</label>
+              <select class="form-select js-choice" name="odometer" required
+                [(ngModel)]="carRegistrationForm.odometerId" #odometer="ngModel"
+                [ngClass]="{'is-invalid': carRegistrationForm.odometerId === 0 && (odometer.touched || isSubmitted)}">
+                <option [value]="0" disabled selected>Select vehicle odometer reading</option>
+                <option *ngFor="let item of odometerReadings" [ngValue]="item.id">{{ item.name }}</option>
+              </select>
+              <div class="invalid-feedback"
+                *ngIf="carRegistrationForm.odometerId == 0 && (odometer.touched || isSubmitted)">
+                Please enter odometer reading.
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <label class="form-label">Transmission</label>
+              <div class="d-flex gap-3">
+
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" id="manual" name="transmission" value="manual"
+                    [(ngModel)]="carRegistrationForm.transmission" #transmission="ngModel"
+                    [ngClass]="{'is-invalid': carRegistrationForm.transmission == '' && (transmission.touched || isSubmitted)}" />
+                  <label class="form-check-label" for="manual">Manual</label>
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" id="automatic" name="transmission" value="automatic"
+                    [(ngModel)]="carRegistrationForm.transmission" #transmission="ngModel"
+                    [ngClass]="{'is-invalid': carRegistrationForm.transmission == '' && (transmission.touched || isSubmitted)}" />
+                  <label class="form-check-label" for="automatic">Automatic</label>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 5 - Vehicle Value -->
+      <div class="card shadow" *ngIf="currentStep==5">
+        <div class="card-header border-bottom">
+          <h5 class="mb-0">Vehicle Value</h5>
+        </div>
+
+        <div class="card-body p-3">
+          <div class="row g-3">
+
+            <div class="col-md-12">
+              <label class="form-label">Market Value (USD)</label>
+              <input class="form-control" type="number" name="value" placeholder="$ Market Value (USD)" required
+                [(ngModel)]="carRegistrationForm.vehicleValue" #value="ngModel"
+                [ngClass]="{'is-invalid': carRegistrationForm.vehicleValue == '' && (value.touched || isSubmitted)}">
+
+              <div class="invalid-feedback"
+                *ngIf="carRegistrationForm.vehicleValue == '' && (value.touched || isSubmitted)">
+                Please enter vehicle's market value.
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 6 - Vehicle Condition -->
+      <div class="card shadow" *ngIf="currentStep==6">
+        <div class="card-header border-bottom">
+          <h5 class="mb-0">Vehicle Condition</h5>
+        </div>
+
+        <div class="card-body p-3">
+          <div class="row g-3">
+
+            <div class="col-md-12">
+              <label class="form-label">Status</label>
+              <select class="form-select js-choice" [(ngModel)]="carRegistrationForm.vehicleConditionId"
+                [ngClass]="{'is-invalid': carRegistrationForm.vehicleConditionId == 0 && (condition.touched || isSubmitted)}"
+                #condition="ngModel">
+                <option [value]="0" selected disabled>Select the condition of your vehicle</option>
+                <option *ngFor="let item of vehicleConditions" [value]="item.id">{{ item.name }}</option>
+              </select>
+              <div class="invalid-feedback"
+                *ngIf="carRegistrationForm.vehicleConditionId == 0 && (condition.touched || isSubmitted)">
+                Please select vehicle condition.
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <label class="form-label">Do all have seatbelts?</label>
+              <div class="d-flex gap-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" id="yes" name="seatbelt" value="1"
+                    [(ngModel)]="carRegistrationForm.seatbelts" #seatbelt="ngModel"
+                    [ngClass]="{'is-invalid': carRegistrationForm.seatbelts == null && (seatbelt.touched || isSubmitted)}" />
+                  <label class="form-check-label" for="yes">Yes</label>
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" id="no" name="seatbelt" value="0"
+                    [(ngModel)]="carRegistrationForm.seatbelts" #seatbelt="ngModel"
+                    [ngClass]="{'is-invalid': carRegistrationForm.seatbelts == null && (seatbelt.touched || isSubmitted)}" />
+                  <label class="form-check-label" for="no">No</label>
+                </div>
+
+                <div class="invalid-feedback"
+                  *ngIf="carRegistrationForm.seatbelts == null && (seatbelt.touched || isSubmitted)">
+                  Please select one of the options above.
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12" *ngIf="carRegistrationForm.seatbelts == true">
+              <label class="form-label">Seatbelt Type</label>
+              <select class="form-select js-choice" name="seatbeltType" required
+                [(ngModel)]="carRegistrationForm.seatbeltTypeId" #seatbeltType="ngModel"
+                [ngClass]="{'is-invalid': carRegistrationForm.seatbeltTypeId == 0 && (seatbeltType.touched || isSubmitted)}">
+                <option [value]="0" disabled selected>Select seatbelt type</option>
+                <option *ngFor="let item of seatBeltTypes" [ngValue]="item.id">{{ item.name }}</option>
+              </select>
+              <div class="invalid-feedback"
+                *ngIf="carRegistrationForm.seatbeltTypeId == 0 && (seatbeltType.touched || isSubmitted)">
+                Please select seatbelt type.
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 7 - Fuel Type -->
+      <div class="card shadow" *ngIf="currentStep==7">
+        <div class="card-header border-bottom">
+          <h5 class="mb-0">Fuel Type</h5>
+        </div>
+
+        <div class="card-body p-3">
+          <div class="row g-3">
+
+            <div class="col-md-12">
+              <label class="form-label">Fuel Type</label>
+              <select class="form-select js-choice" [(ngModel)]="carRegistrationForm.fuelTypeId" #fuelType="ngModel"
+                [ngClass]="{'is-invalid': carRegistrationForm.fuelTypeId == 0 && (fuelType.touched || isSubmitted)}">
+                <option [value]="0" selected disabled>Select the fuel type of your vehicle</option>
+                <option *ngFor="let item of fuelTypes" [value]="item.id">{{ item.name }}</option>
+              </select>
+              <div class="invalid-feedback"
+                *ngIf="carRegistrationForm.fuelTypeId == 0 && (fuelType.touched || isSubmitted)">
+                Please select vehicle fuel type.
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <label class="form-label">Features</label>
+              <div class="d-flex gap-3 flex-wrap">
+                <div class="form-check" *ngFor="let feature of features">
+                  <input class="form-check-input" type="checkbox" [id]="feature"
+                    (change)="toggleFeature(feature, $event)"
+                    [ngClass]="{'is-invalid': selectedFeatures.length == 0 && isSubmitted}" />
+                  <label class="form-check-label" [for]="feature">{{ feature }}</label>
+                </div>
+              </div>
+
+              <div *ngIf="selectedFeatures.length == 0 && isSubmitted" class="text-danger">
+                Please select at least one feature.
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 8 - Car Availibility -->
+      <div class="card shadow" *ngIf="currentStep==8">
+        <div class="card-header border-bottom">
+          <h5 class="mb-0">Car Availibility</h5>
+        </div>
+
+        <div class="card-body p-3">
+          <div class="row g-3">
+
+            <div class="col-md-6">
+              <div class="form-fs-lg form-control-transparent">
+                <label class="form-label small">Start Date</label>
+                <input mwlFlatpickr type="text" class="form-control flatpickr" placeholder="Select date"
+                  [(ngModel)]="carRegistrationForm.startDate" #startDate="ngModel"
+                  [ngClass]="{'is-invalid': carRegistrationForm.startDate == null && startDate.touched}" />
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-fs-lg form-control-transparent">
+                <label class="form-label small">End Date</label>
+                <input mwlFlatpickr type="text" class="form-control flatpickr" placeholder="Select date"
+                  [(ngModel)]="carRegistrationForm.endDate" #endDate="ngModel"
+                  [ngClass]="{'is-invalid': carRegistrationForm.endDate == null && startDate.touched}" />
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <label class="form-label">Mileage Limit (per day)</label>
+              <input class="form-control" type="number" name="value" placeholder="Enter your mileage limit (Km)"
+                required [(ngModel)]="carRegistrationForm.mileageLimit" #limit="ngModel"
+                [ngClass]="{'is-invalid': carRegistrationForm.mileageLimit == 0 && (limit.touched || isSubmitted)}">
+
+              <div class="invalid-feedback"
+                *ngIf="carRegistrationForm.mileageLimit == 0 && (limit.touched || isSubmitted)">
+                Please enter mileage limit.
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 9 - Contact Information -->
+      <div class="card shadow" *ngIf="currentStep==9">
+        <div class="card-header border-bottom">
+          <h5 class="mb-0">Contact Information</h5>
+        </div>
+
+        <div class="card-body p-3">
+          <div class="row g-3">
+
+            <div class="col-md-12">
+              <label class="form-label">Enter your mobile number *</label>
+              <input class="form-control" type="number" name="mobile1" placeholder="Enter your primary mobile number"
+                required [(ngModel)]="carRegistrationForm.mobileNumber1" #mobileNumber1="ngModel"
+                [ngClass]="{'is-invalid': carRegistrationForm.mobileNumber1 == '' && (mobileNumber1.touched || isSubmitted)}">
+              <div class="invalid-feedback"
+                *ngIf="carRegistrationForm.mobileNumber1 == '' && (mobileNumber1.touched || isSubmitted)">
+                Please enter contact number.
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <label class="form-label">Enter your emergency/backup mobile number</label>
+              <input class="form-control" type="number" name="mobile2" placeholder="Enter your secondary mobile number"
+                [(ngModel)]="carRegistrationForm.mobileNumber2" #mobileNumber2="ngModel"
+                [ngClass]="{'is-invalid': carRegistrationForm.mobileNumber2 == '' && (mobileNumber2.touched || isSubmitted)}">
+            </div>
+            <div class="invalid-feedback"
+              *ngIf="carRegistrationForm.mobileNumber2 == '' && (mobileNumber2.touched || isSubmitted)">
+              Please enter your secondary contact number.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 10 - Images -->
+      <div class="card shadow" *ngIf="currentStep==10">
+        <div class="card-header border-bottom">
+          <h5 class="mb-0">Upload Images</h5>
+        </div>
+
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-12">
+              <label class="form-label">Upload thumbnail image *</label>
+              <input class="form-control" type="file" name="my-image" id="image"
+                accept="image/gif, image/jpeg, image/png" (change)="onThumbnailSelected($event)" />
+              <p class="small mb-0 mt-2">
+                <b>Note:</b> Only JPG, JPEG, and PNG. Our suggested dimensions are
+                600px * 450px. The larger image will be cropped to 4:3 to fit our
+                thumbnails/previews.
+              </p>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label">Upload image gallery *</label>
+              <dropzone class="dropzone new-listing-drop" [config]="dropzoneConfig"
+                [message]="'Drop files here or click to upload.'" (addedFile)="onGalleryImageAdded($event)"></dropzone>
+
+              <p class="small mb-0 mt-2">
+                <b>Note:</b> Only JPG, JPEG, and PNG. Our suggested dimensions are
+                600px * 450px. The larger image will be cropped to 4:3 to fit our
+                thumbnails/previews.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 11 - Additional Information -->
+      <div class="card shadow" *ngIf="currentStep==11">
+        <div class="card-header border-bottom">
+          <h5 class="mb-0">Additional Information</h5>
+        </div>
+
+        <div class="card-body p-3">
+          <div class="row g-3">
+
+            <div class="col-md-12">
+              <label class="form-label">Is there anything else our team should know?</label>
+              <textarea class="form-control" rows="5" name="additionalInfo" placeholder="e.g replica, rebuilt engine"
+                required [(ngModel)]="carRegistrationForm.additionalInfo" #additionalInfo="ngModel"
+                [ngClass]="{'is-invalid': carRegistrationForm.additionalInfo == '' && (additionalInfo.touched || isSubmitted)}">
+              </textarea>
+              <div class="invalid-feedback"
+                *ngIf="carRegistrationForm.additionalInfo == '' && (additionalInfo.touched || isSubmitted)">
+                Please enter a short description.
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4 d-flex justify-content-between align-items-center">
+
+        <div class="text-end" [class.invisible]="currentStep === 1">
+          <button type="button" class="btn btn-primary" (click)="prevStep()">Back</button>
+        </div>
+
+        <div class=" text-end">
+          <button type="button" class="btn btn-primary" (click)="nextStep()"> {{ currentStep === totalSteps ? 'Submit' :
+            'Continue' }}</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+<home-footer1 />

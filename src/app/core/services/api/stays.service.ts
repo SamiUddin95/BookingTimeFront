@@ -1,0 +1,35 @@
+import { Injectable } from '@angular/core';
+import { BaseHttpService } from './base-http.service';
+import { Observable } from 'rxjs';
+import { PropertyDetail } from '../../models/property-detail.model';
+import { ReviewRequest, AddReviewRequest } from '../../models/requestModels/review.model';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class StaysService extends BaseHttpService{
+
+    GetListingPropertyById(propertyId: number): Observable<PropertyDetail> {
+      return this.get(`GetListingPropertyById?id=${propertyId}`);
+    }
+
+    GetReviewList(reqBody: ReviewRequest):Observable<any> {
+      return this.post(`GetReviewList`, reqBody);
+    }
+
+    AddPropertyReview(reqBody: AddReviewRequest):Observable<any> {
+      return this.post(`AddPropertyReview`, reqBody);
+    }
+
+    GetPropertyRatingPercentage(propertyId: number):Observable<any> {
+      return this.get(`GetPropertyRatingPercentage/${propertyId}`);
+    }
+
+    GetFeaturedHotel():Observable<any> {
+      return this.get(`GetFeaturedHotel`);
+    }
+
+    GetListingPropertyList(reqBody: any):Observable<any> {
+      return this.post('GetListingPropertyList', reqBody)
+    }
+}

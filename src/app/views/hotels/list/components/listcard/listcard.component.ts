@@ -1,6 +1,5 @@
-import { Component, ViewChild } from '@angular/core'
+import { Component, Input, OnInit, ViewChild, inject } from '@angular/core'
 import { hotels } from '../../data'
-import { TinySliderComponent } from '@/app/components/tiny-slider/tiny-slider.component'
 import type { TinySliderSettings } from 'tiny-slider'
 import {
   NgbDropdownModule,
@@ -9,22 +8,23 @@ import {
 } from '@ng-bootstrap/ng-bootstrap'
 import { RouterModule } from '@angular/router'
 import { currency } from '@/app/store'
+import { CommonModule } from '@angular/common'
 
 @Component({
   selector: 'list-card',
   standalone: true,
   imports: [
-    TinySliderComponent,
     NgbRatingModule,
     NgbDropdownModule,
     NgbPaginationModule,
     RouterModule,
+    CommonModule
   ],
   templateUrl: './listcard.component.html',
   styles: ``,
 })
 export class ListcardComponent {
-  hotelList = hotels
+
   currencyType = currency
   @ViewChild('listSlider', { static: false }) listSlider: any
 
@@ -37,4 +37,8 @@ export class ListcardComponent {
     controls: true,
     items: 1,
   }
+  
+  @Input() hotelList: any = {};
+
+
 }

@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild, type TemplateRef } from '@angular/core'
+import { Component, inject, ViewChild, type TemplateRef, Input } from '@angular/core'
 import { hotelRooms, type HotelsRoomType } from '../../data'
 import { TinySliderComponent } from '@/app/components/tiny-slider/tiny-slider.component'
 import type { TinySliderSettings } from 'tiny-slider'
@@ -27,6 +27,8 @@ export class RoomComponent {
   roomList = hotelRooms
   currencyType = currency
   hotelroomDetail: HotelsRoomType = hotelRooms[0]
+
+  @Input() data: any = {};
 
   @ViewChild('roomSlider', { static: false }) roomSlider: any
 
