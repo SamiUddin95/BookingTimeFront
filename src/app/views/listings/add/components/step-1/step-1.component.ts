@@ -4,6 +4,7 @@ import { Component, inject, Input, OnInit } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import Stepper from 'bs-stepper'
 import { ListingBasicInfo } from '@/app/core/models/add-listing-form.model';
+import { PropertyFormDataService } from '@/app/core/services/property-form-data.service';
 
 @Component({
   selector: 'add-listing-step-1',
@@ -18,15 +19,20 @@ import { ListingBasicInfo } from '@/app/core/models/add-listing-form.model';
 export class Step1Component implements OnInit {
   @Input() stepperInstance?: Stepper;
 
+  constructor(private formDataService: PropertyFormDataService) {}
+
   ngOnInit(): void {
+    
     this.loadCountries();
     this.loadListingTypes();
     this.loadGuestOptions();
+    this.listingForm = { ...this.formDataService.getFormData().page1 };
   }
 
   gotoNext() {
     this.isSubmitted = true;
     if(this.validateForm()) {
+      this.formDataService.updateFormData('page1', this.listingForm);
       this.stepperInstance?.next();
     }
   }
@@ -41,6 +47,7 @@ export class Step1Component implements OnInit {
     cityId: null,
     postalNumber: null,
     street: '',
+    thumbnail: null,
     latitude: null,
     longitude: null
   };
@@ -87,6 +94,13 @@ export class Step1Component implements OnInit {
     ];
   }
 
+  onThumbnailChange(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.formDataService.setThumbnail = file;
+    }
+  }
+  
   validateForm(): boolean {
     return (
       this.listingForm.listingTypeId != 0 &&
@@ -96,7 +110,7 @@ export class Step1Component implements OnInit {
       this.listingForm.countryId != 0 &&
       this.listingForm.stateId != 0 &&
       this.listingForm.cityId != 0 &&
-      this.listingForm.postalNumber != 0 &&
+      this.listingForm.postalNumber != '' &&
       this.listingForm.street != '' &&
       this.listingForm.latitude != 0 &&
       this.listingForm.longitude != 0

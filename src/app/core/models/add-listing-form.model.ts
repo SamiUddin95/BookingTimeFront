@@ -6,13 +6,15 @@ export interface ListingBasicInfo {
     countryId: number | null;
     stateId: number | null;
     cityId: number | null;
-    postalNumber: number | null;
-    street: string;
+    postalNumber: string | null;
+    street: string|null;
+    thumbnail: File | null;
     latitude: number | null;
     longitude: number | null;
   }
 
   export interface ListingDetailedInfo {
+
 
   }
   

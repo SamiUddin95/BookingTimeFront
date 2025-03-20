@@ -124,13 +124,28 @@
           </div>
         </div>
 
-        <div class="col-12">
+        <div class="col-6">
           <label class="form-label">Street *</label>
           <input class="form-control" type="text"  [(ngModel)]="listingForm.street" placeholder="Enter street" required [ngClass]="{'is-invalid': !listingForm.street && isSubmitted}">
           <div *ngIf="!listingForm.street" class="invalid-feedback">
             Please enter a street.
           </div>
         </div>
+
+        <div class="col-6">
+          <label class="form-label">Thumbnail *</label>
+          <input 
+            class="form-control" 
+            type="file"  
+            (change)="onThumbnailChange($event)" 
+            required 
+            [ngClass]="{'is-invalid': !listingForm.thumbnail && isSubmitted}"
+          >
+          <div *ngIf="!listingForm.thumbnail && isSubmitted" class="invalid-feedback">
+            Please upload a thumbnail.
+          </div>
+        </div>
+        
 
         <div class="col-md-6">
           <label class="form-label">Latitude *</label>

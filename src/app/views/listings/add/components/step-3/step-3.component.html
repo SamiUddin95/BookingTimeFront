@@ -10,65 +10,56 @@
       <div class="row g-4">
         <div class="col-md-6">
           <label class="form-label">Currency</label>
-          <select
-            class="form-select"
-            [(ngModel)]="category.currencyId"
-            (change)="validateForm()"
-            required
-            [ngClass]="{'is-invalid': category.currencyId === 0}"
-          >
+          <select class="form-select" [(ngModel)]="category.currencyId" (change)="validateForm()" required
+            #currency="ngModel" [ngClass]="{'is-invalid': currency.touched && category.currencyId === 0}">
             <option *ngFor="let type of currencies" [ngValue]="type.id">{{ type.name }}</option>
           </select>
-          <div *ngIf="category.currencyId === 0" class="invalid-feedback">Please select a Currency.</div>
+          <div *ngIf="currency.touched && category.currencyId === 0" class="invalid-feedback">
+            Please select a Currency.
+          </div>
         </div>
+
 
         <div class="col-md-6">
           <label class="form-label">Base Price *</label>
-          <input
-            type="number"
-            class="form-control"
-            [(ngModel)]="category.basePrice"
-            (input)="validateForm()"
-            required
-            [ngClass]="{'is-invalid': category.basePrice === null || category.basePrice <= 0}"
-            placeholder="Enter price"
-          />
-          <div *ngIf="category.basePrice === null || category.basePrice <= 0" class="invalid-feedback">
+          <input type="number" class="form-control" [(ngModel)]="category.basePrice" (input)="validateForm()" required
+            #basePrice="ngModel"
+            [ngClass]="{'is-invalid': basePrice.touched && (category.basePrice === null || category.basePrice <= 0)}"
+            placeholder="Enter price" />
+          <div *ngIf="basePrice.touched && (category.basePrice === null || category.basePrice <= 0)"
+            class="invalid-feedback">
             Please enter a valid base price.
           </div>
         </div>
 
+
         <div class="col-md-6">
           <label class="form-label">Discount *</label>
-          <input
-            type="number"
-            class="form-control"
-            [(ngModel)]="category.discount"
-            (input)="validateForm()"
-            required
-            [ngClass]="{'is-invalid': category.discount === null || category.discount < 0}"
-            placeholder="Enter discount"
-          />
-          <div *ngIf="category.discount === null || category.discount < 0" class="invalid-feedback">
+          <input type="number" class="form-control" [(ngModel)]="category.discount" (input)="validateForm()" required
+            #discount="ngModel"
+            [ngClass]="{'is-invalid': discount.touched && (category.discount === null || category.discount < 0)}"
+            placeholder="Enter discount" />
+          <div *ngIf="discount.touched && (category.discount === null || category.discount < 0)"
+            class="invalid-feedback">
             Discount cannot be negative.
           </div>
         </div>
+ 
 
         <div class="col-md-6">
           <label class="form-label">Rating</label>
-          <select
-            class="form-select"
-            [(ngModel)]="category.ratingId"
-            (change)="validateForm()"
-            required
-            [ngClass]="{'is-invalid': !category.ratingId || category.ratingId.trim() === ''}"
-          >
-            <option *ngFor="let type of rating" [ngValue]="type.id">{{ type.name }}</option>
+          <select class="form-select" [(ngModel)]="category.ratingId" (change)="validateForm()" required
+            #rate="ngModel"
+            [ngClass]="{'is-invalid': rate.touched && (!category.ratingId || category.ratingId === 0)}">
+            <option value="" disabled selected>Select a rating</option>
+            <option *ngFor="let type of rating" [value]="type.id">{{ type.name }}</option>
           </select>
-          <div *ngIf="!category.ratingId || category.ratingId.trim() === ''" class="invalid-feedback">
+          <div *ngIf="rate.touched && (!category.ratingId || category.ratingId === 0)"
+            class="invalid-feedback">
             Please select a rating.
           </div>
         </div>
+
       </div>
     </div>
   </div>
@@ -82,22 +73,19 @@
       <div class="row g-4">
         <div class="col-12">
           <label class="form-label">Add description *</label>
-          <quill-editor
-            #quillEditor
-            [(ngModel)]="category.description"
-            (ngModelChange)="validateForm()"
-            theme="snow"
-            [modules]="editorConfig"
-            style="height: 300px"
-          ></quill-editor>
-          <div *ngIf="category.description.trim() === ''" class="invalid-feedback">Description is required.</div>
+          <quill-editor #quillEditor [(ngModel)]="category.policyDesc" (ngModelChange)="validateForm()" theme="snow"
+            [modules]="editorConfig" style="height: 300px" #description="ngModel"></quill-editor>
+          <div *ngIf="description.touched && category.policyDesc.trim() === ''" class="invalid-feedback">
+            Description is required.
+          </div>
         </div>
+
       </div>
     </div>
   </div>
 
   <div class="d-flex justify-content-between">
-    <button (click)="stepperInstance?.previous()" type="button" class="btn btn-secondary prev-btn mb-0">
+    <button (click)="  goToPrevious()" type="button" class="btn btn-secondary prev-btn mb-0">
       Previous
     </button>
 
