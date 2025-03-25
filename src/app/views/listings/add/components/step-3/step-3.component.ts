@@ -91,6 +91,8 @@ export class Step3Component {
           '☆'.repeat(5 - Number(item.ratings)),
       }))
     })
+
+
   }
 
   goToPrevious() {

@@ -28,9 +28,10 @@ export class Step2Component implements OnInit {
   };
 
   amenities: any[] = [];
+  additionalInfoList: any[] = [];
 
   ngOnInit(): void {
-    this.loadAmenities();
+    this.loadDropDowns();
 
     const formData = this.formDataService.getFormData()?.page2;
     if (formData) {
@@ -50,10 +51,13 @@ export class Step2Component implements OnInit {
     }
   }
 
-  loadAmenities() {
+  loadDropDowns() {
     this.commonService.GetAllAmenitiesList().subscribe((res) => {
       this.amenities = res;
     });
+    this.commonService.GetAllAdditionalInfoList().subscribe((res) => {
+      this.additionalInfoList = res
+    })
   }
 
   onAmenityChange(event: any, amenity: any) {

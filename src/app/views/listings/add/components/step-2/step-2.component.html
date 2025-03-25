@@ -12,21 +12,17 @@
           <label class="form-label">Select amenities *</label>
           <div class="d-flex flex-wrap">
             <div class="form-check me-4" *ngFor="let amenity of amenities">
-              <input 
-                class="form-check-input" 
-                type="checkbox" 
-                [id]="'amenity_' + amenity.id"
-                [checked]="isAmenitySelected(amenity.id)"
-                (change)="onAmenityChange($event, amenity)">
-              
+              <input class="form-check-input" type="checkbox" [id]="'amenity_' + amenity.id"
+                [checked]="isAmenitySelected(amenity.id)" (change)="onAmenityChange($event, amenity)">
+
               <label class="form-check-label" [for]="'amenity_' + amenity.id">
                 {{ amenity.amenities }}
               </label>
             </div>
           </div>
         </div>
-        
-        
+
+
       </div>
     </div>
   </div>
@@ -40,7 +36,8 @@
       <div class="row g-4">
         <div class="col-md-4">
           <label class="form-label">Total Floor *</label>
-          <input type="text" [(ngModel)]="listingForm.totalFloor" class="form-control" placeholder="Enter total floors" />
+          <input type="text" [(ngModel)]="listingForm.totalFloor" class="form-control"
+            placeholder="Enter total floors" />
         </div>
         <div class="col-md-4">
           <label class="form-label">Total Room *</label>
@@ -48,7 +45,8 @@
         </div>
         <div class="col-md-4">
           <label class="form-label">Room area *</label>
-          <input type="text" [(ngModel)]="listingForm.roomArea" class="form-control" placeholder="Enter area in sq.ft" />
+          <input type="text" [(ngModel)]="listingForm.roomArea" class="form-control"
+            placeholder="Enter area in sq.ft" />
         </div>
       </div>
     </div>
@@ -68,8 +66,8 @@
           </div>
           <div class="col-md-6">
             <label class="form-label">Room thumbnail image *</label>
-            <input class="form-control" type="file" accept="image/gif, image/jpeg, image/png" 
-            (change)="onFileSelected($event, i)" />
+            <input class="form-control" type="file" accept="image/gif, image/jpeg, image/png"
+              (change)="onFileSelected($event, i)" />
           </div>
           <div class="col-md-6">
             <label class="form-label">Room Price *</label>
@@ -80,13 +78,17 @@
             <input type="text" [(ngModel)]="room.discount" class="form-control" placeholder="Enter discount" />
           </div>
           <div class="col-md-6">
-            <label class="form-label">Additional info</label>
-            <select [(ngModel)]="room.additionalInfo" class="form-select border-0 bg-transparent">
-              <option value="">Select item</option>
-              <option>Non Refundable</option>
-              <option>Free Cancellation</option>
+            <label class="form-label">Additional Info</label>
+            <select [(ngModel)]="room.additionalInfo" name="additionalInfo" class="form-select"
+              required #additionalInfo="ngModel">
+              <option value="" disabled>Select additional info</option>
+              <option *ngFor="let type of additionalInfoList" [value]="type.id">{{ type.name }}</option>
             </select>
+            <div *ngIf="additionalInfo.invalid && additionalInfo.touched" class="text-danger">
+              Please select additional info.
+            </div>
           </div>
+
         </div>
 
         <!-- Remove Room Button (Only if there's more than one room) -->
