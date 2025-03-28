@@ -30,4 +30,8 @@ export class CommonService extends BaseHttpService {
   GetAllHotelTypesList(): Observable<any> {
     return this.get('GetAllHotelTypesList');
   }
+  
+  GetAllAdditionalInfoList(): Observable<any> {
+    return this.get('GetAllAdditionalInfoList');
+  }
 }

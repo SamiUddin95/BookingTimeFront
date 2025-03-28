@@ -22,36 +22,54 @@ export class HomeFeaturePropertiesComponent {
   filteredProperties = this.properties;
   selectedLocation: string = '';
   locationFilters: string[] = [];
+  cities: string[] = []; 
+  selectedCity: string = '';
 
   ngOnInit() {
     this.loadFeaturedHotels();
   }
 
-  filterProperties(location: string) {
-    this.selectedLocation = location;
-    this.filteredProperties = this.properties.filter(
-      (property) => property.cityName === location
-    );
-  }
+  // filterProperties(location: string) {
+  //   if (!this.properties.length) return; // Ensure properties is loaded before filtering
+  //   this.selectedLocation = location;
+  //   this.filteredProperties = this.properties.filter(
+  //     (property) => property.cityName === location
+  //   );
+  // }
+  
 
   extractUniqueLocations() {
     this.locationFilters = [...new Set(this.properties.map(p => p.cityName))];
   }
 
-  roundOff(value: number) {
-    return Math.round(value)
+  roundOff(rating: number): number {
+    if (!rating || rating < 0) return 0; 
+    return Math.floor(rating); 
   }
+  
 
   private staysService = inject(StaysService);
 
-  loadFeaturedHotels() {
-    this.staysService.GetFeaturedHotel().subscribe((res => {
-      this.properties = res;
-      console.log(res)
-      this.extractUniqueLocations();
-      this.filterProperties(res[0].cityName) //defaults the ver first location initially
-    }))
+  loadFeaturedHotels(): void {
+    this.staysService.GetFeaturedHotel().subscribe((res: any[]) => {
+      if (res && res.length > 0) {
+        this.properties = res;
+        this.extractCities(); 
+        this.filterProperties(this.cities[0]); 
+      }
+    });
   }
+
+  extractCities(): void {
+    this.cities = [...new Set(this.properties.map(hotel => hotel.cityName))]; 
+  }
+
+  filterProperties(cityName: string): void {
+    this.selectedCity = cityName;
+    const cityData = this.properties.find(hotel => hotel.cityName === cityName);
+    this.filteredProperties = cityData ? cityData.properties : [];
+  }
+  
 
 
 }

@@ -13,61 +13,56 @@
     <div class="mb-3 d-flex gap-3 align-items-start">
       @for (data of claims; track $index) {
       <div class="cursor-pointer" [ngbTooltip]="data.description">
-        <img [src]="data.icon" alt="" class="icon-size me-1"> <span class="text-dark">{{ data.title }} </span>
+        <img [src]="data.icon" alt="" class="icon-size me-1"> <span class="text-light">{{ data.title }} </span>
       </div>
       }
     </div>
 
-    <div class="mb-3">
+    <!-- <div class="mb-3">
       @for (location of locationFilters; track $index){
       <button class="btn btn-outline-primary me-2" (click)="filterProperties(location)"
         [class.active]="selectedLocation === location">{{location}}</button>
-      }
+      } 
+    </div> -->
+
+
+
+    <div class="mb-3">
+      <button *ngFor="let city of cities;"
+              class="btn btn-outline-primary me-2"
+              [class.active]="selectedCity === city"
+              (click)="filterProperties(city)">
+        {{ city }}
+      </button>
     </div>
-
-    <div class="row g-4">
+    
+    <div class="row g-4" *ngIf="filteredProperties.length > 0">
       @for (data of filteredProperties; track $index) {
-      <div class="col-sm-6 col-xl-3">
-        <div class="card card-img-scale overflow-hidden bg-white">
-
-          <div class="card-img-scale-wrapper" style="height: 200px;">
-            <img src="{{ data.thumbnail }}" class="card-img" alt="hotel image" />
-          </div>
-
-          <div class="card-body px-2">
-            <h5 class="card-title d-flex justify-content-between gap-2">
-              <a [routerLink]="['/hotels/detail', data.id]" class="fs-6">{{
-                data.listName
-                }}</a>
-
-              <div>
-                <i class="fa fa-star text-warning fs-6"
-                  *ngFor="let _ of [].constructor(roundOff(data.rating)); let i = index">
-                </i>
-              </div>
-            </h5>
-
-
-            <div class="d-flex gap-2">
-
-              <p class="mb-0 bg-primary w-auto px-2 text-white rating-tag">
-                <span class="fs-6">{{ data.rating}}</span><small class="text-muted">/5</small>
-              </p>
-
-              <p class="text-primary fs-6">{{data.rating}}+ reviews</p>
-
+        <div class="col-sm-6 col-xl-3">
+          <div class="card card-img-scale overflow-hidden bg-white">
+            <div class="card-img-scale-wrapper" style="height: 200px;">
+              <!-- <img *ngIf="data.thumbnail" [src]="data.thumbnail" class="card-img" alt="hotel image" /> -->
+              <img  src="assets/images/gallery/01.jpg" class="card-img" alt="default image" />
             </div>
-
-            <p class="mb-0 w-auto px-2 text-end">
-              <small class="text-dark mr-1">From </small><span class="fs-5 text-dark-blue fw-bold">{{ currencyType }}{{
-                data.basePrice
-                }}</span>
-            </p>
-
+            <div class="card-body px-2">
+              <h5 class="card-title d-flex justify-content-between gap-2">
+                <a [routerLink]="['/hotels/detail', data.id]" class="fs-6">{{ data.listName }}</a>
+                <div>
+                  <i class="fa fa-star text-warning fs-6"
+                    *ngFor="let _ of [].constructor(roundOff(data.rating)); let i = index">
+                  </i>
+                </div>
+              </h5>
+              <p class="mb-0 w-auto px-2 text-end">
+                <small class="text-dark mr-1">From </small>
+                <span class="fs-5 text-dark-blue fw-bold">{{ currencyType }}{{ data.basePrice }}</span>
+              </p>
+            </div>
           </div>
         </div>
-      </div>
       }
     </div>
+    
+    
   </div>
 </section>

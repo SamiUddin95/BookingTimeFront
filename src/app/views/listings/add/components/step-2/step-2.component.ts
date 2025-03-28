@@ -1,79 +1,114 @@
-import {
-  SelectFormInputDirective,
-  type SelectOptions,
-} from '@/app/components/form/select-form-input.directive';
-import { Component, Input } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, inject, Input, OnInit } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import Stepper from 'bs-stepper';
-import { QuillEditorComponent } from 'ngx-quill';
 import { CommonModule } from '@angular/common';
+
+import { CommonService } from '@/app/core/services/api/common.service';
+import { PropertyFormDataService } from '@/app/core/services/property-form-data.service';
 
 @Component({
   selector: 'add-listing-step-2',
   standalone: true,
-  imports: [SelectFormInputDirective, QuillEditorComponent, FormsModule,CommonModule],
+  imports: [FormsModule, CommonModule, ReactiveFormsModule],
   templateUrl: './step-2.component.html',
 })
-export class Step2Component {
+export class Step2Component implements OnInit {
   @Input() stepperInstance?: Stepper;
-  category = {
-    selectedAmenities:'',
-    content: '',
-    guest: '',
-    description: '',
-    countryId: 0,
-    stateId: 0,
-    city: '',
-    postalNumber: '',
-    street: '',
-    latitude: 0,
-    longitude: 0
-  };
-  selectOptions: SelectOptions = {
-    maxItemCount: 15,
-    removeItems: true,
+
+  private commonService = inject(CommonService);
+
+  constructor(private formDataService: PropertyFormDataService) {}
+
+  listingForm: any = {
+    amenities: [],
+    totalFloor: '',
+    totalRoom: '',
+    roomArea: '',
+    rooms: []
   };
 
-  content: string = ` <div class="bg-body border rounded-bottom h-400px overflow-hidden quilleditor">
-  ...`; // your editor content here
+  amenities: any[] = [];
+  additionalInfoList: any[] = [];
 
-  editorConfig = {
-    toolbar: [
-      [{ size: ['small', false, 'large', 'huge'] }],
-      ['bold', 'italic', 'underline', 'strike'],
-      ['color', 'background'],
-      ['code-block'],
-      [
-        { list: 'ordered' },
-        { list: 'bullet' },
-        { indent: '-1' },
-        { indent: '+1' },
-      ],
-      ['link', 'image'],
-      ['clean'],
-    ],
-  };
+  ngOnInit(): void {
+    this.loadDropDowns();
 
-  // List of amenities
-  amenitiesList: string[] = [
-    'Swimming pool',
-    'Spa',
-    'Kid\'s play area',
-    'Gym',
-    'Ironing Service',
-    'Concierge',
-    'Lift',
-    'Dry cleaning',
-    'Room Service',
-    'Waiting Area',
-    'Secrete smoking area',
-  ];
+    const formData = this.formDataService.getFormData()?.page2;
+    if (formData) {
+      this.listingForm = { ...this.listingForm, ...formData };
+    }
 
-  // Selected amenities (using ngModel)
-  selectedAmenities: string[] = [];
-  addDataStepTwo(){
-    console.log("Done");
+    if (!Array.isArray(this.listingForm.rooms) || this.listingForm.rooms.length === 0) {
+      this.listingForm.rooms = [
+        {
+          roomName: '',
+          roomPrice: 0,
+          discount: 0,
+          additionalInfo: '',
+          image: null
+        }
+      ];
+    }
+  }
+
+  loadDropDowns() {
+    this.commonService.GetAllAmenitiesList().subscribe((res) => {
+      this.amenities = res;
+    });
+    this.commonService.GetAllAdditionalInfoList().subscribe((res) => {
+      this.additionalInfoList = res
+    })
+  }
+
+  onAmenityChange(event: any, amenity: any) {
+    if (!Array.isArray(this.listingForm.amenities)) {
+      this.listingForm.amenities = [];
+    }
+
+    if (event.target.checked) {
+      if (!this.listingForm.amenities.includes(amenity.id)) {
+        this.listingForm.amenities = [...this.listingForm.amenities, amenity.id];
+      }
+    } else {
+      this.listingForm.amenities = this.listingForm.amenities.filter((id: number) => id !== amenity.id);
+    }
+  }
+
+  isAmenitySelected(amenityId: number): boolean {
+    return Array.isArray(this.listingForm.amenities) && this.listingForm.amenities.includes(amenityId);
+  }
+
+  goToNext() {
+    this.formDataService.updateFormData('page2', this.listingForm);
     this.stepperInstance?.next();
-    localStorage.setItem("steeper2",JSON.stringify(this.category));
+  }
+
+  goToPrevious() {
+    this.formDataService.updateFormData('page2', this.listingForm);
+    this.stepperInstance?.previous();
+  }
+
+  onFileSelected(event: any, index: number) {
+    const file = event.target.files[0];
+
+    if (file) {
+      this.formDataService.setRoomImage(index, file);
+    }
+  }
+
+  addRoom() {
+    this.listingForm.rooms.push({
+      roomName: '',
+      roomPrice: 0,
+      discount: 0,
+      additionalInfo: '',
+      image: null
+    });
+  }
+
+  removeRoom(index: number) {
+    if (this.listingForm.rooms.length > 1) {
+      this.listingForm.rooms.splice(index, 1);
+    }
   }
 }

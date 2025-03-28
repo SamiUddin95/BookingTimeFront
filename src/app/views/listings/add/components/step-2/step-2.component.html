@@ -1,111 +1,122 @@
 <div class="vstack gap-4">
   <h4 class="mb-0">Detailed Information</h4>
 
+  <!-- Overview -->
   <div class="card shadow">
     <div class="card-header border-bottom">
       <h5 class="mb-0">Overview</h5>
     </div>
-
     <div class="card-body">
       <div class="row g-4">
         <div class="col-12">
           <label class="form-label">Select amenities *</label>
-          <select selectFormInput [(ngModel)]="category.selectedAmenities" [options]="selectOptions"
-            class="form-select js-choice border-0 z-index-9 bg-transparent" aria-label=".form-select-sm"
-            data-max-item-count="15" data-remove-item-button="true" multiple>
-            <option *ngFor="let amenity of amenitiesList" [value]="amenity">{{ amenity }}</option>
-          </select>
-          <small>
-            Maximum of 14 keywords. Keywords should all be in lowercase and
-            separated by commas. e.g. javascript, react, marketing
-          </small>
+          <div class="d-flex flex-wrap">
+            <div class="form-check me-4" *ngFor="let amenity of amenities">
+              <input class="form-check-input" type="checkbox" [id]="'amenity_' + amenity.id"
+                [checked]="isAmenitySelected(amenity.id)" (change)="onAmenityChange($event, amenity)">
+
+              <label class="form-check-label" [for]="'amenity_' + amenity.id">
+                {{ amenity.amenities }}
+              </label>
+            </div>
+          </div>
         </div>
 
-        <div class="col-12">
-          <label class="form-label">Add description *</label>
-          <quill-editor #quillEditor [(ngModel)]="category.content" theme="snow" class="step-ql-editor"
-            [modules]="editorConfig" style="height: 300px"></quill-editor>
-        </div>
+
       </div>
     </div>
   </div>
 
+  <!-- Size Of Listing -->
   <div class="card shadow">
     <div class="card-header border-bottom">
       <h5 class="mb-0">Size Of Your Listing</h5>
     </div>
-
     <div class="card-body">
       <div class="row g-4">
         <div class="col-md-4">
           <label class="form-label">Total Floor *</label>
-          <input type="text" class="form-control" placeholder="Enter total floors" />
+          <input type="text" [(ngModel)]="listingForm.totalFloor" class="form-control"
+            placeholder="Enter total floors" />
         </div>
-
         <div class="col-md-4">
           <label class="form-label">Total Room *</label>
-          <input type="text" class="form-control" placeholder="Enter total rooms" />
+          <input type="text" [(ngModel)]="listingForm.totalRoom" class="form-control" placeholder="Enter total rooms" />
         </div>
-
         <div class="col-md-4">
           <label class="form-label">Room area *</label>
-          <input type="text" class="form-control" placeholder="Enter area in sq.ft" />
+          <input type="text" [(ngModel)]="listingForm.roomArea" class="form-control"
+            placeholder="Enter area in sq.ft" />
         </div>
       </div>
     </div>
   </div>
 
+  <!-- Room Options -->
   <div class="card shadow">
     <div class="card-header border-bottom">
       <h5 class="mb-0">Room Options</h5>
     </div>
-
     <div class="card-body">
-      <div class="row g-4">
-        <div class="col-md-6">
-          <label class="form-label">Room name *</label>
-          <input type="text" class="form-control" placeholder="Enter name" />
+      <div *ngFor="let room of listingForm.rooms; let i = index">
+        <div class="row g-4">
+          <div class="col-md-6">
+            <label class="form-label">Room name *</label>
+            <input type="text" [(ngModel)]="room.roomName" class="form-control" placeholder="Enter name" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Room thumbnail image *</label>
+            <input class="form-control" type="file" accept="image/gif, image/jpeg, image/png"
+              (change)="onFileSelected($event, i)" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Room Price *</label>
+            <input type="text" [(ngModel)]="room.roomPrice" class="form-control" placeholder="Enter price" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Discount *</label>
+            <input type="text" [(ngModel)]="room.discount" class="form-control" placeholder="Enter discount" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Additional Info</label>
+            <select [(ngModel)]="room.additionalInfo" name="additionalInfo" class="form-select"
+              required #additionalInfo="ngModel">
+              <option value="" disabled>Select additional info</option>
+              <option *ngFor="let type of additionalInfoList" [value]="type.id">{{ type.name }}</option>
+            </select>
+            <div *ngIf="additionalInfo.invalid && additionalInfo.touched" class="text-danger">
+              Please select additional info.
+            </div>
+          </div>
+
         </div>
 
-        <div class="col-md-6">
-          <label class="form-label">Room thumbnail image *</label>
-          <input class="form-control" type="file" name="my-image" id="image-2"
-            accept="image/gif, image/jpeg, image/png" />
+        <!-- Remove Room Button (Only if there's more than one room) -->
+        <div class="text-end mt-3">
+          <button *ngIf="listingForm.rooms.length > 1" (click)="removeRoom(i)" type="button"
+            class="btn btn-sm btn-danger">
+            <i class="bi bi-trash me-2"></i> Remove Room
+          </button>
         </div>
 
-        <div class="col-md-6">
-          <label class="form-label">Room Price *</label>
-          <input type="number" class="form-control" placeholder="Enter price" />
-        </div>
+        <hr class="my-4" *ngIf="i !== listingForm.rooms.length - 1" />
+      </div>
 
-        <div class="col-md-6">
-          <label class="form-label">Discount *</label>
-          <input type="text" class="form-control" placeholder="Enter discount" />
-        </div>
-
-        <div class="col-md-6">
-          <label class="form-label">Additional info</label>
-          <select selectFormInput [options]="{ searchEnabled: false }"
-            class="form-select js-choice border-0 z-index-9 bg-transparent">
-            <option value="">Select item</option>
-            <option>Non Refundable</option>
-            <option>Free Cancellation</option>
-          </select>
-        </div>
-
-        <div class="col-12">
-          <a href="javascript:void(0);" class="btn btn-sm btn-primary-soft mb-0"><i
-              class="bi bi-plus-circle me-2"></i>Add New Room</a>
-        </div>
+      <!-- Add New Room Button (Outside *ngFor to avoid multiple buttons) -->
+      <div class="text-start mt-3">
+        <button (click)="addRoom()" type="button" class="btn btn-sm btn-primary">
+          <i class="bi bi-plus-circle me-2"></i> Add New Room
+        </button>
       </div>
     </div>
   </div>
 
+  <!-- Navigation Buttons -->
   <div class="hstack gap-2 flex-wrap justify-content-between">
-    <button (click)="stepperInstance?.previous()" type="button" class="btn btn-secondary prev-btn mb-0">
+    <button (click)="goToPrevious()" type="button" class="btn btn-secondary prev-btn mb-0">
       Previous
     </button>
-    <button (click)="addDataStepTwo()" type="button" class="btn btn-primary next-btn mb-0">
+    <button (click)="goToNext()" type="button" class="btn btn-primary next-btn mb-0">
       Next
     </button>
   </div>

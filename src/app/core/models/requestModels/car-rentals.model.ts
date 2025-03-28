@@ -62,7 +62,9 @@ export interface CarRegistrationFormUpdated {
   vin: number;
   yearId: number;
   makeId: number;
+  capacityId:number
   model?: string;
+  basePrice?: number;
   odometerId: number;
   vehicleValue?: string;
   vehicleConditionId: number;
@@ -72,6 +74,8 @@ export interface CarRegistrationFormUpdated {
   mobileNumber2?: string;
   startDate?: string;
   endDate?: string;
+  startTime?: string;
+  endTime?: string;
   mileageLimit: number;
   fuelTypeId: number;
   features?: string;
