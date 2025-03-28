@@ -39,6 +39,12 @@ export const routes: Routes = [
       import('./views/cabs/cabs.route').then((mod) => mod.CABS_ROUTES),
   },
   {
+    path: 'airport-taxi',
+    component: DefaultLayoutComponent,
+    loadChildren: () =>
+      import('./views/airport-taxis/airport-taxis.route').then((mod) => mod.AIRPORT_TAXI_ROUTES),
+  },
+  {
     path: 'directories',
     component: DefaultLayoutComponent,
     loadChildren: () =>

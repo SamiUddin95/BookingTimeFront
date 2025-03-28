@@ -26,9 +26,9 @@ export const bookingHomeMenuItems: MenuItemType[] = [
     icon: 'fa-solid fa-car',
   },
   {
-    key: 'flight-home',
+    key: 'airport-taxi-home',
     label: 'Airport Taxi',
-    url: '/flights/home',
+    url: '/airport-taxi/home',
     icon: 'fa-solid fa-taxi',
   }
 ]

@@ -1,0 +1,53 @@
+<!-- <sticky-header-component> -->
+
+    <nav class="navbar navbar-expand-xl py-3 bg-transparent">
+        <div class="container px-4">
+          <!-- <app-logo-box /> -->
+      
+          <div class="d-flex align-items-center ">
+            <h4 class="me-4 text-white" routerLink="/">BookingTimes</h4>
+      
+            <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed" class="navbar-collapse collapse"
+              id="navbarCategoryCollapse">
+              <ul class="navbar-nav navbar-nav-scroll nav-pills-primary-soft text-center ms-auto p-2 p-xl-0">
+                @for (item of bookingHomeMenuItems; track $index) {
+                <li class="nav-item">
+                  <a class="nav-link text-white" [routerLink]="item.url" [class.active]="item.label == this.activeTab">
+                    <i class="{{ item.icon }}" class="me-2"></i>{{ item.label }}</a>
+                </li>
+                }
+              </ul>
+            </div>
+          </div>
+      
+          <vertical-menu-button className="ms-auto ms-sm-0"></vertical-menu-button>
+      
+          <button class="navbar-toggler ms-sm-auto mx-3 me-md-0 p-0 p-sm-2" type="button" data-bs-toggle="collapse"
+            (click)="collapse.toggle()" data-bs-target="#navbarCategoryCollapse" aria-controls="navbarCategoryCollapse"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-grid-3x3-gap-fill fa-fw"></i><span class="d-none d-sm-inline-block small">Category</span>
+          </button>
+      
+      
+      
+          <ul class="nav flex-row align-items-center list-unstyled ms-xl-auto">
+            <!-- <app-notification-dropdown className="ms-0 ms-md-3" /> -->
+      
+            <button class="sleek-btn glow-white text-white translucent" type="button" [routerLink]="'/airport-taxi/register-taxi'">
+              <i class="fa fa-building me-2"></i>Register your Taxi
+            </button>
+      
+            <a class="text-white mx-3" [routerLink]="'/auth/sign-in'">
+              Sign in
+            </a>
+      
+            <button class="bg-secondary glow-yellow text-dark-green sleek-btn fw-bold" type="button"
+              [routerLink]="'/auth/sign-up'">
+              Register
+            </button>
+      
+            <app-profile-dropdown className="ms-3" />
+          </ul>
+        </div>
+      </nav>
+      <!-- </sticky-header-component> -->

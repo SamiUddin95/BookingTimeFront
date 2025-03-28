@@ -1,0 +1,27 @@
+<style>
+    .hero-bg-image {
+      position: relative;
+      background:
+        linear-gradient(to bottom, rgba(21, 124, 183, 1), rgba(21, 124, 183, 0.8), rgba(21, 124, 183, 0.7), rgba(21, 124, 183, 0.6), rgba(21, 124, 183, 0.3)),
+        url('/assets/images/bg/01.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      min-height: 50vh;
+    }
+  </style>
+
+<div class="hero-bg-image">
+    <home-topbar [activeTab]="'Airport Taxi'" />
+    <home-banner />
+  </div>
+
+  <main>
+    <div class="card mt-n3">
+      <!-- <home-whychoose /> -->
+    </div>
+  
+    <!-- <home-faqs /> -->
+  
+  </main>
+  <home-footer1 />
