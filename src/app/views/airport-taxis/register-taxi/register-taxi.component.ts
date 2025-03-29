@@ -16,6 +16,9 @@ import {
   type DropzoneConfigInterface,
 } from 'ngx-dropzone-wrapper'
 
+import { RegisterTaxiForm } from '@/app/core/models/requestModels/register-airport-taxi.model';
+import { AirportTaxisService } from '@/app/core/services/api/airport-taxi.service';
+
 @Component({
   selector: 'app-register-taxi',
   standalone: true,
@@ -43,85 +46,46 @@ export class RegisterTaxiComponent {
     addRemoveLinks: true, 
     dictRemoveFile: 'Remove' 
   };
+
   timePickerOptions: any = {
     enableTime: true,     
     noCalendar: true,     
     dateFormat: "H:i",    
     time_24hr: true       
   };
-  
 
-  passengesCapacity = [
-    { id: 1, name: 1 },
-    { id: 2, name: 2 },
-    { id: 3, name: 3 },
-    { id: 4, name: 4 },
-    { id: 5, name: 5 },
-    { id: 6, name: 6 },
-    { id: 7, name: 7 },
-    { id: 8, name: 8 },
-    { id: 9, name: 9 },
-    { id: 10, name: 10 },
-    { id: 11, name: 11 },
-    { id: 12, name: 12 },
-    { id: 13, name: 13 },
-    { id: 14, name: 14 },
-    { id: 15, name: 15 },
-    { id: 16, name: 16 },
-  ];
-
-  carRegistrationForm!: CarRegistrationFormUpdated;
   currentStep = 1;
-  totalSteps = 4;
+  totalSteps = 3;
+
+  taxiRegistrationForm!: RegisterTaxiForm;
 
   constructor(private router: Router, private route: ActivatedRoute) { }
 
 
   initialiseForm() {
-    this.carRegistrationForm= {
+    this.taxiRegistrationForm = {
+      airportName: '',
       countryId: 0,
-      stateId: 0,
       cityId: 0,
-      street: '',
-      vin: 0,
-      yearId: 0,
-      makeId: 0,
-      model: '',
-      odometerId: 0,
-      transmission: '',
-      vehicleValue: '',
-      vehicleConditionId: 0,
-      seatbelts: false,
-      seatbeltTypeId: 0,
-      capacityId: 0,
-      mobileNumber1: '',
-      mobileNumber2: '',
-      startDate: new Date().toISOString().split('T')[0],
-      endDate: new Date().toISOString().split('T')[0],
-      mileageLimit: 0,
-      fuelTypeId: 0,
-      features: '',
-      additionalInfo: '',
-      carImages: [],
-      image: undefined
-    };
+      stateId: 0,
+      firstName: "",
+      lastName: "",
+      email: "",
+      contactNo: "",
+      maxBookingsPerDay: 0,
+      fleetSizeId: 0,
+      vehicleTypeIds: ""
+    }
   }
 
 
   countries: any;
   cities: any;
   states: any;
-  fuelTypes: any;
-  odometerReadings: any;
-  seatBeltTypes: any;
-  vehicleConditions: any;
-  vehicleMakes: any;
-  vehicleYears: any;
-  //passengesCapacity: any;
   isSubmitted: boolean = false;
 
-  private carService = inject(CarRentalsService);
-  private commonService = inject(CommonService)
+  private commonService = inject(CommonService);
+  private taxiService = inject(AirportTaxisService);
 
   nextStep() {
     if (this.currentStep < this.totalSteps) {
@@ -139,14 +103,14 @@ export class RegisterTaxiComponent {
   }
 
   submit() {
-    console.log(this.carRegistrationForm)
+    console.log(this.taxiRegistrationForm)
 
     if (!this.isFormValid()) {
       this.isSubmitted = true;
       return; 
     }
  
-    this.carService.AddCarDetails(this.carRegistrationForm, this.carRegistrationForm.image, this.carRegistrationForm.carImages).subscribe((res => {
+    this.taxiService.registerTaxi(this.taxiRegistrationForm).subscribe((res => {
       console.log(res);
       if (res.success) {
         this.router.navigate(['success'], { relativeTo: this.route });
@@ -164,21 +128,10 @@ export class RegisterTaxiComponent {
   loadDropdowns() {
     forkJoin({
       countries: this.commonService.GetAllCountryList(),
-      fuelTypes: this.carService.GetAllFuelTypeList(),
-      odometerReadings: this.carService.GetAllOdometerReadingList(),
-      seatBeltTypes: this.carService.GetAllSeatbeltTypeList(),
-      vehicleConditions: this.carService.GetAllVehicleConditionList(),
-      vehicleMakes: this.carService.GetAllVehicleMakeList(),
-      vehicleYears: this.carService.GetAllVehicleYearList()
+      //add master/dropdown data apis
     }).subscribe(res => {
       this.countries = res.countries;
-      this.fuelTypes = res.fuelTypes;
-      this.odometerReadings = res.odometerReadings;
-      this.seatBeltTypes = res.seatBeltTypes;
-      this.vehicleConditions = res.vehicleConditions;
-      this.vehicleMakes = res.vehicleMakes;
-      this.vehicleYears = res.vehicleYears;
-      console.log(res);
+      //bind here
     });
   }
 
@@ -192,68 +145,45 @@ export class RegisterTaxiComponent {
     })
   }
 
-  selectedFeatures: string[] = [];
-  features = ['Air Conditioning', 'Sunroof', 'GPS Navigation', 'Leather Seats'];
-
-  toggleFeature(feature: string, event: any) {
-    event.target.checked
-      ? this.selectedFeatures.push(feature)
-      : this.selectedFeatures = this.selectedFeatures.filter(f => f !== feature);
-
-    this.carRegistrationForm.features = this.selectedFeatures.join(', ');
-  }
-
-  onThumbnailSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.carRegistrationForm.image = file;
-    }
-  }
-
-  onGalleryImageAdded(file: File) { 
-  
-      if (!this.carRegistrationForm.carImages) {
-        this.carRegistrationForm.carImages = [];
-      }
-  
-      this.carRegistrationForm.carImages.push(file);
-  }
-  
-
   isFormValid(): boolean {
 
-    const isValid = this.carRegistrationForm.countryId > 0 &&
-      this.carRegistrationForm.stateId > 0 &&
-      this.carRegistrationForm.cityId > 0 &&
-      this.carRegistrationForm.street.trim() !== '' &&
-      this.carRegistrationForm.vin.toString().length >= 5 &&
-      /^[A-HJ-NPR-Z0-9]{17}$/.test(this.carRegistrationForm.vin.toString()) &&
-      this.carRegistrationForm.yearId > 0 &&
-      this.carRegistrationForm.makeId > 0 &&
-      this.carRegistrationForm.model !== '' &&
-      this.carRegistrationForm.odometerId > 0 &&
-      this.carRegistrationForm.transmission !== '' &&
-      this.carRegistrationForm.vehicleValue !== '' &&
-      this.carRegistrationForm.vehicleConditionId > 0 &&
-      (this.carRegistrationForm.seatbeltTypeId ? this.carRegistrationForm.seatbeltTypeId > 0 : true) &&
-      this.carRegistrationForm.mobileNumber1 !== '' &&
-      (this.carRegistrationForm.mobileNumber2 ? this.carRegistrationForm.mobileNumber2 != '' : true) &&
-      this.carRegistrationForm.startDate !== '' &&
-      this.carRegistrationForm.endDate !== '' &&
-      this.carRegistrationForm.mileageLimit > 0 &&
-      this.carRegistrationForm.fuelTypeId > 0;
+    const isValid = this.taxiRegistrationForm.countryId > 0 &&
+      this.taxiRegistrationForm.stateId > 0 &&
+      this.taxiRegistrationForm.cityId > 0 &&
+      this.taxiRegistrationForm.airportName.trim() !== ''
+      
+      //add remaining validations here 
 
     return isValid;
   }
 
   steps = [
-    { id: 1, label: 'Airport & Booking Information' },
-    { id: 2, label: 'Vehicle Details' },
-    { id: 3, label: 'Owner Details' },
-    { id: 4, label: 'Booking & Payment' },
+    { id: 1, label: 'Location' },
+    { id: 2, label: 'Contact Information' },
+    { id: 3, label: 'Vehicle Details' }
   ];
 
   goToStep(stepId: number): void {
     this.currentStep = stepId;
   }
+
+  dummyVehicleTypes: any = [
+    {id: 1, name: "Standard Sedan", description: "Skoda Octavia or similar"},
+    {id: 2, name: "Executive Sedan", description: "Mercedes E-Class or similar"},
+    {id: 3, name: "Luxury Sedan", description: "Mercedes S-Class or similar"},
+    {id: 4, name: "People Carrier", description: "Peugeot 5008 or similar"},
+    {id: 5, name: "Large People Carrier", description: "Ford Tourneo or similar"},
+    {id: 5, name: "Executive People Carrier", description: "Mercedes V-Class or similar"},
+    {id: 5, name: "Minibus", description: "Renault Master or similar"},
+  ]
+
+  dummyFleetSize: any = [
+    {id: 1, name: "1 - 5 Vehicle"},
+    {id: 2, name: "6 - 10 Vehicle"},
+    {id: 3, name: "11 - 15 Vehicle"},
+    {id: 4, name: "16 - 20 Vehicle"},
+    {id: 5, name: "21 - 50 Vehicle"},
+    {id: 6, name: "51 - 100 Vehicle"},
+    {id: 7, name: "100+ Vehicle"},
+  ]
 }
