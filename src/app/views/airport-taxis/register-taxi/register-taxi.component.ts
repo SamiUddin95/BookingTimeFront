@@ -1,23 +1,33 @@
-import { Component, inject, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { Footer1Component } from '../../hotels/home/components/footer1/footer1.component';
-import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, NgModel, Validators } from '@angular/forms';
+import {
+  Component,
+  inject,
+  OnInit,
+  QueryList,
+  ViewChildren,
+} from '@angular/core'
+import { Footer1Component } from '../../hotels/home/components/footer1/footer1.component'
+import { CommonModule } from '@angular/common'
+import { FormBuilder, FormGroup, NgModel, Validators } from '@angular/forms'
 import { DateFormInputDirective } from '@/app/components/form/date-form-input.directive'
 import { SelectFormInputDirective } from '@/app/components/form/select-form-input.directive'
-import { CarRentalsService } from '@/app/core/services/api/car-rentals.service';
-import { forkJoin } from 'rxjs';
-import { CommonService } from '@/app/core/services/api/common.service';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { CarRegistrationForm, CarRegistrationFormIncorrect, CarRegistrationFormUpdated } from '@/app/core/models/requestModels/car-rentals.model';
+import { CarRentalsService } from '@/app/core/services/api/car-rentals.service'
+import { forkJoin } from 'rxjs'
+import { CommonService } from '@/app/core/services/api/common.service'
+import { ReactiveFormsModule, FormsModule } from '@angular/forms'
+import { ActivatedRoute, Router } from '@angular/router'
+import {
+  CarRegistrationForm,
+  CarRegistrationFormIncorrect,
+  CarRegistrationFormUpdated,
+} from '@/app/core/models/requestModels/car-rentals.model'
 import {
   DROPZONE_CONFIG,
   DropzoneModule,
   type DropzoneConfigInterface,
 } from 'ngx-dropzone-wrapper'
 
-import { RegisterTaxiForm } from '@/app/core/models/requestModels/register-airport-taxi.model';
-import { AirportTaxisService } from '@/app/core/services/api/airport-taxi.service';
+import { RegisterTaxiForm } from '@/app/core/models/requestModels/register-airport-taxi.model'
+import { AirportTaxisService } from '@/app/core/services/api/airport-taxi.service'
 
 @Component({
   selector: 'app-register-taxi',
@@ -31,11 +41,10 @@ import { AirportTaxisService } from '@/app/core/services/api/airport-taxi.servic
     DropzoneModule,
   ],
   templateUrl: './register-taxi.component.html',
-  styleUrl: './register-taxi.component.scss'
+  styleUrl: './register-taxi.component.scss',
 })
 export class RegisterTaxiComponent {
-
-  @ViewChildren(NgModel) formFields!: QueryList<NgModel>;
+  @ViewChildren(NgModel) formFields!: QueryList<NgModel>
 
   dropzoneConfig: DropzoneConfigInterface = {
     url: '#',
@@ -43,147 +52,189 @@ export class RegisterTaxiComponent {
     maxFilesize: 5,
     acceptedFiles: 'image/jpeg, image/png, image/gif',
     autoProcessQueue: false,
-    addRemoveLinks: true, 
-    dictRemoveFile: 'Remove' 
-  };
+    addRemoveLinks: true,
+    dictRemoveFile: 'Remove',
+  }
 
   timePickerOptions: any = {
-    enableTime: true,     
-    noCalendar: true,     
-    dateFormat: "H:i",    
-    time_24hr: true       
-  };
+    enableTime: true,
+    noCalendar: true,
+    dateFormat: 'H:i',
+    time_24hr: true,
+  }
 
-  currentStep = 1;
-  totalSteps = 3;
+  currentStep = 1
+  totalSteps = 3
 
-  taxiRegistrationForm!: RegisterTaxiForm;
+  taxiRegistrationForm!: RegisterTaxiForm
 
-  constructor(private router: Router, private route: ActivatedRoute) { }
-
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
   initialiseForm() {
     this.taxiRegistrationForm = {
-      airportName: '',
+      operatingAirport: '',
       countryId: 0,
       cityId: 0,
       stateId: 0,
-      firstName: "",
-      lastName: "",
-      email: "",
-      contactNo: "",
-      maxBookingsPerDay: 0,
-      fleetSizeId: 0,
-      vehicleTypeIds: ""
+      firstName: '',
+      lastName: '',
+      email: '',
+      contactNumber: '',
+      bookingPerDay: 0,
+      fleetSize: 0,
+      vehicleType: '',
+      website: '',
+      capacity: 0,
+      basePrice: 0,
+      currency: 'Select Currency',
+      availabilityStatus: '',
+      status: 'Approved',
+      description: '',
+      image: null,
     }
   }
 
+  onThumbnailChange(event: any) {
+    const file = event.target.files[0]
+    if (file) {
+      this.taxiRegistrationForm.image = file
+    }
+  }
+  fleet: any = []
+  types: any = []
+  countries: any
+  cities: any
+  states: any
+  isSubmitted: boolean = false
 
-  countries: any;
-  cities: any;
-  states: any;
-  isSubmitted: boolean = false;
-
-  private commonService = inject(CommonService);
-  private taxiService = inject(AirportTaxisService);
+  private commonService = inject(CommonService)
+  private taxiService = inject(AirportTaxisService)
 
   nextStep() {
     if (this.currentStep < this.totalSteps) {
-      this.currentStep++;
-    }
-    else if (this.currentStep == this.totalSteps) {
-      this.submit();
+      this.currentStep++
+    } else if (this.currentStep == this.totalSteps) {
+      this.submit()
     }
   }
 
   prevStep() {
     if (this.currentStep > 1) {
-      this.currentStep--;
+      this.currentStep--
     }
   }
+  selectedVehicleTypes: number[] = [];
+  onVehicleTypeChange(event: Event, vehicleId: number) {
+    const isChecked = (event.target as HTMLInputElement).checked;
+    if (isChecked) {
+      this.selectedVehicleTypes.push(vehicleId);
+    } else {
+      this.selectedVehicleTypes = this.selectedVehicleTypes.filter(id => id !== vehicleId);
+    }
 
+  }
   submit() {
+   var vechileType=this.selectedVehicleTypes
+   this.taxiRegistrationForm.vehicleType=String(vechileType);
     console.log(this.taxiRegistrationForm)
 
     if (!this.isFormValid()) {
-      this.isSubmitted = true;
-      return; 
+      this.isSubmitted = true
+      return
     }
- 
-    this.taxiService.registerTaxi(this.taxiRegistrationForm).subscribe((res => {
-      console.log(res);
-      if (res.success) {
-        this.router.navigate(['success'], { relativeTo: this.route });
-      }
-    }))
-
+    this.taxiService.registerTaxi(this.taxiRegistrationForm).subscribe((res) => {
+        console.log(res)
+        if (res.success) {
+          alert("Successfully added");
+          this.router.navigate(['/airport-taxi/home']);
+        }
+      })
   }
 
   ngOnInit(): void {
-    this.loadDropdowns();
-    this.initialiseForm();
+    this.loadDropdowns()
+    this.initialiseForm()
   }
-  
-  
+
   loadDropdowns() {
     forkJoin({
       countries: this.commonService.GetAllCountryList(),
+      fleet: this.taxiService.GetAllTaxiFleetsizesList(),
+      types: this.taxiService.GetAllTaxiVechiletypesList(),
       //add master/dropdown data apis
-    }).subscribe(res => {
-      this.countries = res.countries;
+    }).subscribe((res) => {
+      this.countries = res.countries
+      this.fleet = res.fleet
+      this.types = res.types
       //bind here
-    });
+    })
   }
 
   loadCitiesAndStates(countryId: number) {
     this.commonService.GetCityByCountryId(countryId).subscribe((res) => {
-      this.cities = res;
+      this.cities = res
     })
 
     this.commonService.GetStateByCountryId(countryId).subscribe((res) => {
-      this.states = res;
+      this.states = res
     })
   }
 
   isFormValid(): boolean {
-
-    const isValid = this.taxiRegistrationForm.countryId > 0 &&
+    const isValid =
+      this.taxiRegistrationForm.countryId > 0 &&
       this.taxiRegistrationForm.stateId > 0 &&
       this.taxiRegistrationForm.cityId > 0 &&
-      this.taxiRegistrationForm.airportName.trim() !== ''
-      
-      //add remaining validations here 
+      this.taxiRegistrationForm.operatingAirport.trim() !== ''
 
-    return isValid;
+    //add remaining validations here
+
+    return isValid
   }
 
   steps = [
     { id: 1, label: 'Location' },
     { id: 2, label: 'Contact Information' },
-    { id: 3, label: 'Vehicle Details' }
-  ];
+    { id: 3, label: 'Vehicle Details' },
+  ]
+
+  passengesCapacity = [
+    { id: 1, name: 1 },
+    { id: 2, name: 2 },
+    { id: 3, name: 3 },
+    { id: 4, name: 4 },
+    { id: 5, name: 5 },
+    { id: 6, name: 6 },
+    { id: 7, name: 7 },
+    { id: 8, name: 8 },
+    { id: 9, name: 9 },
+    { id: 10, name: 10 },
+    { id: 11, name: 11 },
+    { id: 12, name: 12 },
+    { id: 13, name: 13 },
+    { id: 14, name: 14 },
+    { id: 15, name: 15 },
+    { id: 16, name: 16 },
+  ]
+
+  availabilityStatusList = [
+    { value: 'Available', label: 'Available' },
+    { value: 'Busy', label: 'Busy' },
+    { value: 'Under Maintenance', label: 'Under Maintenance' },
+    { value: 'Inactive', label: 'Inactive' },
+  ]
+
+  currencies = [
+    { id: 'Select Currency', name: 'Select Currency' },
+    { id: 'USD', name: 'USD' },
+    { id: 'EURO', name: 'EURO' },
+    { id: 'VND', name: 'VND' },
+  ]
 
   goToStep(stepId: number): void {
-    this.currentStep = stepId;
+    this.currentStep = stepId
   }
-
-  dummyVehicleTypes: any = [
-    {id: 1, name: "Standard Sedan", description: "Skoda Octavia or similar"},
-    {id: 2, name: "Executive Sedan", description: "Mercedes E-Class or similar"},
-    {id: 3, name: "Luxury Sedan", description: "Mercedes S-Class or similar"},
-    {id: 4, name: "People Carrier", description: "Peugeot 5008 or similar"},
-    {id: 5, name: "Large People Carrier", description: "Ford Tourneo or similar"},
-    {id: 5, name: "Executive People Carrier", description: "Mercedes V-Class or similar"},
-    {id: 5, name: "Minibus", description: "Renault Master or similar"},
-  ]
-
-  dummyFleetSize: any = [
-    {id: 1, name: "1 - 5 Vehicle"},
-    {id: 2, name: "6 - 10 Vehicle"},
-    {id: 3, name: "11 - 15 Vehicle"},
-    {id: 4, name: "16 - 20 Vehicle"},
-    {id: 5, name: "21 - 50 Vehicle"},
-    {id: 6, name: "51 - 100 Vehicle"},
-    {id: 7, name: "100+ Vehicle"},
-  ]
 }

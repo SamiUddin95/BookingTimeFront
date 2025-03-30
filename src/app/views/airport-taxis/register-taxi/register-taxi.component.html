@@ -55,14 +55,15 @@
             </div>
 
             <div class="col-md-6">
-              <label class="form-label">State *</label>
+              <label class="form-label">State *</label> 
               <select class="form-select js-choice" name="stateId" required [(ngModel)]="taxiRegistrationForm.stateId"
                 [ngClass]="{'is-invalid': taxiRegistrationForm.stateId === 0 && (state.touched || isSubmitted)}"
                 #state="ngModel">
                 <option [value]="0" disabled selected>Select State</option>
                 <option *ngFor="let state of states" [ngValue]="state.stateId">{{ state.stateName }}</option>
               </select>
-              <div class="invalid-feedback" *ngIf="taxiRegistrationForm.stateId === 0 && (state.touched || isSubmitted)">
+              <div class="invalid-feedback"
+                *ngIf="taxiRegistrationForm.stateId === 0 && (state.touched || isSubmitted)">
                 Please select a state.
               </div>
             </div>
@@ -83,10 +84,11 @@
 
             <div class="col-12">
               <label class="form-label">Airport *</label>
-              <input class="form-control" type="text" name="street" [(ngModel)]="taxiRegistrationForm.airportName"
+              <input class="form-control" type="text" name="street" [(ngModel)]="taxiRegistrationForm.operatingAirport"
                 placeholder="Enter operation airport" required #airportName="ngModel"
-                [ngClass]="{'is-invalid': taxiRegistrationForm.airportName == '' && (airportName.touched || isSubmitted)}">
-              <div class="invalid-feedback" *ngIf="taxiRegistrationForm.airportName == '' && (airportName.touched || isSubmitted)">
+                [ngClass]="{'is-invalid': taxiRegistrationForm.operatingAirport == '' && (airportName.touched || isSubmitted)}">
+              <div class="invalid-feedback"
+                *ngIf="taxiRegistrationForm.operatingAirport == '' && (airportName.touched || isSubmitted)">
                 Please enter an operation airport.
               </div>
             </div>
@@ -103,10 +105,9 @@
 
         <div class="card-body p-3">
           <div class="row g-3">
-
             <div class="col-md-6">
               <label class="form-label">First Name *</label>
-              <input class="form-control" type="number" name="mobile1" placeholder="Enter your first name" required
+              <input class="form-control" type="text" name="firstName" placeholder="Enter your first name" required
                 [(ngModel)]="taxiRegistrationForm.firstName" #firstName="ngModel"
                 [ngClass]="{'is-invalid': taxiRegistrationForm.firstName == '' && (firstName.touched || isSubmitted)}">
               <div class="invalid-feedback"
@@ -117,7 +118,7 @@
 
             <div class="col-md-6">
               <label class="form-label">Last Name *</label>
-              <input class="form-control" type="number" name="mobile1" placeholder="Enter your last name" required
+              <input class="form-control" type="text" name="lastName" placeholder="Enter your last name" required
                 [(ngModel)]="taxiRegistrationForm.lastName" #lastName="ngModel"
                 [ngClass]="{'is-invalid': taxiRegistrationForm.lastName == '' && (lastName.touched || isSubmitted)}">
               <div class="invalid-feedback"
@@ -132,23 +133,26 @@
                 [(ngModel)]="taxiRegistrationForm.email" #email="ngModel"
                 [ngClass]="{'is-invalid': taxiRegistrationForm.email == '' && (email.touched || isSubmitted)}">
             </div>
-            <div class="invalid-feedback"
-              *ngIf="taxiRegistrationForm.email == '' && (email.touched || isSubmitted)">
+            <div class="invalid-feedback" *ngIf="taxiRegistrationForm.email == '' && (email.touched || isSubmitted)">
               Please enter your email address.
             </div>
 
             <div class="col-md-6">
               <label class="form-label">Phone Number *</label>
               <input class="form-control" type="text" name="mobile1" placeholder="Enter your phone number" required
-                [(ngModel)]="taxiRegistrationForm.contactNo" #contactNo="ngModel"
-                [ngClass]="{'is-invalid': taxiRegistrationForm.contactNo == '' && (contactNo.touched || isSubmitted)}">
+                [(ngModel)]="taxiRegistrationForm.contactNumber" #contactNo="ngModel"
+                [ngClass]="{'is-invalid': taxiRegistrationForm.contactNumber == '' && (contactNo.touched || isSubmitted)}">
               <div class="invalid-feedback"
-                *ngIf="taxiRegistrationForm.contactNo == '' && (contactNo.touched || isSubmitted)">
+                *ngIf="taxiRegistrationForm.contactNumber == '' && (contactNo.touched || isSubmitted)">
                 Please enter your phone number.
               </div>
             </div>
 
-
+            <div class="col-md-12">
+              <label class="form-label">Website </label>
+              <input class="form-control" type="text" name="website" placeholder="Enter your Website"
+                [(ngModel)]="taxiRegistrationForm.website" [maxlength]="40">
+            </div>
           </div>
         </div>
       </div>
@@ -165,11 +169,11 @@
             <div class="col-md-6">
               <label class="form-label">Max Bookings per day *</label>
               <input class="form-control" type="number" name="value" placeholder="Enter bookings" required
-                [(ngModel)]="taxiRegistrationForm.maxBookingsPerDay" #maxBookingsPerDay="ngModel"
-                [ngClass]="{'is-invalid': taxiRegistrationForm.maxBookingsPerDay == 0 && (maxBookingsPerDay.touched || isSubmitted)}">
+                [(ngModel)]="taxiRegistrationForm.bookingPerDay" #maxBookingsPerDay="ngModel"
+                [ngClass]="{'is-invalid': taxiRegistrationForm.bookingPerDay == 0 && (maxBookingsPerDay.touched || isSubmitted)}">
 
               <div class="invalid-feedback"
-                *ngIf="taxiRegistrationForm.maxBookingsPerDay == 0 && (maxBookingsPerDay.touched || isSubmitted)">
+                *ngIf="taxiRegistrationForm.bookingPerDay == 0 && (maxBookingsPerDay.touched || isSubmitted)">
                 Please enter max bookings per day.
               </div>
             </div>
@@ -177,22 +181,92 @@
             <div class="col-md-6">
               <label class="form-label">Fleet Size *</label>
               <select class="form-select js-choice" name="odometer" required
-                [(ngModel)]="taxiRegistrationForm.fleetSizeId" #fleetSizeId="ngModel"
-                [ngClass]="{'is-invalid': taxiRegistrationForm.fleetSizeId === 0 && (fleetSizeId.touched || isSubmitted)}">
+                [(ngModel)]="taxiRegistrationForm.fleetSize" #fleetSizeId="ngModel"
+                [ngClass]="{'is-invalid': taxiRegistrationForm.fleetSize === 0 && (fleetSizeId.touched || isSubmitted)}">
                 <option [value]="0" disabled selected>Select fleet size</option>
-                <option *ngFor="let item of dummyFleetSize" [ngValue]="item.id">{{ item.name }}</option>
+                <option *ngFor="let item of fleet" [ngValue]="item.id">{{ item.name }}</option>
               </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Availability Status</label>
+              <select class="form-select js-choice" name="availabilityStatus" required
+                [(ngModel)]="taxiRegistrationForm.availabilityStatus" #availability="ngModel"
+                [ngClass]="{'is-invalid': !taxiRegistrationForm.availabilityStatus && (availability.touched || isSubmitted)}">
+                <option [value]="''" disabled selected>Select Availability Status</option>
+                <option *ngFor="let item of availabilityStatusList" [ngValue]="item.value">{{ item.label }}</option>
+              </select>
+              <div class="invalid-feedback"
+                *ngIf="!taxiRegistrationForm.availabilityStatus && (availability.touched || isSubmitted)">
+                Please select Availability Status.
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Passengers Capacity</label>
+              <select class="form-select js-choice" name="seats" required [(ngModel)]="taxiRegistrationForm.capacity"
+                #make="ngModel"
+                [ngClass]="{'is-invalid': taxiRegistrationForm.capacity == 0 && (make.touched || isSubmitted)}">
+                <option [value]="0" disabled selected>Select Passengers Capacity</option>
+                <option *ngFor="let item of passengesCapacity" [ngValue]="item.id">{{ item.name }}</option>
+              </select>
+              <div class="invalid-feedback" *ngIf="taxiRegistrationForm.capacity == 0 && (make.touched || isSubmitted)">
+                Please select Passengers Capacity.
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Base Price *</label>
+              <input class="form-control" type="number" name="value" placeholder="Enter Base Price" required
+                [(ngModel)]="taxiRegistrationForm.basePrice" #price="ngModel" [min]="0"
+                [ngClass]="{'is-invalid': taxiRegistrationForm.basePrice == 0 && (price.touched || isSubmitted)}">
+
+              <div class="invalid-feedback"
+                *ngIf="taxiRegistrationForm.basePrice == 0 && (price.touched || isSubmitted)">
+                Please enter Base Price.
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Currency</label>
+              <select class="form-select" [(ngModel)]="taxiRegistrationForm.currency" required #currency="ngModel"
+                [ngClass]="{'is-invalid': currency.touched && taxiRegistrationForm.currency === 'Select Currency'}">
+                <option *ngFor="let type of currencies" [ngValue]="type.id">{{ type.name }}</option>
+              </select>
+              <div *ngIf="currency.touched && taxiRegistrationForm.currency === 'Select Currency'"
+                class="invalid-feedback">
+                Please select a valid Currency.
+              </div>
+            </div>
+
+            <div class="col-6">
+              <label class="form-label">Image *</label>
+              <input class="form-control" type="file" (change)="onThumbnailChange($event)" required
+                [ngClass]="{'is-invalid': !taxiRegistrationForm.image && isSubmitted}">
+              <div *ngIf="!taxiRegistrationForm.image && isSubmitted" class="invalid-feedback">
+                Please upload a image.
+              </div>
+            </div>
+            <div class="col-6">
+              <label class="form-label">Descripption *</label>
+              <input class="form-control" type="text"  [(ngModel)]="taxiRegistrationForm.description"
+                [ngClass]="{'is-invalid': !taxiRegistrationForm.description && isSubmitted}">
+              <div *ngIf="!taxiRegistrationForm.description && isSubmitted" class="invalid-feedback">
+                Please Enter Description.
+              </div>
             </div>
 
             <div class="col-md-12">
               <label class="form-label">Vehicle Type *</label>
-              
-                @for(item of dummyVehicleTypes; track $index) {
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" [value]="item.id" [id]="item.name" />
-                  <label class="form-check-label" [for]="item.name">{{item.name}} - <small>{{item.description}}</small> </label>
-                </div>
-                }
+
+              @for(item of types; track $index) {
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox"   (change)="onVehicleTypeChange($event, item.id)"
+                  [value]="item.id" [id]="item.name" />
+                <label class="form-check-label" [for]="item.name">{{item.name}} - <small>{{item.description}}</small>
+                </label>
+              </div>
+              }
 
             </div>
 
@@ -208,7 +282,8 @@
         </div>
 
         <div class=" text-end">
-          <button type="button" class="btn btn-primary" (click)="nextStep()"> {{ currentStep === totalSteps ? 'Complete Registration' :
+          <button type="button" class="btn btn-primary" (click)="nextStep()"> {{ currentStep === totalSteps ? 'Complete
+            Registration' :
             'Continue' }}</button>
         </div>
       </div>
