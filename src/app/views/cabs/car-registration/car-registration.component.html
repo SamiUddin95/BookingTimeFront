@@ -427,7 +427,7 @@
               <label class="form-label">Base Price</label>
               <input class="form-control" type="number" name="value" placeholder="Enter Base Price"
                 required [(ngModel)]="carRegistrationForm.basePrice" #price="ngModel" [min]="0"
-                [ngClass]="{'is-invalid': carRegistrationForm.basePrice == 0 && (limit.touched || isSubmitted)}">
+                [ngClass]="{'is-invalid': carRegistrationForm.basePrice == 0 && (price.touched || isSubmitted)}">
 
               <div class="invalid-feedback"
                 *ngIf="carRegistrationForm.basePrice == 0 && (price.touched || isSubmitted)">

@@ -75,6 +75,8 @@ export class CarRegistrationComponent implements OnInit {
     { id: 16, name: 16 },
   ];
 
+
+
   carRegistrationForm!: CarRegistrationFormUpdated;
   currentStep = 1;
   totalSteps = 11;
