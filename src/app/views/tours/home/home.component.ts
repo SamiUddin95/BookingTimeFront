@@ -1,5 +1,5 @@
 import { Component } from '@angular/core'
-import { TopNavComponent } from './components/top-nav/top-nav.component'
+import { TopbarComponent } from './components/top-nav/top-nav.component'
 import { HeroComponent } from './components/hero/hero.component'
 import { TourPackageComponent } from './components/tour-package/tour-package.component'
 import { ActionBoxComponent } from './components/action-box/action-box.component'
@@ -11,7 +11,7 @@ import { Footer4Component } from './components/footer4/footer4.component'
   selector: 'app-home',
   standalone: true,
   imports: [
-    TopNavComponent,
+    TopbarComponent,
     HeroComponent,
     TourPackageComponent,
     ActionBoxComponent,
