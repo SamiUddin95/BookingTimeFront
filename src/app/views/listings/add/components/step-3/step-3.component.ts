@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common'
 import { CommonService } from '@/app/core/services/api/common.service'
 import { PropertyFormDataService } from '@/app/core/services/property-form-data.service'
 import { StaysService } from '@/app/core/services/api/stays.service'
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'add-listing-step-3',
@@ -17,6 +18,7 @@ import { StaysService } from '@/app/core/services/api/stays.service'
   styles: ``,
 })
 export class Step3Component {
+  private sub!: Subscription;
   constructor(
     private app: AppServiceService,
     private router: Router,
@@ -28,11 +30,20 @@ export class Step3Component {
   @Input() stepperInstance?: Stepper
 
   ngOnInit(): void {
+
     this.loadRating()
     const storedData = this.formDataService.getFormData().page3
     if (storedData) {
       this.category = storedData
+    }else{
+      this.category.discount=0;
     }
+    this.sub = this.formDataService.countryChanged$.subscribe((countryId) => {
+      if (countryId) {
+        this.loadCurrencies(countryId);
+      }
+    });
+
   }
   category = {
     currencyId: 0,
@@ -41,12 +52,14 @@ export class Step3Component {
     ratingId: 0,
     policyDesc: '',
   }
-
-  currencies = [
+  loadCurrencies(countryId: any) 
+  {
+    this.commonService.GetCurrencyBycountryId(countryId).subscribe((res) => {
+      this.currencies=res
+    })
+  }
+  currencies:any = [
     { id: 0, name: 'Select Currency' },
-    { id: 1, name: 'USD' },
-    { id: 2, name: 'EURO' },
-    { id: 3, name: 'VND' },
   ]
 
   editorConfig = {
@@ -109,7 +122,7 @@ export class Step3Component {
         if (res.success === true) {
           alert("Successfully Created"); 
           this.formDataService.resetFormData();
-          // this.router.navigate(['listings/added']);
+          // this.router.navigate(['hotels/home']);
         } else {
           alert(res.Message || "An unexpected issue occurred.");
         }
@@ -193,9 +206,6 @@ export class Step3Component {
         }
       })
     }
-
-    console.log('FormData:', formData)
-
     return formData
   }
 }

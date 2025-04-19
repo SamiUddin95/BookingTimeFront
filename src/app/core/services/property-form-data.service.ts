@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-
+import { Subject } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
@@ -9,6 +9,10 @@ export class PropertyFormDataService {
   
   private roomImages: File[] = []; 
   private thumbnail: any; 
+  private countryId: any; 
+
+  private countryChangedSource = new Subject<any>();
+  countryChanged$ = this.countryChangedSource.asObservable();
 
   constructor() {
     this.initializeFormData()
@@ -52,6 +56,15 @@ export class PropertyFormDataService {
 
   getThumbnail(): File | null {
     return this.thumbnail || null;
+  }
+
+  setCountryId(countryId: any) {
+    this.countryId = countryId;
+    this.countryChangedSource.next(countryId);  
+  }
+
+  getCountryId(): any | null {
+    return this.countryId || 0;
   }
 
   // getRoomImage(index: number): File | null {
