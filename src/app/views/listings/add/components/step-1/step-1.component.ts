@@ -71,14 +71,17 @@ export class Step1Component implements OnInit {
     })
   }
 
-  loadCitiesAndStates(countryId: number) {
-    this.commonService.GetCityByCountryId(countryId).subscribe((res)=>{
-      this.cities = res;
-    })
-
+  loadStates(countryId: number) {
     this.commonService.GetStateByCountryId(countryId).subscribe((res)=>{
       this.states = res;
     })
+    this.formDataService.setCountryId(countryId);
+  }
+  loadCities(stateId: number) {
+    this.commonService.GetCityByCountryId(stateId).subscribe((res)=>{
+      this.cities = res;
+    })
+
   }
 
   loadListingTypes() {

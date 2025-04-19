@@ -41,7 +41,8 @@
             <label class="form-label">Is your listing set as a personal or guest use *</label>
             <div class="d-sm-flex">
               <div class="form-check radio-bg-light me-4" *ngFor="let option of guestOptions">
-                <input class="form-check-input" type="radio" name="guestOption" [value]="option.value" [id]="option.id" required [ngClass]="{'is-invalid': !listingForm.guestOption && isSubmitted}" [(ngModel)]="listingForm.guestOption">
+                <input class="form-check-input" type="radio" name="guestOption" [value]="option.value" [id]="option.id" required
+                 [ngClass]="{'is-invalid': !listingForm.guestOption && isSubmitted}" [(ngModel)]="listingForm.guestOption">
                 <label class="form-check-label" [for]="option.id">
                   {{ option.label }}
                 </label>
@@ -84,7 +85,7 @@
           [(ngModel)]="listingForm.countryId"
           required 
           [ngClass]="{'is-invalid': listingForm.countryId == null && isSubmitted}"
-          (ngModelChange)="loadCitiesAndStates($event)"
+          (ngModelChange)="loadStates($event)"
           >
             <option [value]="null" disabled selected>Select Country</option>
             <option *ngFor="let country of countries" [value]="country.countryId">{{ country.countryName }}</option>
@@ -96,7 +97,9 @@
 
         <div class="col-md-6">
           <label class="form-label">State *</label>
-          <select class="form-select js-choice" name="stateId" required [ngClass]="{'is-invalid': listingForm.stateId == null && isSubmitted}" [(ngModel)]="listingForm.stateId">
+          <select class="form-select js-choice" name="stateId" required 
+          (ngModelChange)="loadCities($event)"
+          [ngClass]="{'is-invalid': listingForm.stateId == null && isSubmitted}" [(ngModel)]="listingForm.stateId">
             <option [value]="null" disabled selected>Select State</option>
             <option *ngFor="let state of states" [ngValue]="state.stateId">{{ state.stateName }}</option>
           </select>
