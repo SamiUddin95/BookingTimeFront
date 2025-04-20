@@ -78,7 +78,7 @@ export class Step1Component implements OnInit {
     this.formDataService.setCountryId(countryId);
   }
   loadCities(stateId: number) {
-    this.commonService.GetCityByCountryId(stateId).subscribe((res)=>{
+    this.commonService.GetCityByStateId(stateId).subscribe((res)=>{
       this.cities = res;
     })
 
