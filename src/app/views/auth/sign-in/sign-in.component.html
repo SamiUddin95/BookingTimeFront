@@ -26,7 +26,7 @@
         <label class="form-label">Enter email id</label>
         <input
           type="email"
-          formControlName="email"
+          formControlName="Email"
           class="form-control"
           [ngClass]="{ 'is-invalid': submitted && form['email'].errors }"
         />
@@ -37,7 +37,7 @@
         <label class="form-label">Enter password</label>
         <input
           class="form-control fakepassword"
-          formControlName="password"
+          formControlName="Password"
           [type]="passwordType ? 'password' : 'text'"
           [ngClass]="{ 'is-invalid': submitted && form['password'].errors }"
           id="psw-input"
