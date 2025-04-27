@@ -14,16 +14,25 @@ import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } f
 export class FilterbarComponent implements OnInit{
 
   @Output() hotelFilterEmit = new EventEmitter<any>(); 
+  private commonService = inject(CommonService);
 
   currencyType = currency
   hotelTypes: any;
   ratings:any;
   amenities: any;
+  // meals: any;
+  // facilities: any;
+  // funActivites: any;
+  // policy: any;
+  bedroom: any;
+  bathroom: any;
   
   hotelFilter = {
     details: {
       priceRangeFrom: 0,
       priceRangeTo: 2000,
+      bedrooms: 0,
+      bathrooms: 0,
       ratingId: 0,
       hotelTypes: [] as { hotelTypeId: number }[],
       amenities: [] as { amenitiesId: number }[]
@@ -33,8 +42,51 @@ export class FilterbarComponent implements OnInit{
     }
   };
   
-  private commonService = inject(CommonService);
+meals:any=[
+{Id:1,Name:"Kitchen facility"},
+{Id:2,Name:"Breakfast included"},
+{Id:3,Name:"All meal included"},
+{Id:4,Name:"All-inclusive"},
+{Id:5,Name:"Breakfast and lunch included"},
+{Id:5,Name:"Breakfast and dinner included"}
+]
+facilities:any=[
+{Id:1,Name:"Parking"},
+{Id:2,Name:"Resturent"},
+{Id:3,Name:"Pet friendly"},
+{Id:4,Name:"Room service"},
+{Id:5,Name:"24-hour front desk"}
+]
 
+funActivites:any=[
+{Id:1,Name:"Beach"},
+{Id:2,Name:"Hiking"},
+{Id:3,Name:"Cycling"},
+{Id:4,Name:"Golf course"},
+{Id:5,Name:"Fishing"}
+]
+policy:any=[
+{Id:1,Name:"Free cancellation"},
+{Id:2,Name:"Book without credit card"}
+]
+
+  
+
+  increase(type: string) {
+    if (type === 'bedrooms') {
+      this.hotelFilter.details.bedrooms++;
+    } else if (type === 'bathrooms') {
+      this.hotelFilter.details.bathrooms++;
+    }
+  }
+  
+  decrease(type: string) {
+    if (type === 'bedrooms' && this.hotelFilter.details.bedrooms > 0) {
+      this.hotelFilter.details.bedrooms--;
+    } else if (type === 'bathrooms' && this.hotelFilter.details.bathrooms > 0) {
+      this.hotelFilter.details.bathrooms--;
+    }
+  }
   ngOnInit(): void {
       this.loadHotelTypes();
       this.loadRatings();
@@ -95,6 +147,8 @@ export class FilterbarComponent implements OnInit{
       details: {
         priceRangeFrom: 0,
         priceRangeTo: 2000,
+        bedrooms: 0,
+        bathrooms: 0,
         ratingId: 0,
         hotelTypes: [],
         amenities: []
