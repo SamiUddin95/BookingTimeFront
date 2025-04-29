@@ -9,6 +9,7 @@ import { CommonService } from '@/app/core/services/api/common.service'
 import { PropertyFormDataService } from '@/app/core/services/property-form-data.service'
 import { StaysService } from '@/app/core/services/api/stays.service'
 import { Subscription } from 'rxjs';
+import { ToastrService } from 'ngx-toastr'
 
 @Component({
   selector: 'add-listing-step-3',
@@ -24,7 +25,8 @@ export class Step3Component {
     private router: Router,
     private commonService: CommonService,
     private api: StaysService,
-    private formDataService: PropertyFormDataService
+    private formDataService: PropertyFormDataService,
+    private toastr: ToastrService
   ) {}
 
   @Input() stepperInstance?: Stepper
@@ -120,11 +122,11 @@ export class Step3Component {
     this.api.AddListingProperty(formData).subscribe({
       next: (res) => {
         if (res.success === true) {
-          alert("Successfully Created"); 
+          this.toastr.success("Property registered successfully!",'Property Registration Success');
           this.formDataService.resetFormData();
-          // this.router.navigate(['hotels/home']);
+          this.router.navigate(['hotels/home']);
         } else {
-          alert(res.Message || "An unexpected issue occurred.");
+          this.toastr.error(res.Message || "An unexpected issue occurred.");
         }
         console.log("Response:", res);
       },
