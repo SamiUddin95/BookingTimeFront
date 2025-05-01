@@ -29,7 +29,6 @@ export class StaysService extends BaseHttpService{
       return this.get(`GetFeaturedHotel`);
     }
 
-
     AddListingProperty(reqBody:any):Observable<any> {
       return this.post(`AddListingProperty`,reqBody);
     }
@@ -37,4 +36,35 @@ export class StaysService extends BaseHttpService{
     GetListingPropertyList(reqBody: any):Observable<any> {
       return this.post('GetListingPropertyList', reqBody)
     }
+
+
+    GetAllBeachAccessList():Observable<any> {
+      return this.get(`GetAllBeachAccessList`);
+    }
+    GetAllEntirePlacesList():Observable<any> {
+      return this.get(`GetAllEntirePlacesList`);
+    
+    }
+    GetAllFacilityList():Observable<any> {
+      return this.get(`GetAllFacilityList`);
+    }
+    GetAllFunThingsToDoList():Observable<any> {
+      return this.get(`GetAllFunThingsToDoList`);
+    }
+    GetAllPopularFiltersList():Observable<any> {
+      return this.get(`GetAllPopularFiltersList`);
+    }
+    GetAllRoomAccessList():Observable<any> {
+      return this.get(`GetAllRoomAccessList`);
+    }
+    GetAllRoomFacilityList():Observable<any> {
+      return this.get(`GetAllRoomFacilityList`);
+    }
+    GetAllPropertyAccessibilitiesList():Observable<any> {
+      return this.get(`GetAllPropertyAccessibilitiesList`);
+    }
+    GetAllPropertyTypeList():Observable<any> {
+      return this.get(`GetAllPropertyTypeList`);
+    }
+
 }

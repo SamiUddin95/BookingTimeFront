@@ -9,14 +9,19 @@
           <i class="bi bi-geo-alt fs-4 me-2 mt-3"></i>
 
           <div class="flex-grow-1">
-            <label class="form-label bg-white ">Location</label>
-            <select selectFormInput data-search-enabled="true">
+            <label class="form-label bg-white">Location</label>
+            <select 
+              class="form-select js-choice" 
+              [(ngModel)]="hotelFilter.details.cityId" 
+              name="city" 
+              data-search-enabled="true">
               <option value="-1" disabled selected>Select location</option>
-              <option>San Jacinto, USA</option>
-              <option>North Dakota, Canada</option>
-              <option>West Virginia, Paris</option>
+              <option *ngFor="let city of cities" [value]="city.id">
+                {{ city.name }}
+              </option>
             </select>
           </div>
+          
         </div>
       </div>
 

@@ -1,8 +1,9 @@
 import { currency } from '@/app/store'
-import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core'
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core'
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap'
 import { CommonService } from '@/app/core/services/api/common.service'
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms'
+import { StaysService } from '@/app/core/services/api/stays.service'
 
 @Component({
   selector: 'list-filterbar',
@@ -13,32 +14,56 @@ import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } f
 })
 export class FilterbarComponent implements OnInit{
 
+
   @Output() hotelFilterEmit = new EventEmitter<any>(); 
 
   currencyType = currency
   hotelTypes: any;
   ratings:any;
   amenities: any;
-  
+  beaches: any[] = [];
+  entirePlaces: any[] = [];
+  facility: any[] = [];
+  funThings: any[] = [];
+  popular: any[] = [];
+  roomAccess: any[] = [];
+  roomFacility: any[] = [];
+  propertyAccess: any[] = [];
+  propertyType: any[] = [];
+  additionalInfoList: any[] = [];
+
+
   hotelFilter = {
     details: {
       priceRangeFrom: 0,
       priceRangeTo: 2000,
       ratingId: 0,
       hotelTypes: [] as { hotelTypeId: number }[],
-      amenities: [] as { amenitiesId: number }[]
+      amenities: [] as { amenitiesId: number }[],
+      BeachAccess: [] as { id: number }[],
+      EntirePlaces: [] as { id: number }[],
+      Facilities: [] as { id: number }[],
+      FunThingsToDo: [] as { id: number }[],
+      PopularFilter: [] as { id: number }[],
+      PropertyType: [] as { id: number }[],
+      PropertyAccessibility: [] as { id: number }[],
+      roomAccessibility: [] as { id: number }[],
+      roomFacilities: [] as { id: number }[]
     },
     paginationInfo: {
-
+      page: 0,
+      rowsPerPage: 10
     }
   };
   
   private commonService = inject(CommonService);
+  private propertyService = inject(StaysService);
 
   ngOnInit(): void {
       this.loadHotelTypes();
       this.loadRatings();
       this.loadAmenities();
+      this.loadDropDowns();
   }
 
   loadHotelTypes() {
@@ -59,6 +84,50 @@ export class FilterbarComponent implements OnInit{
     }))
   }
 
+  loadDropDowns() {
+
+    this.propertyService.GetAllBeachAccessList().subscribe((res) => {
+      this.beaches = res;
+    });
+
+    this.propertyService.GetAllEntirePlacesList().subscribe((res) => {
+      this.entirePlaces = res;
+    });
+
+    this.propertyService.GetAllFacilityList().subscribe((res) => {
+      this.facility = res;
+    });
+
+    this.propertyService.GetAllFunThingsToDoList().subscribe((res) => {
+      this.funThings = res;
+    });
+
+    this.propertyService.GetAllPopularFiltersList().subscribe((res) => {
+      this.popular = res;
+    });
+
+    this.propertyService.GetAllPropertyAccessibilitiesList().subscribe((res) => {
+      this.propertyAccess = res;
+    });
+
+    this.propertyService.GetAllPropertyTypeList().subscribe((res) => {
+      this.propertyType = res;
+    });
+
+    this.propertyService.GetAllRoomAccessList().subscribe((res) => {
+      this.roomAccess = res;
+    });
+
+    this.propertyService.GetAllRoomFacilityList().subscribe((res) => {
+      this.roomFacility = res;
+    });
+
+    this.commonService.GetAllAdditionalInfoList().subscribe((res) => {
+      this.additionalInfoList = res
+    })
+  }
+
+  
   onHotelTypeChange(hotelTypeId: number, event: Event) {
     const isChecked = (event.target as HTMLInputElement).checked;
     if (isChecked) {
@@ -90,6 +159,11 @@ export class FilterbarComponent implements OnInit{
     }
   }
 
+  isItemChecked(list: any[], id: any): boolean {
+    return list?.some(x => x === id || x.id === id);
+  }
+  
+
   clearAll() {
     this.hotelFilter = {
       details: {
@@ -97,7 +171,16 @@ export class FilterbarComponent implements OnInit{
         priceRangeTo: 2000,
         ratingId: 0,
         hotelTypes: [],
-        amenities: []
+        amenities: [],
+        BeachAccess:[],
+        EntirePlaces:[],
+        FunThingsToDo:[],
+        Facilities:[],
+        PopularFilter:[],
+        PropertyType:[],
+        PropertyAccessibility:[],
+        roomAccessibility:[],
+        roomFacilities:[],
       },
       paginationInfo: {
         page: 0,

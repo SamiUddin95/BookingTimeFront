@@ -1,6 +1,9 @@
 import { DateFormInputDirective } from '@/app/components/form/date-form-input.directive'
 import { SelectFormInputDirective } from '@/app/components/form/select-form-input.directive'
-import { Component } from '@angular/core'
+import { CommonService } from '@/app/core/services/api/common.service'
+import { CommonModule } from '@angular/common'
+import { Component, inject, OnInit } from '@angular/core'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap'
 
 type AvailabilityFormType = {
@@ -17,13 +20,53 @@ type AvailabilityFormType = {
   selector: 'home-availability-filter',
   standalone: true,
   imports: [
-    SelectFormInputDirective,
     DateFormInputDirective,
     NgbDropdownModule,
+    FormsModule,
+    CommonModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './availability-filter.component.html',
 })
-export class AvailabilityFilterComponent {
+export class AvailabilityFilterComponent implements OnInit {
+ 
+  ngOnInit(): void {
+    this.loadCities()
+  }
+
+  private commonService = inject(CommonService)
+
+  hotelFilter = {
+    details: {
+      cityId: 0,
+      priceRangeFrom: 0,
+      priceRangeTo: 2000,
+      ratingId: 0,
+      hotelTypes: [] as { hotelTypeId: number }[],
+      amenities: [] as { amenitiesId: number }[],
+      BeachAccess: [] as { id: number }[],
+      EntirePlaces: [] as { id: number }[],
+      Facilities: [] as { id: number }[],
+      FunThingsToDo: [] as { id: number }[],
+      PopularFilter: [] as { id: number }[],
+      PropertyType: [] as { id: number }[],
+      PropertyAccessibility: [] as { id: number }[],
+      roomAccessibility: [] as { id: number }[],
+      roomFacilities: [] as { id: number }[],
+    },
+    paginationInfo: {
+      page: 0,
+      rowsPerPage: 10,
+    },
+  }
+  cities: any[] = []
+
+  loadCities() {
+    this.commonService.GetCityAndCountryList().subscribe((res) => {
+      this.cities = res
+    })
+  }
+
   formValue: AvailabilityFormType = {
     location: 'San Jacinto, USA',
     stayFor: [new Date(), new Date(Date.now() + 5 * 24 * 60 * 60 * 1000)],

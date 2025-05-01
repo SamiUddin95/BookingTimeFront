@@ -1,6 +1,8 @@
 import { DateFormInputDirective } from '@/app/components/form/date-form-input.directive'
 import { SelectFormInputDirective } from '@/app/components/form/select-form-input.directive'
-import { Component } from '@angular/core'
+import { CommonService } from '@/app/core/services/api/common.service'
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap'
 
 type AvailabilityFormType = {
@@ -17,14 +19,17 @@ type AvailabilityFormType = {
   selector: 'list-banner',
   standalone: true,
   imports: [
-    SelectFormInputDirective,
+    // SelectFormInputDirective,
     DateFormInputDirective,
     NgbDropdownModule,
+    FormsModule,
+     ReactiveFormsModule
   ],
   templateUrl: './banner.component.html',
   styles: ``,
 })
 export class BannerComponent {
+  
   formValue: AvailabilityFormType = {
     location: 'San Jacinto, USA',
     stayFor: [new Date(), new Date(Date.now() + 5 * 24 * 60 * 60 * 1000)],

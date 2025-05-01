@@ -46,22 +46,22 @@ export class ListComponent implements OnInit {
 
   searchHotel(e: Event) {
     console.log(e)
-    this.staysService.GetListingPropertyList(e).subscribe((res=> {
-      this.hotelList = res;
-      console.log(res)
-    }))
+    // this.staysService.GetListingPropertyList(e).subscribe((res=> {
+    //   this.hotelList = res;
+    //   console.log(res)
+    // }))
   }
 
   ngOnInit(): void {
       this.loadHotels();
   }
 
-  hotelList: any = {};
+  // hotelList: any = {};
 
   loadHotels() {
-    this.staysService.GetListingPropertyList(this.hotelFilter).subscribe((res)=> {
-      this.hotelList = res;
-      console.log(res)
-    })
+    // this.staysService.GetListingPropertyList(this.hotelFilter).subscribe((res)=> {
+    //   this.hotelList = res;
+    //   console.log(res)
+    // })
   }
 }

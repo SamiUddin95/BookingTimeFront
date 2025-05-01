@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms'
 import Stepper from 'bs-stepper'
 import { ListingBasicInfo } from '@/app/core/models/add-listing-form.model';
 import { PropertyFormDataService } from '@/app/core/services/property-form-data.service';
+import { StaysService } from '@/app/core/services/api/stays.service';
 
 @Component({
   selector: 'add-listing-step-1',
@@ -56,6 +57,7 @@ export class Step1Component implements OnInit {
 
   private commonService = inject(CommonService);
 
+
   //category
   listingTypes: any[] = [];
   guestOptions: any[] = [];
@@ -71,14 +73,17 @@ export class Step1Component implements OnInit {
     })
   }
 
-  loadCitiesAndStates(countryId: number) {
-    this.commonService.GetCityByCountryId(countryId).subscribe((res)=>{
-      this.cities = res;
-    })
-
+  loadStates(countryId: number) {
     this.commonService.GetStateByCountryId(countryId).subscribe((res)=>{
       this.states = res;
     })
+    this.formDataService.setCountryId(countryId);
+  }
+  loadCities(stateId: number) {
+    this.commonService.GetCityByStateId(stateId).subscribe((res)=>{
+      this.cities = res;
+    })
+
   }
 
   loadListingTypes() {

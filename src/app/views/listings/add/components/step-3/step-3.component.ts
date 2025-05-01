@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common'
 import { CommonService } from '@/app/core/services/api/common.service'
 import { PropertyFormDataService } from '@/app/core/services/property-form-data.service'
 import { StaysService } from '@/app/core/services/api/stays.service'
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'add-listing-step-3',
@@ -17,6 +18,7 @@ import { StaysService } from '@/app/core/services/api/stays.service'
   styles: ``,
 })
 export class Step3Component {
+  private sub!: Subscription;
   constructor(
     private app: AppServiceService,
     private router: Router,
@@ -28,11 +30,20 @@ export class Step3Component {
   @Input() stepperInstance?: Stepper
 
   ngOnInit(): void {
+
     this.loadRating()
     const storedData = this.formDataService.getFormData().page3
     if (storedData) {
       this.category = storedData
+    }else{
+      this.category.discount=0;
     }
+    this.sub = this.formDataService.countryChanged$.subscribe((countryId) => {
+      if (countryId) {
+        this.loadCurrencies(countryId);
+      }
+    });
+
   }
   category = {
     currencyId: 0,
@@ -41,12 +52,14 @@ export class Step3Component {
     ratingId: 0,
     policyDesc: '',
   }
-
-  currencies = [
+  loadCurrencies(countryId: any) 
+  {
+    this.commonService.GetCurrencyBycountryId(countryId).subscribe((res) => {
+      this.currencies=res
+    })
+  }
+  currencies:any = [
     { id: 0, name: 'Select Currency' },
-    { id: 1, name: 'USD' },
-    { id: 2, name: 'EURO' },
-    { id: 3, name: 'VND' },
   ]
 
   editorConfig = {
@@ -103,13 +116,16 @@ export class Step3Component {
     if (!this.isFormValid) return
     this.formDataService.updateFormData('page3', this.category)
     const formData = this.prepareFormData()
-    console.log(this.category, 'data')
+    // for (const [key, value] of (formData as any).entries()) {
+    //   console.log(`${key}:`, value);
+    // }
+    // console.log(this.category, 'data')
     this.api.AddListingProperty(formData).subscribe({
       next: (res) => {
         if (res.success === true) {
           alert("Successfully Created"); 
           this.formDataService.resetFormData();
-          // this.router.navigate(['listings/added']);
+          this.router.navigate(['hotels/list']);
         } else {
           alert(res.Message || "An unexpected issue occurred.");
         }
@@ -171,31 +187,87 @@ export class Step3Component {
       formData.append('Thumbnail', thumbnailFile, thumbnailFile.name)
     }
 
-    if (Array.isArray(formDataJson.page2?.amenities)) {
+    if (Array.isArray(formDataJson.page2?.amenities)) {//
       formDataJson.page2.amenities.forEach((amenityId: any, index: number) => {
         formData.append(`Amenities[${index}].AmenitiesId`, String(amenityId))
       })
     }
+debugger
+    if (Array.isArray(formDataJson.page2?.beaches)) {
+      formDataJson.page2.beaches.forEach((beach: any, index: number) => {
+        formData.append(`BeachAccess[${index}].id`, String(beach.id));
+      });
+    }
+  
+    // Map entirePlaces
+    if (Array.isArray(formDataJson.page2?.entirePlaces)) {//
+      formDataJson.page2.entirePlaces.forEach((place: any, index: number) => {
+        formData.append(`EntirePlaces[${index}].id`, String(place.id));
+      });
+    }
+  
+    // Map facilities
+    if (Array.isArray(formDataJson.page2?.facility)) {//
+      formDataJson.page2.facility.forEach((facility: any, index: number) => {
+        formData.append(`Facilities[${index}].id`, String(facility.id));
+      });
+    }
+  
+    // Map funThingsToDo
+    if (Array.isArray(formDataJson.page2?.funthing)) {//
+      formDataJson.page2.funthing.forEach((thing: any, index: number) => {
+        formData.append(`FunThingsToDo[${index}].id`, String(thing.id));
+      });
+    }
+  
+    // Map popularFilter
+    if (Array.isArray(formDataJson.page2?.popular)) {//
+      formDataJson.page2.popular.forEach((filter: any, index: number) => {
+        formData.append(`PopularFilter[${index}].id`, String(filter.id));
+      });
+    }
+  
+    // Map propertyType
+    if (Array.isArray(formDataJson.page2?.propertyType)) {//
+      formDataJson.page2.propertyType.forEach((type: any, index: number) => {
+        formData.append(`PropertyType[${index}].id`, String(type.id));
+      });
+    }
+  
+    // Map propertyAccessibility
+    if (Array.isArray(formDataJson.page2?.propertyAccess)) {//
+      formDataJson.page2.propertyAccess.forEach((accessibility: any, index: number) => {
+        formData.append(`PropertyAccessibility[${index}].id`, String(accessibility.id));
+      });
+    }
 
     if (Array.isArray(formDataJson.page2?.rooms)) {
-      formDataJson.page2.rooms.forEach((room: any, index: number) => {
-        formData.append(`Rooms[${index}].name`, room.roomName?.trim() || '')
-        formData.append(`Rooms[${index}].price`, String(room.roomPrice))
-        formData.append(`Rooms[${index}].discount`, String(room.discount))
+      formDataJson.page2.rooms.forEach((room: any, roomIndex: number) => {
+        formData.append(`Rooms[${roomIndex}].name`, room.roomName?.trim() || '')
+        formData.append(`Rooms[${roomIndex}].price`, String(room.roomPrice))
+        formData.append(`Rooms[${roomIndex}].discount`, String(room.discount))
         formData.append(
-          `Rooms[${index}].additionalInfoId`,
+          `Rooms[${roomIndex}].additionalInfoId`,
           room.additionalInfo?.trim() || ''
         )
-
-        const roomImage = this.formDataService.getRoomImage(index)
+        if (Array.isArray(room.roomAccessibility)) {
+          room.roomAccessibility.forEach((access: any, index: number) => {//
+            formData.append(`Rooms[${roomIndex}].roomAccessibility[${index}].id`, String(access.id));
+          });
+        }
+  
+        // Map room facilities
+        if (Array.isArray(room.roomFacilities)) {
+          room.roomFacilities.forEach((facility: any, index: number) => {//
+            formData.append(`Rooms[${roomIndex}].roomFacilities[${index}].id`, String(facility.id));
+          });
+        }
+        const roomImage = this.formDataService.getRoomImage(roomIndex)
         if (roomImage) {
-          formData.append(`Rooms[${index}].image`, roomImage, roomImage.name)
+          formData.append(`Rooms[${roomIndex}].image`, roomImage, roomImage.name)
         }
       })
     }
-
-    console.log('FormData:', formData)
-
     return formData
   }
 }
