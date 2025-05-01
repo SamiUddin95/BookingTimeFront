@@ -125,7 +125,7 @@ export class Step3Component {
         if (res.success === true) {
           alert("Successfully Created"); 
           this.formDataService.resetFormData();
-          this.router.navigate(['hotels/list']);
+          // this.router.navigate(['hotels/home']);
         } else {
           alert(res.Message || "An unexpected issue occurred.");
         }

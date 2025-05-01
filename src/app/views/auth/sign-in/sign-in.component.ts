@@ -1,16 +1,17 @@
-import { credits, currentYear } from '@/app/store'
-import { login } from '@/app/store/authentication/authentication.actions'
-import { CommonModule } from '@angular/common'
-import { Component, inject } from '@angular/core'
+import { AppServiceService } from '@/app/services/app-service.service';
+import { credits, currentYear } from '@/app/store';
+import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import {
   FormsModule,
   ReactiveFormsModule,
   UntypedFormBuilder,
   Validators,
-  type UntypedFormGroup,
-} from '@angular/forms'
-import { RouterModule } from '@angular/router'
-import { Store } from '@ngrx/store'
+  UntypedFormGroup,
+} from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'auth-sign-in',
@@ -24,38 +25,54 @@ import { Store } from '@ngrx/store'
   `,
 })
 export class SignInComponent {
-  creditsBy = credits
-  currentYear = currentYear
-  signinForm!: UntypedFormGroup
-  submitted: boolean = false
-  passwordType: boolean = true
+  creditsBy = credits;
+  currentYear = currentYear;
+  signinForm!: UntypedFormGroup;
+  submitted: boolean = false;
+  passwordType: boolean = true;
 
-  public fb = inject(UntypedFormBuilder)
-  store = inject(Store)
+  public fb = inject(UntypedFormBuilder);
+  public store = inject(Store);
+  public toastr = inject(ToastrService);
 
-  constructor() {
+  constructor(private app:AppServiceService) {
     this.signinForm = this.fb.group({
-      email: ['user@gmail.com', [Validators.required, Validators.email]],
-      password: ['123456', [Validators.required]],
-    })
+      Email: ['', [Validators.required, Validators.email]],
+      Password: ['', [Validators.required]],
+    });
   }
 
   get form() {
-    return this.signinForm.controls
+    return this.signinForm.controls;
   }
 
   onLogin() {
-    this.submitted = true
+    debugger
+    if (this.signinForm.invalid) {
+      this.submitted = false;
+      return;
+    }
+    const formData = this.signinForm.value;
+    console.log('Sending login form data:', formData);
+    this.app.post('login', formData).subscribe(
+      (res) => {
+        console.log('Login success:', res);
+        if (res.code === 200) {
+          // Success handling here
+        }
+      },
+      (error) => {
+        console.error('Login error:', error);
+      }
+    );
+    this.submitted = true;
     if (this.signinForm.valid) {
-      const email = this.form['email'].value // Get the username from the form
-      const password = this.form['password'].value // Get the password from the form
 
-      // Login Api
-      this.store.dispatch(login({ email: email, password: password }))
     }
   }
+  
 
   changeType() {
-    this.passwordType = !this.passwordType
+    this.passwordType = !this.passwordType;
   }
 }

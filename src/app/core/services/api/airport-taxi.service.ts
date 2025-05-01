@@ -9,7 +9,27 @@ import { RegisterTaxiForm } from "../../models/requestModels/register-airport-ta
 
 export class AirportTaxisService extends BaseHttpService { 
 
-    registerTaxi(reqBody: RegisterTaxiForm): Observable<any> {
-        return this.post('dummyRegisterTaxiRoute', reqBody);
+    registerTaxi(reqBody: any): Observable<any> {
+        const formData = new FormData();
+      
+        Object.keys(reqBody).forEach(key => {
+          if (reqBody[key] !== null) {
+            formData.append(key, reqBody[key] as any);  
+          }
+        });
+      
+        if (reqBody.image) {
+          formData.append('image', reqBody.image);
+        }
+      
+        return this.post('AddAirportTaxiDetail', formData);
+      }
+      
+    
+    GetAllTaxiFleetsizesList(): Observable<any> {
+        return this.get('GetAllTaxiFleetsizesList');
+    }
+    GetAllTaxiVechiletypesList(): Observable<any> {
+        return this.get('GetAllTaxiVechiletypesList');
     }
 }

@@ -9,6 +9,8 @@ import { AgentDetailComponent } from './agents/agent-detail/agent-detail.compone
 import { ReviewsComponent } from './reviews/reviews.component'
 import { EarningsComponent } from './earnings/earnings.component'
 import { SettingsComponent } from './settings/settings.component'
+import { UserListsComponent } from './users/list/list.component'
+import { UserDetailsComponent } from './users/detail/detail.component'
 
 export const ADMIN_ROUTES: Route[] = [
   {
@@ -30,6 +32,16 @@ export const ADMIN_ROUTES: Route[] = [
     path: 'guests/list',
     component: ListsComponent,
     data: { title: 'Admin Guests List' },
+  },
+  {
+    path: 'users/list',
+    component: UserListsComponent,
+    data: { title: 'Admin Users List' },
+  },
+  {
+    path: 'users/detail',
+    component: UserDetailsComponent,
+    data: { title: 'Admin Booking Detail' },
   },
   {
     path: 'guests/detail',

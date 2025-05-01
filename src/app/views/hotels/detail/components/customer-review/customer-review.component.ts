@@ -26,12 +26,12 @@ export class CustomerReviewComponent implements OnInit {
     this.loadReviews()
   }
 
-  constructor(private route: ActivatedRoute, private fb: FormBuilder) { 
+  constructor(private route: ActivatedRoute, private fb: FormBuilder) {
     this.reviewForm = this.fb.group({
-      propertyId: [this.getPropertyIdFromParameter()], 
+      propertyId: [this.getPropertyIdFromParameter()],
       userId: [10018], //currently hardcoded, needs to be fetched from the session
-      ratingId: ['5'],     
-      review: ['']      
+      ratingId: ['5'],
+      review: ['']
     });
   }
 
@@ -48,7 +48,7 @@ export class CustomerReviewComponent implements OnInit {
       console.log(res);
     }))
 
-    this.staysService.GetPropertyRatingPercentage(this.getPropertyIdFromParameter()).subscribe((res=> {
+    this.staysService.GetPropertyRatingPercentage(this.getPropertyIdFromParameter()).subscribe((res => {
       this.reviewProportions = res;
       console.log(res);
     }))

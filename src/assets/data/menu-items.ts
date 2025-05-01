@@ -254,6 +254,24 @@ export const ADMIN_MENU_ITEMS: MenuItemType[] = [
       },
     ],
   },
+  {
+    key: 'users',
+    label: 'Users',
+    children: [
+      {
+        key: 'users-list',
+        label: 'User List',
+        url: '/admin/users/list',
+        parentKey: 'users',
+      },
+      {
+        key: 'users-detail',
+        label: 'User Detail',
+        url: '/admin/user/user-detail',
+        parentKey: 'users',
+      },
+    ],
+  },
 ]
 
 export const HELP_MENU_ITEMS: MenuItemType[] = [

@@ -1,16 +1,21 @@
 export interface RegisterTaxiForm {
-    countryId: number,
+    countryId: number, // Fixed from string to number
     stateId: number,
     cityId: number,
-    airportName: string,
-
+    operatingAirport: string,
     firstName: string,
     lastName: string,
     email: string,
-    contactNo: string,
-
-    maxBookingsPerDay: number,
-    fleetSizeId: number,
-    vehicleTypeIds: string //comma seperated ids
-
+    contactNumber: string, // Changed from contactNo to match C# model
+    bookingPerDay: number,
+    website: string,
+    capacity: number,
+    basePrice: number,
+    currency: string,
+    availabilityStatus: string | null,
+    description: string | null,
+    image: File | null, // Matches C# IFormFile
+    fleetSize: number,
+    status: string,
+    vehicleType: string // Comma-separated IDs
 }
