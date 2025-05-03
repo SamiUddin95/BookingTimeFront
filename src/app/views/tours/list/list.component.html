@@ -1,0 +1,123 @@
+<div class="header-wrapper-hotel-list d-flex justify-content-between flex-column">
+  <top-nav-header [activeTab]="'Stays'" />
+
+  <div class="container mb-n4" style="z-index: 9999;">
+    <home-availability-filter />
+  </div>
+
+</div>
+
+<main>
+
+  <section class="pt-7 mt-n3 card">
+    <div class="container">
+
+      <div class="row">
+        <aside class="col-xl-4 col-xxl-3">
+          <div class="offcanvas-xl offcanvas-end" tabindex="-1" id="offcanvasSidebar"
+            aria-labelledby="offcanvasSidebarLabel">
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="offcanvasSidebarLabel">Advance Filters</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#offcanvasSidebar"
+                aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body flex-column p-3 p-xl-0">
+              <form class="rounded-3 shadow">
+                <div class="card card-body rounded-0 rounded-top p-4">
+                  <h6 class="mb-2">Locations</h6>
+
+                  <div class="col-12">
+
+                    @for (item of locations; track $index) {
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" [value]="item.id" [id]="item.cityName" />
+                      <label class="form-check-label" [for]="item.cityName">{{item.cityName}}</label>
+                      <span>  ({{item.attractionCount}})</span>
+                    </div>
+                    }
+                  </div>
+
+                  <h6 class="mt-4 mb-2">Categories</h6>
+
+                  <div class="col-12">
+
+                    @for (item of categories; track $index) {
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" [value]="item.id" [id]="item.name" />
+                      <label class="form-check-label" [for]="item.name">{{item.name}}</label>
+                      <span>  ({{item.attractionCount}})</span>
+                    </div>
+                    }
+                  </div>
+                </div>
+
+
+
+                <div class="d-flex justify-content-between p-2 p-xl-0 mt-xl-4">
+                  <button class="btn btn-link p-0 mb-0" >Clear all</button>
+                  <button class="btn btn-primary mb-0">Filter Result</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </aside>
+
+        <div class="col-xl-8 col-xxl-9">
+          <div class="vstack gap-4">
+            @for (item of attractions; track $index) {
+            <div class="rounded shadow">
+              <div class="row g-0">
+
+                <div class="col-md-4">
+                  <div class="m-1">
+                    <img [src]="item.imageUrls[0]" class="card-img" alt="">
+                  </div>
+                </div>
+
+                <div class="col-md-8">
+                  <div class="card-body py-md-2 d-flex flex-column h-100 position-relative">
+
+                    <h5 class="card-title mb-1">
+                      {{ item.title }}
+                    </h5>
+                    <small><i class="bi bi-geo-alt me-2"></i>{{ item.cityName }}</small>
+
+                    <div>
+                      <p class="m-0 text-dark">{{item.shortDescription}}</p>
+                    </div>
+
+                    <div class="mt-2 d-flex align-items-start">
+
+                      <i class="fa-solid fa-star text-warning me-1">
+                      </i>
+                      <p class="m-0 fw-bold text-dark">{{item.rating}}</p>
+                    </div>
+
+                    <div class="d-flex flex-column align-items-end mt-3 mt-md-auto">
+                      <h5 class="fw-bold mb-2">
+                        From ${{ item.price }}
+                      </h5>
+                      <a [routerLink]="['/tours/detail', item.id]" class="btn btn-sm btn-dark mb-0">View Details</a>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+            }
+
+            <nav class="d-flex justify-content-center" aria-label="navigation">
+              <ngb-pagination class="pagination pagination-primary-soft d-inline-block d-md-flex rounded mb-0"
+                [page]="2" [collectionSize]="60" [maxSize]="2">
+                <ng-template ngbPaginationPrevious><i class="fa-solid fa-angle-left"></i></ng-template>
+                <ng-template ngbPaginationNext><i class="fa-solid fa-angle-right"></i></ng-template>
+              </ngb-pagination>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+<home-footer1 />
