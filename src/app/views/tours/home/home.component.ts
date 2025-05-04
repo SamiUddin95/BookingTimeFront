@@ -6,6 +6,8 @@ import { ActionBoxComponent } from './components/action-box/action-box.component
 import { TopCategoryComponent } from './components/top-category/top-category.component'
 import { TourStoriesComponent } from './components/tour-stories/tour-stories.component'
 import { Footer4Component } from './components/footer4/footer4.component'
+import { FooterComponent } from '@/app/layouts/user-layout/components/footer/footer.component'
+import { Footer1Component } from '../../hotels/home/components/footer1/footer1.component'         
 
 @Component({
   selector: 'app-home',
@@ -18,6 +20,7 @@ import { Footer4Component } from './components/footer4/footer4.component'
     TopCategoryComponent,
     TourStoriesComponent,
     Footer4Component,
+    Footer1Component
   ],
   templateUrl: './home.component.html',
   styles: ``,

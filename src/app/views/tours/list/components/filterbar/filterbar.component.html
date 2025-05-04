@@ -1,0 +1,232 @@
+<div class="offcanvas-xl offcanvas-end" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasSidebarLabel">Advance Filters</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#offcanvasSidebar"
+      aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body flex-column p-3 p-xl-0">
+    <form class="rounded-3 shadow">
+      <div class="card card-body rounded-0 rounded-top p-4">
+        <h6 class="mb-2">Hotel Type</h6>
+
+        <div class="col-12">
+
+          @for (item of hotelTypes; track $index) {
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" [value]="item.id" [id]="item.name"
+              (change)="onHotelTypeChange(item.id, $event)" />
+            <label class="form-check-label" [for]="item.name">{{item.name}}</label>
+          </div>
+          }
+        </div>
+      </div>
+
+      <hr class="my-0" />
+
+      <div class="card card-body rounded-0 p-4">
+        <h6 class="mb-2">Price range ({{ currencyType }})</h6>
+
+        <div class="col-12">
+          <label for="priceRangeMin">Minimum: &nbsp;</label>
+          <output id="minPriceDisplay">0</output> {{ currencyType }}
+          <input type="range" class="form-range" id="priceRangeMin" min="0" max="2000" step="100"
+            oninput="minPriceDisplay.value = this.value" [(ngModel)]="hotelFilter.details.priceRangeFrom"
+            name="priceRangeMin" />
+
+          <label for="priceRangeMax">Maximum: &nbsp; </label>
+          <output id="maxPriceDisplay">2000</output> {{ currencyType }}
+          <input type="range" class="form-range" id="priceRangeMax" min="2000" max="5000" step="100"
+            oninput="maxPriceDisplay.value = this.value" [(ngModel)]="hotelFilter.details.priceRangeTo"
+            name="priceRangeMax" />
+        </div>
+      </div>
+
+      <hr class="my-0" />
+
+      <div class="card card-body rounded-0 p-4">
+        <h6 class="mb-2">Rating</h6>
+
+        <ul class="list-inline mb-0 g-3">
+
+          @for (item of ratings; track $index) {
+          <li class="list-inline-item mb-0">
+            <input type="checkbox" class="btn-check" [value]="item.id" [id]="item.ratings"
+              (change)="onRatingChange(item.id, $event)" />
+            <label class="btn btn-sm btn-light btn-primary-soft-check" [for]="item.ratings">
+              {{item.ratings}} <i class="bi bi-star-fill"></i>
+            </label>
+          </li>
+          }
+        </ul>
+      </div>
+
+      <hr class="my-0" />
+
+      <div class="card card-body rounded-0 rounded-bottom p-4">
+        <h6 class="mb-2">Amenities</h6>
+
+        <div class="col-12">
+          @for(item of amenities; track $index) {
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" [value]="item.id" [id]="item.amenities"
+              (change)="onAmenityChange(item.id, $event)" />
+            <label class="form-check-label" [for]="item.amenities">{{item.amenities}}</label>
+          </div>
+          }
+        </div>
+      </div>
+
+      <hr class="my-0" />
+
+      <div class="card card-body rounded-0 rounded-bottom p-4">
+        <h6 class="mb-2">Beach Plase</h6>
+
+        <div class="col-12">
+          @for(item of beaches; track $index) {
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" [value]="item.id" [id]="item.name"
+              (change)="onAmenityChange(item.id, $event)" />
+            <label class="form-check-label" [for]="item.name">{{item.name}}</label>
+          </div>
+          }
+        </div>
+      </div>
+
+      <hr class="my-0" />
+
+      <div class="card card-body rounded-0 rounded-bottom p-4">
+        <h6 class="mb-2">Entire Places</h6>
+
+        <div class="col-12">
+          @for(item of entirePlaces; track $index) {
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" [value]="item.id" [id]="item.name"
+              (change)="onAmenityChange(item.id, $event)" />
+            <label class="form-check-label" [for]="item.name">{{item.name}}</label>
+          </div>
+          }
+        </div>
+      </div>
+
+      <hr class="my-0" />
+
+      <div class="card card-body rounded-0 rounded-bottom p-4">
+        <h6 class="mb-2">Facilities</h6>
+
+        <div class="col-12">
+          @for(item of facility; track $index) {
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" [value]="item.id" [id]="item.name"
+              (change)="onAmenityChange(item.id, $event)" />
+            <label class="form-check-label" [for]="item.name">{{item.name}}</label>
+          </div>
+          }
+        </div>
+      </div>
+
+      <hr class="my-0" />
+
+      <div class="card card-body rounded-0 rounded-bottom p-4">
+        <h6 class="mb-2">Fun Things To Do</h6>
+
+        <div class="col-12">
+          @for(item of funThings; track $index) {
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" [value]="item.id" [id]="item.name"
+              (change)="onAmenityChange(item.id, $event)" />
+            <label class="form-check-label" [for]="item.name">{{item.name}}</label>
+          </div>
+          }
+        </div>
+      </div>
+
+      <hr class="my-0" />
+
+      <div class="card card-body rounded-0 rounded-bottom p-4">
+        <h6 class="mb-2">Popular Filters</h6>
+
+        <div class="col-12">
+          @for(item of popular; track $index) {
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" [value]="item.id" [id]="item.name"
+              (change)="onAmenityChange(item.id, $event)" />
+            <label class="form-check-label" [for]="item.name">{{item.name}}</label>
+          </div>
+          }
+        </div>
+      </div>
+
+      <hr class="my-0" />
+
+      <div class="card card-body rounded-0 rounded-bottom p-4">
+        <h6 class="mb-2">Property Type</h6>
+
+        <div class="col-12">
+          @for(item of propertyType; track $index) {
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" [value]="item.id" [id]="item.name"
+              (change)="onAmenityChange(item.id, $event)" />
+            <label class="form-check-label" [for]="item.name">{{item.name}}</label>
+          </div>
+          }
+        </div>
+      </div>
+
+      <hr class="my-0" />
+
+      <div class="card card-body rounded-0 rounded-bottom p-4">
+        <h6 class="mb-2">Property Accessibility</h6>
+
+        <div class="col-12">
+          @for(item of propertyAccess; track $index) {
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" [value]="item.id" [id]="item.name"
+              (change)="onAmenityChange(item.id, $event)" />
+            <label class="form-check-label" [for]="item.name">{{item.name}}</label>
+          </div>
+          }
+        </div>
+      </div>
+
+      <hr class="my-0" />
+
+      <div class="card card-body rounded-0 rounded-bottom p-4">
+        <h6 class="mb-2">Room Accessibility</h6>
+
+        <div class="col-12">
+          @for(item of roomAccess; track $index) {
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" [value]="item.id" [id]="item.name"
+              (change)="onAmenityChange(item.id, $event)" />
+            <label class="form-check-label" [for]="item.name">{{item.name}}</label>
+          </div>
+          }
+        </div>
+      </div>
+
+      <hr class="my-0" />
+
+      <div class="card card-body rounded-0 rounded-bottom p-4">
+        <h6 class="mb-2">Room Facilities</h6>
+
+        <div class="col-12">
+          @for(item of roomFacility; track $index) {
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" [value]="item.id" [id]="item.name"
+              (change)="onAmenityChange(item.id, $event)" />
+            <label class="form-check-label" [for]="item.name">{{item.name}}</label>
+          </div>
+          }
+        </div>
+      </div>
+
+    
+      
+    </form>
+  </div>
+
+  <div class="d-flex justify-content-between p-2 p-xl-0 mt-xl-4">
+    <button class="btn btn-link p-0 mb-0" (click)="clearAll()">Clear all</button>
+    <button class="btn btn-primary mb-0" (click)="applyFilter()">Filter Result</button>
+  </div>
+</div>

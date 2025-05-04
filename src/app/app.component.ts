@@ -11,11 +11,12 @@ import {
 import { BackToTopComponent } from './components/back-to-top.component'
 import { NgProgressComponent, NgProgressModule } from 'ngx-progressbar'
 import { TitleService } from './core/services/title.service'
+import { LoaderComponent } from "./components/loader/loader.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, BackToTopComponent, NgProgressModule],
+  imports: [RouterOutlet, BackToTopComponent, NgProgressModule, LoaderComponent],
   templateUrl: './app.component.html',
 })
 export class AppComponent implements OnInit {
