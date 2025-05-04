@@ -11,6 +11,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router'
 import { TopNavHeaderComponent } from '../../../components/top-nav-header/top-nav-header.component'
 import { AvailabilityFilterComponent } from '../home/components/availability-filter/availability-filter.component'
 import { Footer1Component } from '../../hotels/home/components/footer1/footer1.component'
+import { HeroComponent } from '../home/components/hero/hero.component'
 
 import { AttractionService } from '@/app/core/services/api/attraction.service'
 
@@ -36,7 +37,8 @@ import {
     AvailabilityFilterComponent,
     NgbDropdownModule,
     NgbPaginationModule,
-    NgbRatingModule
+    NgbRatingModule,
+    HeroComponent
   ],
   templateUrl: './list.component.html',
   styles: ``,
@@ -47,18 +49,12 @@ export class ListComponent implements OnInit {
   cityId: any;
   locations: any
   categories: any
+  selectedCityIds: number[] = [];
+  selectedCategoryIds: number[] = [];
 
   constructor(private route: ActivatedRoute) { }
 
   private attractionService = inject(AttractionService);
-
-  searchHotel(e: Event) {
-    console.log(e)
-    // this.staysService.GetListingPropertyList(e).subscribe((res=> {
-    //   this.hotelList = res;
-    //   console.log(res)
-    // }))
-  }
 
   ngOnInit(): void {
     this.cityId = this.route.snapshot.paramMap.get('id');
@@ -86,5 +82,38 @@ export class ListComponent implements OnInit {
       this.categories = res;
       console.log(res)
     })
+  }
+
+  filterAttractions() {
+    const payload = {
+      cityIds: this.selectedCityIds,
+      categoryIds: this.selectedCategoryIds
+    };
+
+    console.log("the payload: ", payload)
+
+    this.attractionService.GetAttractionsByFilter(payload).subscribe(res => {
+      this.attractions = res;
+    });
+  }
+
+  onCityChange(event: any, cityId: number) {
+    const id = cityId;
+    if (event.target.checked) {
+      this.selectedCityIds.push(id);
+    } else {
+      this.selectedCityIds = this.selectedCityIds.filter(x => x !== id);
+    }
+    this.filterAttractions();
+  }
+  
+  onCategoryChange(event: any, categoryId: number) {
+    const id = categoryId;
+    if (event.target.checked) {
+      this.selectedCategoryIds.push(id);
+    } else {
+      this.selectedCategoryIds = this.selectedCategoryIds.filter(x => x !== id);
+    }
+    this.filterAttractions();
   }
 }

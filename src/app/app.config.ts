@@ -23,6 +23,7 @@ import { JwtInterceptor } from './helpers/jwt.interceptor'
 import { ErrorInterceptor } from './helpers/error.interceptor'
 import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
 import { provideToastr, ToastrModule } from 'ngx-toastr';
+import { LoadingInterceptor } from './core/interceptors/loading.interceptor'
 
 // Scroll
 const scrollConfig: InMemoryScrollingOptions = {
@@ -53,5 +54,7 @@ export const appConfig: ApplicationConfig = {
     FakeBackendProvider,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
+
   ],
 }

@@ -1,8 +1,8 @@
 <div class="header-wrapper-hotel-list d-flex justify-content-between flex-column">
-  <top-nav-header [activeTab]="'Stays'" />
+  <top-nav-header [activeTab]="'Attractions & Tours'" />
 
   <div class="container mb-n4" style="z-index: 9999;">
-    <home-availability-filter />
+    <tours-hero />
   </div>
 
 </div>
@@ -23,39 +23,48 @@
             </div>
             <div class="offcanvas-body flex-column p-3 p-xl-0">
               <form class="rounded-3 shadow">
+
+                <h5 class="mt-3 mx-3">Filter By: </h5>
+                <hr>
+                
                 <div class="card card-body rounded-0 rounded-top p-4">
-                  <h6 class="mb-2">Locations</h6>
+                  <h6 class="mb-2">Location</h6>
 
                   <div class="col-12">
 
                     @for (item of locations; track $index) {
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" [value]="item.id" [id]="item.cityName" />
-                      <label class="form-check-label" [for]="item.cityName">{{item.cityName}}</label>
-                      <span>  ({{item.attractionCount}})</span>
-                    </div>
+                      <div class="form-check">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               [value]="item.cityId"
+                               [id]="'city' + item.cityId"
+                               (change)="onCityChange($event, item.cityId)" />
+                        <label class="form-check-label" [for]="'city' + item.cityId">
+                          {{ item.cityName }}
+                        </label>
+                        <span> ({{ item.attractionCount }})</span>
+                      </div>
                     }
                   </div>
 
-                  <h6 class="mt-4 mb-2">Categories</h6>
+                  <h6 class="mt-4 mb-2">Category</h6>
 
                   <div class="col-12">
 
                     @for (item of categories; track $index) {
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" [value]="item.id" [id]="item.name" />
-                      <label class="form-check-label" [for]="item.name">{{item.name}}</label>
-                      <span>  ({{item.attractionCount}})</span>
-                    </div>
+                      <div class="form-check">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               [value]="item.id"
+                               [id]="'category' + item.id"
+                               (change)="onCategoryChange($event, item.id)" />
+                        <label class="form-check-label" [for]="'category' + item.id">
+                          {{ item.name }}
+                        </label>
+                        <span> ({{ item.attractionCount }})</span>
+                      </div>
                     }
                   </div>
-                </div>
-
-
-
-                <div class="d-flex justify-content-between p-2 p-xl-0 mt-xl-4">
-                  <button class="btn btn-link p-0 mb-0" >Clear all</button>
-                  <button class="btn btn-primary mb-0">Filter Result</button>
                 </div>
               </form>
             </div>
