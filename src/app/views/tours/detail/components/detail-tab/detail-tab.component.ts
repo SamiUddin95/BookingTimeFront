@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'
+import { Component, Input } from '@angular/core'
 import { NgbAccordionModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap'
 import {
   aboutTour,
@@ -29,4 +29,6 @@ export class DetailTabComponent {
   cancellationPolicy = cancellationPolicy
   inclusionsList = inclusionsList
   tourInfo = tourInfo
+
+  @Input() attraction: any;
 }

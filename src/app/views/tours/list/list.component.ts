@@ -14,6 +14,7 @@ import { Footer1Component } from '../../hotels/home/components/footer1/footer1.c
 import { HeroComponent } from '../home/components/hero/hero.component'
 
 import { AttractionService } from '@/app/core/services/api/attraction.service'
+import { CommonModule } from '@angular/common'
 
 import {
   NgbDropdownModule,
@@ -38,7 +39,8 @@ import {
     NgbDropdownModule,
     NgbPaginationModule,
     NgbRatingModule,
-    HeroComponent
+    HeroComponent,
+    CommonModule
   ],
   templateUrl: './list.component.html',
   styles: ``,

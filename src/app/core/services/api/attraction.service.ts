@@ -24,9 +24,15 @@ export class AttractionService extends BaseHttpService {
         return this.get(`Attractions/by-city/${cityId}`);
     }
 
+    GetAttractionsById(id: Number): Observable<any> {
+        return this.get(`Attractions/${id}`);
+    }
+
     GetAttractionsByFilter(requestPayload: any): Observable<any> {
         return this.post('Attractions/filter', requestPayload);
     }
+
+
 
 
 

@@ -73,6 +73,11 @@
 
         <div class="col-xl-8 col-xxl-9">
           <div class="vstack gap-4">
+
+            <div *ngIf="attractions.length === 0" class="text-center py-5">
+              <h5 class="text-muted">No attractions found matching your criteria.</h5>
+            </div>
+
             @for (item of attractions; track $index) {
             <div class="rounded shadow">
               <div class="row g-0">
@@ -115,13 +120,13 @@
             </div>
             }
 
-            <nav class="d-flex justify-content-center" aria-label="navigation">
+            <!-- <nav class="d-flex justify-content-center" aria-label="navigation">
               <ngb-pagination class="pagination pagination-primary-soft d-inline-block d-md-flex rounded mb-0"
                 [page]="2" [collectionSize]="60" [maxSize]="2">
                 <ng-template ngbPaginationPrevious><i class="fa-solid fa-angle-left"></i></ng-template>
                 <ng-template ngbPaginationNext><i class="fa-solid fa-angle-right"></i></ng-template>
               </ngb-pagination>
-            </nav>
+            </nav> -->
           </div>
         </div>
       </div>
