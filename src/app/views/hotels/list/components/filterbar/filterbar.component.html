@@ -30,12 +30,14 @@
           <label for="priceRangeMin">Minimum: &nbsp;</label>
           <output id="minPriceDisplay">0</output> {{ currencyType }}
           <input type="range" class="form-range" id="priceRangeMin" min="0" max="2000" step="100"
+          (change)="onPriceRangeChange()"
             oninput="minPriceDisplay.value = this.value" [(ngModel)]="hotelFilter.details.priceRangeFrom"
             name="priceRangeMin" />
 
           <label for="priceRangeMax">Maximum: &nbsp; </label>
           <output id="maxPriceDisplay">2000</output> {{ currencyType }}
           <input type="range" class="form-range" id="priceRangeMax" min="2000" max="5000" step="100"
+          (change)="onPriceRangeChange()"
             oninput="maxPriceDisplay.value = this.value" [(ngModel)]="hotelFilter.details.priceRangeTo"
             name="priceRangeMax" />
         </div>
@@ -85,7 +87,7 @@
           @for(item of beaches; track $index) {
           <div class="form-check">
             <input class="form-check-input" type="checkbox" [value]="item.id" [id]="item.name"
-              (change)="onAmenityChange(item.id, $event)" />
+              (change)="onCheckBoxChanges('beachAccess',item.id, $event)" />
             <label class="form-check-label" [for]="item.name">{{item.name}}</label>
           </div>
           }
@@ -101,7 +103,7 @@
           @for(item of entirePlaces; track $index) {
           <div class="form-check">
             <input class="form-check-input" type="checkbox" [value]="item.id" [id]="item.name"
-              (change)="onAmenityChange(item.id, $event)" />
+            (change)="onCheckBoxChanges('entirePlaces',item.id, $event)" />
             <label class="form-check-label" [for]="item.name">{{item.name}}</label>
           </div>
           }
@@ -117,7 +119,7 @@
           @for(item of facility; track $index) {
           <div class="form-check">
             <input class="form-check-input" type="checkbox" [value]="item.id" [id]="item.name"
-              (change)="onAmenityChange(item.id, $event)" />
+            (change)="onCheckBoxChanges('facilities',item.id, $event)" />
             <label class="form-check-label" [for]="item.name">{{item.name}}</label>
           </div>
           }
@@ -133,7 +135,7 @@
           @for(item of funThings; track $index) {
           <div class="form-check">
             <input class="form-check-input" type="checkbox" [value]="item.id" [id]="item.name"
-              (change)="onAmenityChange(item.id, $event)" />
+            (change)="onCheckBoxChanges('funThingsToDo',item.id, $event)" />
             <label class="form-check-label" [for]="item.name">{{item.name}}</label>
           </div>
           }
@@ -149,7 +151,7 @@
           @for(item of popular; track $index) {
           <div class="form-check">
             <input class="form-check-input" type="checkbox" [value]="item.id" [id]="item.name"
-              (change)="onAmenityChange(item.id, $event)" />
+            (change)="onCheckBoxChanges('popularFilter',item.id, $event)" />
             <label class="form-check-label" [for]="item.name">{{item.name}}</label>
           </div>
           }
@@ -165,7 +167,7 @@
           @for(item of propertyType; track $index) {
           <div class="form-check">
             <input class="form-check-input" type="checkbox" [value]="item.id" [id]="item.name"
-              (change)="onAmenityChange(item.id, $event)" />
+            (change)="onCheckBoxChanges('propertyType',item.id, $event)" />
             <label class="form-check-label" [for]="item.name">{{item.name}}</label>
           </div>
           }
@@ -181,7 +183,7 @@
           @for(item of propertyAccess; track $index) {
           <div class="form-check">
             <input class="form-check-input" type="checkbox" [value]="item.id" [id]="item.name"
-              (change)="onAmenityChange(item.id, $event)" />
+            (change)="onCheckBoxChanges('propertyAccessibility',item.id, $event)" />
             <label class="form-check-label" [for]="item.name">{{item.name}}</label>
           </div>
           }
@@ -197,7 +199,7 @@
           @for(item of roomAccess; track $index) {
           <div class="form-check">
             <input class="form-check-input" type="checkbox" [value]="item.id" [id]="item.name"
-              (change)="onAmenityChange(item.id, $event)" />
+            (change)="onCheckBoxChanges('roomAccessibility',item.id, $event)" />
             <label class="form-check-label" [for]="item.name">{{item.name}}</label>
           </div>
           }
@@ -213,7 +215,7 @@
           @for(item of roomFacility; track $index) {
           <div class="form-check">
             <input class="form-check-input" type="checkbox" [value]="item.id" [id]="item.name"
-              (change)="onAmenityChange(item.id, $event)" />
+            (change)="onCheckBoxChanges('roomFacilities',item.id, $event)" />
             <label class="form-check-label" [for]="item.name">{{item.name}}</label>
           </div>
           }

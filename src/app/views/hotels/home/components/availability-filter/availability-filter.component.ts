@@ -1,10 +1,13 @@
 import { DateFormInputDirective } from '@/app/components/form/date-form-input.directive'
 import { SelectFormInputDirective } from '@/app/components/form/select-form-input.directive'
+import { propertydetailsmodel } from '@/app/core/models/requestModels/property-details-model'
 import { CommonService } from '@/app/core/services/api/common.service'
+import { HotelSearchService } from '@/app/core/services/hotel-search.service'
 import { CommonModule } from '@angular/common'
 import { Component, inject, OnInit } from '@angular/core'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap'
+import { Options } from 'flatpickr/dist/types/options';
 
 type AvailabilityFormType = {
   location: string
@@ -35,32 +38,45 @@ export class AvailabilityFilterComponent implements OnInit {
   }
 
   private commonService = inject(CommonService)
+  private hotelSearchService = inject(HotelSearchService);
 
-  hotelFilter = {
+  hotelFilter :propertydetailsmodel = {
     details: {
-      cityId: 0,
-      priceRangeFrom: 0,
-      priceRangeTo: 2000,
-      ratingId: 0,
+      cityId: null,
+      checkIn: null as Date | null,
+      checkOut: null as Date | null,
+      priceRangeFrom: null,
+      priceRangeTo: null,
+      ratingId: null,
       hotelTypes: [] as { hotelTypeId: number }[],
       amenities: [] as { amenitiesId: number }[],
-      BeachAccess: [] as { id: number }[],
-      EntirePlaces: [] as { id: number }[],
-      Facilities: [] as { id: number }[],
-      FunThingsToDo: [] as { id: number }[],
-      PopularFilter: [] as { id: number }[],
-      PropertyType: [] as { id: number }[],
-      PropertyAccessibility: [] as { id: number }[],
+      beachAccess: [] as { id: number }[],
+      entirePlaces: [] as { id: number }[],
+      facilities: [] as { id: number }[],
+      funThingsToDo: [] as { id: number }[],
+      popularFilter: [] as { id: number }[],
+      propertyType: [] as { id: number }[],
+      propertyAccessibility: [] as { id: number }[],
       roomAccessibility: [] as { id: number }[],
       roomFacilities: [] as { id: number }[],
-    },
+        },
     paginationInfo: {
       page: 0,
       rowsPerPage: 10,
     },
   }
-  cities: any[] = []
 
+  cities: any[] = []
+  dateRange: Date[] = [];
+
+  flatpickrOptions: Partial<Options> = {
+    mode: 'range',
+    dateFormat: 'd M Y',
+    onChange: (selectedDates: Date[]) => {
+      this.onDateRangeChange(selectedDates);
+    }
+  };
+  
   loadCities() {
     this.commonService.GetCityAndCountryList().subscribe((res) => {
       this.cities = res
@@ -68,14 +84,37 @@ export class AvailabilityFilterComponent implements OnInit {
   }
 
   formValue: AvailabilityFormType = {
-    location: 'San Jacinto, USA',
-    stayFor: [new Date(), new Date(Date.now() + 5 * 24 * 60 * 60 * 1000)],
+    location: '',
+    stayFor: [],
     guests: {
-      adults: 2,
-      rooms: 1,
+      adults: 0,
+      rooms: 0,
       children: 0,
     },
+  };
+  
+
+  onDateRangeChange(dates: Date[]) {
+  
+    if (dates && dates.length === 2) {
+      this.hotelFilter.details.checkIn = dates[0];
+      this.hotelFilter.details.checkOut = dates[1];
+      const availabilityData = {
+        cityId: this.hotelFilter.details.cityId,
+        checkIn: this.hotelFilter.details.checkIn,
+        checkOut: this.hotelFilter.details.checkOut,
+        guests: this.formValue.guests,
+      };
+    
+//      this.hotelSearchService.updateAvailability(availabilityData);
+    } else {
+      this.hotelFilter.details.checkIn = null;
+      this.hotelFilter.details.checkOut = null;
+    }
+  
+
   }
+  
 
   updateGuests = (
     type: keyof AvailabilityFormType['guests'],
@@ -105,4 +144,35 @@ export class AvailabilityFilterComponent implements OnInit {
     }
     return value
   }
+
+  searchHotels() {
+    if (!this.hotelFilter.details.cityId) {
+      alert('Please select a city.');
+      return;
+    }
+  
+    const availabilityData = {
+      cityId: this.hotelFilter.details.cityId,
+      checkIn: this.hotelFilter.details.checkIn,
+      checkOut: this.hotelFilter.details.checkOut,
+      guests: this.formValue.guests,
+    };
+  
+    // Update the shared service
+    this.hotelSearchService.updateAvailability(availabilityData);
+
+  }
+  
+  onLocationChange(): void {
+    const availabilityData = {
+      cityId: this.hotelFilter.details.cityId,
+      checkIn: this.hotelFilter.details.checkIn,
+      checkOut: this.hotelFilter.details.checkOut,
+      guests: this.formValue.guests,
+    };
+    // Update the shared service
+    this.hotelSearchService.updateAvailabilityWithCity(availabilityData);
+  }
+
+  
 }
