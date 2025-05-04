@@ -29,32 +29,32 @@
           <h5 class="card-title mb-1">
             <a [routerLink]="['/hotels/detail', item.id]">{{ item.listName }}</a>
           </h5>
-          <small><i class="bi bi-geo-alt me-2"></i>{{ item.street }}{{ item.city }}{{ item.country }} - {{item.postalCode}}</small>
-
-          <ul class="nav nav-divider mt-3">
-            @for (feature of item.features; track $index) {
-            @if ($index < 3) { <li class="nav-item">{{ feature }}</li>
-              } @else {
-              <li class="nav-item">
-                <a href="javascript:void(0);" class="mb-0 text-primary">More+</a>
-              </li>
+          <!-- <small><i class="bi bi-geo-alt me-2"></i>{{ item.street }}{{ item.city }}{{ item.country }} - {{item.postalCode}}</small> -->
+          <small><i class="bi bi-geo-alt me-2"></i>{{ item.city }} - {{ item.country }}  -
+            {{item.postalCode}}</small>
+            <ul class="nav nav-divider mt-3">
+              @for (feature of item.features; track feature) {
+                @if ($index < 3) {
+                  <li class="nav-item">{{ feature }}</li>
+                } @else if ($index === 3) {
+                  <li class="nav-item">
+                    <a href="javascript:void(0);" class="mb-0 text-primary">More+</a>
+                  </li>
+                }
               }
-              }
-          </ul>
-
-          <ul class="list-group list-group-borderless small mb-0 mt-2">
-            @if (item.schemes) {
-            @for (scheme of item.schemes; track $index) {
-            <li class="list-group-item d-flex text-success p-0">
-              <i class="bi bi-patch-check-fill me-2"></i>{{ scheme }}
-            </li>
-            }
-            } @else {
-            <li class="list-group-item d-flex text-danger p-0">
-              <i class="bi bi-patch-check-fill me-2"></i>Non Refundable
-            </li>
-            }
-          </ul>
+            </ul>
+            
+            
+            <div class="small text-success mt-2" >
+              <i class="bi bi-patch-check-fill me-2"></i>{{ item.schemes}}
+            </div>
+            
+            <ng-template #nonRefundable>
+              <div class="small text-danger mt-2">
+                <i class="bi bi-patch-check-fill me-2"></i>Non Refundable
+              </div>
+            </ng-template>
+            
 
           <div class="d-sm-flex justify-content-sm-between align-items-center mt-3 mt-md-auto">
             <div class="d-flex align-items-center">
@@ -78,10 +78,12 @@
   }
 
   <nav class="d-flex justify-content-center" aria-label="navigation">
-    <ngb-pagination class="pagination pagination-primary-soft d-inline-block d-md-flex rounded mb-0" [page]="2"
-      [collectionSize]="60" [maxSize]="2">
+    <ngb-pagination class="pagination pagination-primary-soft d-inline-block d-md-flex rounded mb-0"
+      [(page)]="currentPage" [pageSize]="pageSize" [collectionSize]="totalCount" [maxSize]="2"
+      (pageChange)="onPageChange($event)">
       <ng-template ngbPaginationPrevious><i class="fa-solid fa-angle-left"></i></ng-template>
       <ng-template ngbPaginationNext><i class="fa-solid fa-angle-right"></i></ng-template>
     </ngb-pagination>
+
   </nav>
 </div>

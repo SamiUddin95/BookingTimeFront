@@ -14,7 +14,8 @@
               class="form-select js-choice" 
               [(ngModel)]="hotelFilter.details.cityId" 
               name="city" 
-              data-search-enabled="true">
+              data-search-enabled="true"
+              (change)="onLocationChange()">
               <option value="-1" disabled selected>Select location</option>
               <option *ngFor="let city of cities" [value]="city.id">
                 {{ city.name }}
@@ -31,8 +32,15 @@
 
           <div class="form-control-border form-control-white form-fs-md">
             <label class="form-label bg-white">Check in - out</label>
-            <input type="text" type="text" mwlFlatpickr [flatpickrOptions]="{ mode: 'range', dateFormat: 'd M' }"
-              class="form-control flatpickr" placeholder="Select date" value="19 Sep to 28 Sep" />
+            <input
+            type="text"
+            mwlFlatpickr
+            [flatpickrOptions]="flatpickrOptions"
+            [(ngModel)]="dateRange"
+            class="form-control flatpickr"
+            placeholder="Select date"
+          />
+          
           </div>
         </div>
       </div>
@@ -122,6 +130,7 @@
 
       <div class="col-lg-1 d-none d-md-none d-lg-block">
         <a class="icon-lg btn btn-secondary mb-0 d-flex align-items-center justify-content-center"
+        (click)="searchHotels()"
           href="javascript:void()"><i class="bi bi-search fa-fw fs-5 text-dark-green"></i></a>
       </div>
     </div>

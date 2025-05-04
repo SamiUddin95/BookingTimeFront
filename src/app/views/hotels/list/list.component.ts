@@ -13,6 +13,7 @@ import { AvailabilityFilterComponent } from '../home/components/availability-fil
 import { Footer1Component } from '../home/components/footer1/footer1.component'
 
 import { StaysService } from '@/app/core/services/api/stays.service'
+import { HotelSearchService } from '@/app/core/services/hotel-search.service'
 
 @Component({
   selector: 'app-list',
@@ -43,6 +44,8 @@ export class ListComponent implements OnInit {
   };
 
   private staysService = inject(StaysService);
+  private hotelSearchService = inject(HotelSearchService);
+  hotelList: any
 
   searchHotel(e: Event) {
     console.log(e)
@@ -53,15 +56,10 @@ export class ListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-      this.loadHotels();
+      // this.loadHotels();
   }
 
   // hotelList: any = {};
 
-  loadHotels() {
-    // this.staysService.GetListingPropertyList(this.hotelFilter).subscribe((res)=> {
-    //   this.hotelList = res;
-    //   console.log(res)
-    // })
-  }
+  
 }
