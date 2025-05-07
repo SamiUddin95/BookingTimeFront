@@ -99,14 +99,20 @@ export class AvailabilityFilterComponent implements OnInit {
     if (dates && dates.length === 2) {
       this.hotelFilter.details.checkIn = dates[0];
       this.hotelFilter.details.checkOut = dates[1];
+      // var a = this.hotelSearchService.GetPriceRange()?.from;
+      // var b = this.hotelSearchService.GetPriceRange()?.to;
+
       const availabilityData = {
         cityId: this.hotelFilter.details.cityId,
         checkIn: this.hotelFilter.details.checkIn,
-        checkOut: this.hotelFilter.details.checkOut,
+        checkOut:this.hotelFilter.details.checkOut,
         guests: this.formValue.guests,
+        priceRangeFrom: this.hotelSearchService.GetPriceRange()?.from,
+        priceRangeTo: this.hotelSearchService.GetPriceRange()?.to,
+        ratingId: this.hotelSearchService.getratingId(),
       };
     
-//      this.hotelSearchService.updateAvailability(availabilityData);
+     this.hotelSearchService.updateAvailabilityWithPriceRange(availabilityData);
     } else {
       this.hotelFilter.details.checkIn = null;
       this.hotelFilter.details.checkOut = null;
@@ -150,13 +156,21 @@ export class AvailabilityFilterComponent implements OnInit {
       alert('Please select a city.');
       return;
     }
-  
     const availabilityData = {
       cityId: this.hotelFilter.details.cityId,
-      checkIn: this.hotelFilter.details.checkIn,
-      checkOut: this.hotelFilter.details.checkOut,
+      checkIn: this.hotelSearchService.GetCheckInOutDates()?.checkIn??this.hotelFilter.details.checkIn,
+      checkOut: this.hotelSearchService.GetCheckInOutDates()?.checkOut??this.hotelFilter.details.checkOut,
       guests: this.formValue.guests,
+      priceRangeFrom: this.hotelSearchService.GetPriceRange()?.from,
+      priceRangeTo: this.hotelSearchService.GetPriceRange()?.to,
+      ratingId: this.hotelSearchService.getratingId(),
     };
+    this.hotelSearchService.updateAvailabilityWithPriceRange(availabilityData);
+    const isCheckInCheckOutValid = this.hotelSearchService.CheckInCheckOutValid()
+    if (!isCheckInCheckOutValid) {
+      alert('Please ensure the check-in date is before the check-out date.')
+      return
+    }
   
     // Update the shared service
     this.hotelSearchService.updateAvailability(availabilityData);
@@ -164,10 +178,14 @@ export class AvailabilityFilterComponent implements OnInit {
   }
   
   onLocationChange(): void {
+    
     const availabilityData = {
       cityId: this.hotelFilter.details.cityId,
-      checkIn: this.hotelFilter.details.checkIn,
-      checkOut: this.hotelFilter.details.checkOut,
+      checkIn: this.hotelSearchService.GetCheckInOutDates()?.checkIn,
+      checkOut: this.hotelSearchService.GetCheckInOutDates()?.checkOut,
+      priceRangeFrom: this.hotelSearchService.GetPriceRange()?.from,
+      priceRangeTo: this.hotelSearchService.GetPriceRange()?.to,
+      ratingId: this.hotelSearchService.getratingId(),
       guests: this.formValue.guests,
     };
     // Update the shared service

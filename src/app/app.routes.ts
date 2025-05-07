@@ -130,7 +130,7 @@ export const routes: Routes = [
       import('./views/blogs/blogs.route').then((mod) => mod.BLOGS_ROUTES),
   },
   {
-    path: '',
+    path: 'other',
     component: DefaultLayoutComponent,
     loadChildren: () =>
       import('./views/other-pages/other-pages.route').then(

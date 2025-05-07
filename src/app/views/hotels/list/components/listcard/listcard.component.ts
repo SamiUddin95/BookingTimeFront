@@ -20,17 +20,16 @@ import { StaysService } from '@/app/core/services/api/stays.service'
     NgbDropdownModule,
     NgbPaginationModule,
     RouterModule,
-    CommonModule
+    CommonModule,
   ],
   templateUrl: './listcard.component.html',
   styles: ``,
 })
 export class ListcardComponent implements OnInit {
-
   currencyType = currency
   @ViewChild('listSlider', { static: false }) listSlider: any
-  private hotelSearchService = inject(HotelSearchService);
-  private staysService = inject(StaysService);
+  private hotelSearchService = inject(HotelSearchService)
+  private staysService = inject(StaysService)
 
   listSliderSettings: TinySliderSettings = {
     arrowKeys: true,
@@ -42,17 +41,18 @@ export class ListcardComponent implements OnInit {
     items: 1,
   }
 
-  hotelList:any=[]
-  
-  currentPage = 1;
-pageSize = 10;
-totalCount = 0;
+  hotelList: any = []
+
+  currentPage = 1
+  pageSize = 10
+  totalCount = 0
+  hotelCount = -1
   ngOnInit() {
     this.hotelSearchService.filter$.subscribe((filter: any) => {
       if (filter) {
-        this.callApiWith(filter);
+        this.callApiWith(filter)
       }
-    });
+    })
   }
 
   // hotelList = {
@@ -101,68 +101,67 @@ totalCount = 0;
   //     }
   //   ]
   // };
-  
-//  currencyType = '$';
-  
-// loadHotels() {
-//   // this.staysService.GetListingPropertyList(this.hotelFilter).subscribe((res)=> {
-//   //   this.hotelList = res;
-//   //   console.log(res)
-//   // })
-//   debugger
-//   this.hotelSearchService.filter$.subscribe((filter: any) => {
-//     if (filter) {
-//      this.callApiWith(filter);
-//     }
-//   });
-// }
-onPageChange(page: number) {
-  this.currentPage = page;
-  this.hotelSearchService.filter$.subscribe((filter: any) => {
-    if (filter) {
-      this.callApiWith(filter);
+
+  //  currencyType = '$';
+
+  // loadHotels() {
+  //   // this.staysService.GetListingPropertyList(this.hotelFilter).subscribe((res)=> {
+  //   //   this.hotelList = res;
+  //   //   console.log(res)
+  //   // })
+  //   debugger
+  //   this.hotelSearchService.filter$.subscribe((filter: any) => {
+  //     if (filter) {
+  //      this.callApiWith(filter);
+  //     }
+  //   });
+  // }
+  onPageChange(page: number) {
+    this.currentPage = page
+    this.hotelSearchService.filter$.subscribe((filter: any) => {
+      if (filter) {
+        this.callApiWith(filter)
+      }
+    })
+  }
+
+  callApiWith(filter: any) {
+    const payload = {
+      details: filter.details,
+      paginationInfo: {
+        page: this.currentPage,
+        pageSize: this.pageSize,
+      },
     }
-  });
-}
 
+    this.staysService.GetListingPropertyList(payload).subscribe((res) => {
+      
+      const mappedHotelList = res.propertydetails.map((property: any) => {
+        return {
+          id: property.id,
+          thumbnail: property.thumbnail || '',
+          rating: parseFloat(property.rating),
+          listName: property.listName,
+          street: '',
+          city: property.cityName,
+          country: property.countryName,
+          postalCode: '',
+          features: (property.amenities ?? []).map(
+            (amenity: any) => amenity.name
+          ),
+          schemes: property.shortDesc || '',
+          basePrice: property.basePrice,
+          sale: property.discount > 0,
+        }
+      })
 
-callApiWith(filter: any) {
-  const payload = {
-    details: filter.details,
-    paginationInfo: {
-      page: this.currentPage,
-      pageSize: this.pageSize
-    }
-  };
+      this.hotelList = {
+        propertydetails: mappedHotelList,
+      }
 
-  this.staysService.GetListingPropertyList(payload).subscribe((res) => {
-    const mappedHotelList = res.propertydetails.map((property: any) => {
-      return {
-        id: property.id,
-        thumbnail: property.thumbnail || '', 
-        rating: parseFloat(property.rating), 
-        listName: property.listName,
-        street: '', 
-        city: property.cityName, 
-        country: property.countryName,
-        postalCode: '', 
-        features: (property.amenities ?? []).map((amenity: any) => amenity.name), 
-        schemes: property.shortDesc ||'', 
-        basePrice: property.basePrice,
-        sale: property.discount > 0 
-      };
-    });
-
-    this.hotelList = {
-      propertydetails: mappedHotelList
-    };
-
-    this.totalCount = res.totalCount || 0;
-  });
-}
-
-
-
-
-
+      this.totalCount = res.totalCount || 0
+      this.hotelCount = res.totalCount>=0?res.totalCount:-1
+      this.hotelSearchService.setHotelCount(this.hotelCount);
+    })
+  }
 }

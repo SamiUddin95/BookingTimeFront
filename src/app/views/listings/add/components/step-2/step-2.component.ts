@@ -6,11 +6,12 @@ import { CommonModule } from '@angular/common';
 import { CommonService } from '@/app/core/services/api/common.service';
 import { PropertyFormDataService } from '@/app/core/services/property-form-data.service';
 import { StaysService } from '@/app/core/services/api/stays.service';
+import {  DROPZONE_CONFIG,  DropzoneModule, type DropzoneConfigInterface,} from 'ngx-dropzone-wrapper'
 
 @Component({
   selector: 'add-listing-step-2',
   standalone: true,
-  imports: [FormsModule, CommonModule, ReactiveFormsModule],
+  imports: [FormsModule, CommonModule, ReactiveFormsModule, DropzoneModule,],
   templateUrl: './step-2.component.html',
 })
 export class Step2Component implements OnInit {
@@ -19,8 +20,18 @@ export class Step2Component implements OnInit {
   private commonService = inject(CommonService);
   private propertyService = inject(StaysService);
 
+  dropzoneConfig: DropzoneConfigInterface = {
+    url: '#',
+    maxFiles: 5,
+    maxFilesize: 5,
+    acceptedFiles: 'image/jpeg, image/png, image/gif',
+    autoProcessQueue: false,
+    addRemoveLinks: true, 
+    dictRemoveFile: 'Remove' 
+  };
 
   constructor(private formDataService: PropertyFormDataService) {}
+
 
   listingForm: any = {
     amenities: [],
@@ -41,7 +52,8 @@ export class Step2Component implements OnInit {
         discount: '',
         additionalInfo: '',
         roomAccessibility: [],
-        roomFacilities: []
+        roomFacilities: [],
+        roomImages: []
       }
     ]
   };
@@ -140,6 +152,28 @@ export class Step2Component implements OnInit {
       this.additionalInfoList = res
     })
   }
+
+  onGalleryImageAdded(file: File, roomIndex: number) {
+    // Save the actual file in memory
+    this.formDataService.setRoomGalleryImage(roomIndex, file);
+  
+    // Update localStorage for metadata only (optional)
+    if (!this.listingForm.rooms[roomIndex].roomImages) {
+      this.listingForm.rooms[roomIndex].roomImages = [];
+    }
+  
+    this.listingForm.rooms[roomIndex].roomImages.push({
+      upload: {
+        uuid: self.crypto.randomUUID(),
+        progress: 0,
+        total: file.size,
+        bytesSent: 0
+      },
+      name: file.name
+    });
+  }
+  
+  
 
   onAmenityChange(event: any, amenity: any) {
     if (!Array.isArray(this.listingForm.amenities)) {
