@@ -1,6 +1,6 @@
 import { currency } from '@/app/store'
 import { CommonModule } from '@angular/common'
-import { Component, OnInit, TemplateRef, inject } from '@angular/core'
+import { Component, Input, OnInit, TemplateRef, inject } from '@angular/core'
 import {
   FormBuilder,
   FormGroup,
@@ -44,4 +44,6 @@ export class PricingComponent implements OnInit {
   onSubmit() {
     this.formSubmit = true
   }
+
+  @Input() attraction: any
 }
