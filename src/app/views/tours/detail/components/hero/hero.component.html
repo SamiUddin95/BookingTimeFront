@@ -26,7 +26,7 @@
             preloadPages: 3,
             heightRatio: 0.5
           }">
-          @for (item of attraction.imageUrls; track $index) {
+          @for (item of attraction.images; track $index) {
           <splide-slide class="splide__slide"><img [src]="item" alt="" />
 
             <a [href]="item" class="stretched-link" data-gallery="banner"></a>
@@ -46,7 +46,7 @@
             fixedWidth: 200,
             fixedHeight: 120
           }">
-          @for (data of attraction.imageUrls; track $index) {
+          @for (data of attraction.images; track $index) {
           <splide-slide class="splide__slide mt-3"><img [src]="data" alt="" /></splide-slide>
           }
         </splide>

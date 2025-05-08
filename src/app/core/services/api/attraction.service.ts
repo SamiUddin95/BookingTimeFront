@@ -9,14 +9,14 @@ import { Observable } from 'rxjs';
 export class AttractionService extends BaseHttpService {
 
     GetTopDestinationsByAttraction(): Observable<any> {
-        return this.get('Attractions/all-destinations');
+        return this.get('Attractions/top-destinations');
     }
 
     GetAllDestinationsByAttraction(): Observable<any> {
         return this.get('Attractions/all-destinations');
     }
 
-    GetAllAttractionCateogories(): Observable<any> {
+    GetAllAttractionCategories(): Observable<any> {
         return this.get('Attractions/all-attraction-categories');
     }
 
@@ -30,6 +30,10 @@ export class AttractionService extends BaseHttpService {
 
     GetAttractionsByFilter(requestPayload: any): Observable<any> {
         return this.post('Attractions/filter', requestPayload);
+    }
+
+    CreateAttraction(data: FormData): Observable<any> {
+        return this.post('Attractions', data);
     }
 
 
