@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core'
-import { TopbarComponent } from './components/topbar/topbar.component'
+/* import { TopbarComponent } from './components/topbar/topbar.component' */
 import { BannerComponent } from './components/banner/banner.component'
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap'
 import { ListcardComponent } from './components/listcard/listcard.component'
@@ -15,6 +15,8 @@ import { HeroComponent } from '../home/components/hero/hero.component'
 
 import { AttractionService } from '@/app/core/services/api/attraction.service'
 import { CommonModule } from '@angular/common'
+
+import { TopbarComponent } from '../home/components/top-nav/top-nav.component'
 
 import {
   NgbDropdownModule,
@@ -40,7 +42,8 @@ import {
     NgbPaginationModule,
     NgbRatingModule,
     HeroComponent,
-    CommonModule
+    CommonModule,
+    TopbarComponent
   ],
   templateUrl: './list.component.html',
   styles: ``,
@@ -80,7 +83,7 @@ export class ListComponent implements OnInit {
   }
 
   loadCategories() {
-    this.attractionService.GetAllAttractionCateogories().subscribe((res) => {
+    this.attractionService.GetAllAttractionCategories().subscribe((res) => {
       this.categories = res;
       console.log(res)
     })
@@ -92,10 +95,9 @@ export class ListComponent implements OnInit {
       categoryIds: this.selectedCategoryIds
     };
 
-    console.log("the payload: ", payload)
-
     this.attractionService.GetAttractionsByFilter(payload).subscribe(res => {
       this.attractions = res;
+      console.log(res)
     });
   }
 

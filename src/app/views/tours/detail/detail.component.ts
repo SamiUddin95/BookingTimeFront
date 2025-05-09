@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core'
-import { TopbarComponent } from './components/topbar/topbar.component'
+import { TopbarComponent } from '../home/components/top-nav/top-nav.component'
 import { HeroComponent } from './components/hero/hero.component'
 import { DetailTabComponent } from './components/detail-tab/detail-tab.component'
 import { Footer1Component } from './components/footer1/footer1.component'

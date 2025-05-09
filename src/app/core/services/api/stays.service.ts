@@ -40,6 +40,7 @@ export class StaysService extends BaseHttpService{
       return this.post(`AddListingProperty`,reqBody);
     }
 
+   
     GetListingPropertyList(reqBody: any):Observable<any> {
       return this.post('GetListingPropertyList', reqBody)
     }

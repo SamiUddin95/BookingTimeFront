@@ -17,87 +17,68 @@
       New here?<a routerLink="/auth/sign-up"> Create an account</a>
     </p>
 
-    <form
-      [formGroup]="signinForm"
-      (ngSubmit)="onLogin()"
-      class="mt-4 text-start"
-    >
+    <form class="mx-auto" style="max-width: 400px">
       <div class="mb-3">
-        <label class="form-label">Enter email id</label>
+        <label class="form-label">Email</label>
         <input
           type="email"
-          formControlName="Email"
+          [(ngModel)]="userModel.email"
+          name="email"
           class="form-control"
-          [ngClass]="{ 'is-invalid': submitted && form['email'].errors }"
+          required
         />
-        <div class="invalid-feedback">Please enter email</div>
       </div>
 
       <div class="mb-3 position-relative">
-        <label class="form-label">Enter password</label>
+        <label class="form-label">Password</label>
         <input
-          class="form-control fakepassword"
-          formControlName="Password"
+          [(ngModel)]="userModel.password"
+          name="password"
+          class="form-control"
           [type]="passwordType ? 'password' : 'text'"
-          [ngClass]="{ 'is-invalid': submitted && form['password'].errors }"
-          id="psw-input"
+          required
         />
         <span
-          class="position-absolute top-50 end-0 translate-middle-y p-0 mt-3"
+          class="position-absolute top-50 end-0 translate-middle-y mt-3 me-2"
+          (click)="changeType()"
+          style="cursor: pointer;"
         >
-          <i
-            class="fakepasswordicon fas fa-eye-slash cursor-pointer p-2"
-            [ngClass]="{ 'fa-eye': !passwordType }"
-            (click)="changeType()"
-          ></i>
+          <i class="fas" [ngClass]="passwordType ? 'fa-eye-slash' : 'fa-eye'"></i>
         </span>
-        <div class="invalid-feedback">Please enter password</div>
       </div>
 
-      <div class="mb-3 d-sm-flex justify-content-between">
+      <div class="mb-3 d-flex justify-content-between align-items-center">
         <div>
           <input
             type="checkbox"
-            class="form-check-input me-1"
             id="rememberCheck"
+            class="form-check-input me-1"
           />
-          <label class="form-check-label" for="rememberCheck"
-            >Remember me?</label
-          >
+          <label for="rememberCheck" class="form-check-label">Remember me</label>
         </div>
         <a routerLink="/auth/forgot-password">Forgot password?</a>
       </div>
 
-      <div>
-        <button type="submit" class="btn btn-primary w-100 mb-0">Login</button>
+      <button type="submit"(click)="onLogin()" class="btn btn-primary w-100 mb-3">Login</button>
+
+      <div class="text-center my-4">
+        <hr class="my-2" />
+        <span class="small text-muted px-2 bg-white">or sign in with</span>
       </div>
 
-      <div class="position-relative my-4">
-        <hr />
-        <p
-          class="small bg-mode position-absolute top-50 start-50 translate-middle px-2"
-        >
-          Or sign in with
-        </p>
+      <div class="vstack gap-3 text-center">
+        <a href="javascript:void(0);" class="btn btn-light">
+          <i class="fab fa-google me-2 text-google-icon"></i> Sign in with Google
+        </a>
+        <a href="javascript:void(0);" class="btn btn-light">
+          <i class="fab fa-facebook-f me-2 text-facebook"></i> Sign in with Facebook
+        </a>
       </div>
 
-      <div class="vstack gap-3">
-        <a href="javascript:void(0);" class="btn btn-light mb-0"
-          ><i class="fab fa-fw fa-google text-google-icon me-2"></i>Sign in with
-          Google</a
-        >
-        <a href="javascript:void(0);" class="btn btn-light mb-0"
-          ><i class="fab fa-fw fa-facebook-f text-facebook me-2"></i>Sign in
-          with Facebook</a
-        >
-      </div>
-
-      <div class="text-primary-hover text-body mt-3 text-center">
-        Copyrights ©{{ currentYear }} Booking. Build by
-        <a href="{{ creditsBy.website }}" class="text-body">{{
-          creditsBy.name
-        }}</a
-        >.
+      <div class="text-center text-muted mt-4 small">
+        Copyright © {{ currentYear }} Booking.
+        Built by
+        <a [href]="creditsBy.website">{{ creditsBy.name }}</a>.
       </div>
     </form>
   </div>

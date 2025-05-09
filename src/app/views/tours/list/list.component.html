@@ -1,5 +1,5 @@
 <div class="header-wrapper-hotel-list d-flex justify-content-between flex-column">
-  <top-nav-header [activeTab]="'Attractions & Tours'" />
+  <home-topbar [activeTab]="'Attractions & Tours'" />
 
   <div class="container mb-n4" style="z-index: 9999;">
     <tours-hero />
@@ -84,7 +84,7 @@
 
                 <div class="col-md-4">
                   <div class="m-1">
-                    <img [src]="item.imageUrls[0]" class="card-img" alt="">
+                    <img [src]="item.images[0]" class="card-img" alt="">
                   </div>
                 </div>
 
@@ -96,7 +96,7 @@
                     </h5>
                     <small><i class="bi bi-geo-alt me-2"></i>{{ item.cityName }}</small>
 
-                    <div>
+                    <div class="mt-1">
                       <p class="m-0 text-dark">{{item.shortDescription}}</p>
                     </div>
 
@@ -104,12 +104,12 @@
 
                       <i class="fa-solid fa-star text-warning me-1">
                       </i>
-                      <p class="m-0 fw-bold text-dark">{{item.rating}}</p>
+                      <p class="m-0 fw-bold text-dark">{{ item.rating | number: '1.1-1' }}</p>
                     </div>
 
                     <div class="d-flex flex-column align-items-end mt-3 mt-md-auto">
                       <h5 class="fw-bold mb-2">
-                        From ${{ item.price }}
+                        From {{ item.price }}
                       </h5>
                       <a [routerLink]="['/tours/detail', item.id]" class="btn btn-sm btn-dark mb-0">View Details</a>
                     </div>

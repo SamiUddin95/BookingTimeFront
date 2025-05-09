@@ -15,24 +15,32 @@ export class ThemeModeService {
     this.theme = this.getSavedTheme()
   }
 
-  private getSavedTheme(): 'light' | 'dark' {
-    const foundTheme = localStorage.getItem(storageThemeKey)
-    const preferredTheme = window.matchMedia('(prefers-color-scheme: dark)')
-      .matches
-      ? 'dark'
-      : 'light'
-    if (foundTheme) {
-      if (foundTheme === 'auto') {
-        toggleDocumentAttribute(themeAttributeKey, preferredTheme)
-        return preferredTheme
-      }
-      toggleDocumentAttribute(themeAttributeKey, foundTheme)
-      return foundTheme == 'dark' ? 'dark' : 'light'
-    } else {
-      localStorage.setItem(storageThemeKey, preferredTheme)
-      return preferredTheme
-    }
+  // private getSavedTheme(): 'light' | 'dark' {
+  //   const foundTheme = localStorage.getItem(storageThemeKey)
+  //   const preferredTheme = window.matchMedia('(prefers-color-scheme: dark)')
+  //     .matches
+  //     ? 'dark'
+  //     : 'light'
+  //   if (foundTheme) {
+  //     if (foundTheme === 'auto') {
+  //       toggleDocumentAttribute(themeAttributeKey, preferredTheme)
+  //       return preferredTheme
+  //     }
+  //     toggleDocumentAttribute(themeAttributeKey, foundTheme)
+  //     return foundTheme == 'dark' ? 'dark' : 'light'
+  //   } else {
+  //     localStorage.setItem(storageThemeKey, preferredTheme)
+  //     return preferredTheme
+  //   }
+  // }
+
+  private getSavedTheme(): 'light' {
+    const forcedTheme: 'light' = 'light'
+    localStorage.setItem(storageThemeKey, forcedTheme)
+    toggleDocumentAttribute(themeAttributeKey, forcedTheme)
+    return forcedTheme
   }
+  
 
   updateTheme(newTheme: 'light' | 'dark' | 'auto') {
     const foundTheme = localStorage.getItem(storageThemeKey)

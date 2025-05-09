@@ -7,8 +7,15 @@ import { Observable } from 'rxjs';
 })
 export class CommonService extends BaseHttpService {
 
+  login(reqBody: any):Observable<any> {
+    return this.post('loginRequest', reqBody)
+  }
   GetAllCountryList(): Observable<any> {
     return this.get('GetAllCountryList');
+  }
+
+  GetAllCityList(): Observable<any> {
+    return this.get(`GetAllCityList`);
   }
 
   GetStateByCountryId(countryId: number): Observable<any> {
@@ -18,10 +25,11 @@ export class CommonService extends BaseHttpService {
   GetCityByCountryId(countryId: number): Observable<any> {
     return this.get(`GetCityByCountryId/${countryId}`);
   }
+
   GetCityByStateId(stateId: number): Observable<any> {
     return this.get(`GetCityByStateId/${stateId}`);
   }
-  
+
   GetCurrencyBycountryId(countryId: number): Observable<any> {
     return this.get(`GetCurrencyBycountryId/${countryId}`);
   }
