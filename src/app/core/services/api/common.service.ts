@@ -7,6 +7,9 @@ import { Observable } from 'rxjs';
 })
 export class CommonService extends BaseHttpService {
 
+  login(reqBody: any):Observable<any> {
+    return this.post('loginRequest', reqBody)
+  }
   GetAllCountryList(): Observable<any> {
     return this.get('GetAllCountryList');
   }

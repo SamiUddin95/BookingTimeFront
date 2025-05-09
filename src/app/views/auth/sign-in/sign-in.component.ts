@@ -1,3 +1,5 @@
+import { CommonService } from '@/app/core/services/api/common.service';
+import { UserService } from '@/app/core/services/api/user.service';
 import { AppServiceService } from '@/app/services/app-service.service';
 import { credits, currentYear } from '@/app/store';
 import { CommonModule } from '@angular/common';
@@ -9,7 +11,7 @@ import {
   Validators,
   UntypedFormGroup,
 } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router,RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { ToastrService } from 'ngx-toastr';
 
@@ -35,40 +37,29 @@ export class SignInComponent {
   public store = inject(Store);
   public toastr = inject(ToastrService);
 
-  constructor(private app:AppServiceService) {
-    this.signinForm = this.fb.group({
-      Email: ['', [Validators.required, Validators.email]],
-      Password: ['', [Validators.required]],
-    });
+  constructor(private app:CommonService,private router: Router) {
+    // this.signinForm = this.fb.group({
+    //   Email: ['', [Validators.required, Validators.email]],
+    //   Password: ['', [Validators.required]],
+    // });
   }
 
-  get form() {
-    return this.signinForm.controls;
-  }
+  // get form() {
+  //   return this.signinForm.controls;
+  // }
 
-  onLogin() {
-    debugger
-    if (this.signinForm.invalid) {
-      this.submitted = false;
-      return;
-    }
-    const formData = this.signinForm.value;
-    console.log('Sending login form data:', formData);
-    this.app.post('login', formData).subscribe(
-      (res) => {
-        console.log('Login success:', res);
-        if (res.code === 200) {
-          // Success handling here
-        }
-      },
-      (error) => {
-        console.error('Login error:', error);
-      }
-    );
-    this.submitted = true;
-    if (this.signinForm.valid) {
-
-    }
+  userModel:any={}
+   onLogin() {
+    this.app.login(this.userModel).subscribe(res=>{
+      if(res.code===200){
+        this.router.navigate(['hotels/home']);
+        this.toastr.success("User logged in successfully!",'Login Success');
+      }else
+      if(res.code!=200)
+        this.toastr.error(res?.msg,'Login Error');
+    },err=>{
+      this.toastr.error(err.msg,err);
+    })
   }
   
 
