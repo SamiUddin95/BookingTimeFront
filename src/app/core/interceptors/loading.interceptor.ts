@@ -1,4 +1,3 @@
-// loading.interceptor.ts
 import { Injectable } from '@angular/core';
 import {
   HttpEvent,
@@ -8,18 +7,22 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-import { LoadingService } from '../services/loading.service';
+import { NgProgress } from 'ngx-progressbar';
 
 @Injectable()
 export class LoadingInterceptor implements HttpInterceptor {
-  constructor(private loadingService: LoadingService) {}
+  constructor(private progress: NgProgress) { }
 
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    this.loadingService.start();
+    this.progress.ref().start();
 
-    return next.handle(req).pipe(finalize(() => this.loadingService.stop()));
+    return next.handle(req).pipe(finalize(() => {
+      setTimeout(() => {
+        this.progress.ref().complete();
+      }, 300);
+    }));
   }
 }

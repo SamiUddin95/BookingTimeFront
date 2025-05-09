@@ -95,10 +95,9 @@ export class ListComponent implements OnInit {
       categoryIds: this.selectedCategoryIds
     };
 
-    console.log("the payload: ", payload)
-
     this.attractionService.GetAttractionsByFilter(payload).subscribe(res => {
       this.attractions = res;
+      console.log(res)
     });
   }
 
