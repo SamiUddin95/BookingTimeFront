@@ -1,9 +1,22 @@
 import { currency } from '@/app/store'
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core'
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core'
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap'
 import { CommonService } from '@/app/core/services/api/common.service'
 import { HotelSearchService } from '@/app/core/services/hotel-search.service'
-import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms'
+import {
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms'
 import { StaysService } from '@/app/core/services/api/stays.service'
 import { propertydetailsmodel } from '@/app/core/models/requestModels/property-details-model'
 
@@ -14,30 +27,27 @@ import { propertydetailsmodel } from '@/app/core/models/requestModels/property-d
   templateUrl: './filterbar.component.html',
   styles: ``,
 })
-export class FilterbarComponent implements OnInit{
+export class FilterbarComponent implements OnInit {
+  @Output() hotelFilterEmit = new EventEmitter<any>()
 
-
-  @Output() hotelFilterEmit = new EventEmitter<any>(); 
-
-  private hotelSearchService = inject(HotelSearchService);
+  private hotelSearchService = inject(HotelSearchService)
 
   currencyType = currency
-  hotelTypes: any;
-  ratings:any;
-  amenities: any;
-  beaches: any[] = [];
-  entirePlaces: any[] = [];
-  facility: any[] = [];
-  funThings: any[] = [];
-  popular: any[] = [];
-  roomAccess: any[] = [];
-  roomFacility: any[] = [];
-  propertyAccess: any[] = [];
-  propertyType: any[] = [];
-  additionalInfoList: any[] = [];
+  hotelTypes: any
+  ratings: any
+  amenities: any
+  beaches: any[] = []
+  entirePlaces: any[] = []
+  facility: any[] = []
+  funThings: any[] = []
+  popular: any[] = []
+  roomAccess: any[] = []
+  roomFacility: any[] = []
+  propertyAccess: any[] = []
+  propertyType: any[] = []
+  additionalInfoList: any[] = []
 
-
-  hotelFilter :propertydetailsmodel = {
+  hotelFilter: propertydetailsmodel = {
     details: {
       cityId: 0,
       checkIn: null as Date | null,
@@ -61,166 +71,246 @@ export class FilterbarComponent implements OnInit{
       page: 0,
       rowsPerPage: 10,
     },
-  }  
-  private commonService = inject(CommonService);
-  private propertyService = inject(StaysService);
+  }
+  private commonService = inject(CommonService)
+  private propertyService = inject(StaysService)
 
   ngOnInit(): void {
-      this.loadHotelTypes();
-      this.loadRatings();
-      this.loadAmenities();
-      this.loadDropDowns();
+    this.loadHotelTypes()
+    this.loadRatings()
+    this.loadAmenities()
+    this.loadDropDowns()
   }
 
   loadHotelTypes() {
-    this.commonService.GetAllHotelTypesList().subscribe((res => {
-      this.hotelTypes = res;
-    }))
+    this.commonService.GetAllHotelTypesList().subscribe((res) => {
+      this.hotelTypes = res
+    })
   }
 
   loadRatings() {
-    this.commonService.GetAllRatingsList().subscribe((res=> {
-      this.ratings = res;
-    }))
+    this.commonService.GetAllRatingsList().subscribe((res) => {
+      this.ratings = res
+    })
   }
 
   loadAmenities() {
-    this.commonService.GetAllAmenitiesList().subscribe((res=>{
-      this.amenities = res;
-    }))
+    this.commonService.GetAllAmenitiesList().subscribe((res) => {
+      this.amenities = res
+    })
   }
 
   loadDropDowns() {
-
     this.propertyService.GetAllBeachAccessList().subscribe((res) => {
-      this.beaches = res;
-    });
+      this.beaches = res
+    })
 
     this.propertyService.GetAllEntirePlacesList().subscribe((res) => {
-      this.entirePlaces = res;
-    });
+      this.entirePlaces = res
+    })
 
     this.propertyService.GetAllFacilityList().subscribe((res) => {
-      this.facility = res;
-    });
+      this.facility = res
+    })
 
     this.propertyService.GetAllFunThingsToDoList().subscribe((res) => {
-      this.funThings = res;
-    });
+      this.funThings = res
+    })
 
     this.propertyService.GetAllPopularFiltersList().subscribe((res) => {
-      this.popular = res;
-    });
+      this.popular = res
+    })
 
-    this.propertyService.GetAllPropertyAccessibilitiesList().subscribe((res) => {
-      this.propertyAccess = res;
-    });
+    this.propertyService
+      .GetAllPropertyAccessibilitiesList()
+      .subscribe((res) => {
+        this.propertyAccess = res
+      })
 
     this.propertyService.GetAllPropertyTypeList().subscribe((res) => {
-      this.propertyType = res;
-    });
+      this.propertyType = res
+    })
 
     this.propertyService.GetAllRoomAccessList().subscribe((res) => {
-      this.roomAccess = res;
-    });
+      this.roomAccess = res
+    })
 
     this.propertyService.GetAllRoomFacilityList().subscribe((res) => {
-      this.roomFacility = res;
-    });
+      this.roomFacility = res
+    })
 
     this.commonService.GetAllAdditionalInfoList().subscribe((res) => {
       this.additionalInfoList = res
     })
   }
 
-  
   onHotelTypeChange(hotelTypeId: number, event: Event) {
-    const cityId = this.hotelSearchService.getCityId();
+    const cityId = this.hotelSearchService.getCityId()
     if (!cityId) {
-      alert('Please select a city.');
-      (event.target as HTMLInputElement).checked = false; 
-      return;
+      alert('Please select a city.')
+      ;(event.target as HTMLInputElement).checked = false
+      return
     }
 
-    const isCheckInCheckOutValid = this.hotelSearchService.CheckInCheckOutValid();
-  if (!isCheckInCheckOutValid) {
-    alert('Please ensure the check-in date is before the check-out date.');
-    (event.target as HTMLInputElement).checked = false;  
-    return;
-  }
+    const isCheckInCheckOutValid =
+      this.hotelSearchService.CheckInCheckOutValid()
+    const hotelCount = this.hotelSearchService.getHotelCount()
+    if (hotelCount < 0) {
+      if (!this.hotelFilter.details.hotelTypes) {
+        this.hotelFilter.details.hotelTypes = []
+      }
 
-    if (!this.hotelFilter.details.hotelTypes) {
-      this.hotelFilter.details.hotelTypes = [];
-    }
-  
-    const isChecked = (event.target as HTMLInputElement).checked;
-    if (isChecked) {
-      this.hotelFilter.details.hotelTypes.push({ hotelTypeId });
+      const isChecked = (event.target as HTMLInputElement).checked
+      if (isChecked) {
+        this.hotelFilter.details.hotelTypes.push({ hotelTypeId })
+      } else {
+        this.hotelFilter.details.hotelTypes =
+          this.hotelFilter.details.hotelTypes.filter(
+            (ht: { hotelTypeId: number }) => ht.hotelTypeId !== hotelTypeId
+          )
+      }
+      return
     } else {
-      this.hotelFilter.details.hotelTypes = this.hotelFilter.details.hotelTypes.filter(
-        (        ht: { hotelTypeId: number }) => ht.hotelTypeId !== hotelTypeId
-      );
+      if (!isCheckInCheckOutValid) {
+        alert('Please ensure the check-in date is before the check-out date.')
+        ;(event.target as HTMLInputElement).checked = false
+        return
+      }
+      if (!this.hotelFilter.details.hotelTypes) {
+        this.hotelFilter.details.hotelTypes = []
+      }
+
+      const isChecked = (event.target as HTMLInputElement).checked
+      if (isChecked) {
+        this.hotelFilter.details.hotelTypes.push({ hotelTypeId })
+      } else {
+        this.hotelFilter.details.hotelTypes =
+          this.hotelFilter.details.hotelTypes.filter(
+            (ht: { hotelTypeId: number }) => ht.hotelTypeId !== hotelTypeId
+          )
+      }
+      this.applyFilter()
     }
-    this.applyFilter();
   }
 
   onRatingChange(ratingId: number, event: Event) {
-    const cityId = this.hotelSearchService.getCityId();
+    const cityId = this.hotelSearchService.getCityId()
     if (!cityId) {
-      alert('Please select a city.');
-      (event.target as HTMLInputElement).checked = false; 
-      return;
+      alert('Please select a city.')
+      ;(event.target as HTMLInputElement).checked = false
+      return
     }
 
-    
-    const isCheckInCheckOutValid = this.hotelSearchService.CheckInCheckOutValid();
-  if (!isCheckInCheckOutValid) {
-    alert('Please ensure the check-in date is before the check-out date.');
-    (event.target as HTMLInputElement).checked = false;  
-    return;
-  }
+    const isCheckInCheckOutValid =
+      this.hotelSearchService.CheckInCheckOutValid()
+    const hotelCount = this.hotelSearchService.getHotelCount()
+    if (hotelCount < 0) {
+      // alert('Please ensure the check-in date is before the check-out date.');
+      // (event.target as HTMLInputElement).checked = false;
+      // return;
 
+      const isChecked = (event.target as HTMLInputElement).checked
+      if (isChecked) {
+        this.hotelFilter.details.ratingId = ratingId
+      } else {
+        this.hotelFilter.details.ratingId = 0
+      }
 
-    const isChecked = (event.target as HTMLInputElement).checked;
-    if (isChecked) {
-      this.hotelFilter.details.ratingId = ratingId;
+      const availabilityData = {
+        cityId: this.hotelSearchService.getCityId(),
+        checkIn: this.hotelSearchService.GetCheckInOutDates()?.checkIn,
+        checkOut: this.hotelSearchService.GetCheckInOutDates()?.checkOut,
+        priceRangeFrom: this.hotelSearchService.GetPriceRange()?.from,
+        priceRangeTo: this.hotelSearchService.GetPriceRange()?.to,
+        ratingId: this.hotelFilter.details.ratingId,
+        // guests: this.formValue.guests,
+      };
+      // Update the shared service
+      this.hotelSearchService.updateAvailabilityWithPriceRange(availabilityData);
+      return
     } else {
-      this.hotelFilter.details.ratingId = 0;
+      if (!isCheckInCheckOutValid) {
+        alert('Please ensure the check-in date is before the check-out date.')
+        ;(event.target as HTMLInputElement).checked = false
+        return
+      }
+
+      const isChecked = (event.target as HTMLInputElement).checked
+      if (isChecked) {
+        this.hotelFilter.details.ratingId = ratingId
+      } else {
+        this.hotelFilter.details.ratingId = 0
+      }
+
+      
+      const availabilityData = {
+        cityId:this.hotelSearchService.getCityId(),
+        checkIn: this.hotelSearchService.GetCheckInOutDates()?.checkIn,
+        checkOut: this.hotelSearchService.GetCheckInOutDates()?.checkOut,
+        priceRangeFrom: this.hotelSearchService.GetPriceRange()?.from,
+        priceRangeTo: this.hotelSearchService.GetPriceRange()?.to,
+        ratingId: this.hotelFilter.details.ratingId,
+        // guests: this.formValue.guests,
+      };
+      // Update the shared service
+      this.hotelSearchService.updateAvailabilityWithPriceRange(availabilityData);
+
+      this.applyFilter()
     }
-    this.applyFilter();
   }
 
   onAmenityChange(amenityId: number, event: Event) {
-    const cityId = this.hotelSearchService.getCityId();
+    const cityId = this.hotelSearchService.getCityId()
     if (!cityId) {
-      alert('Please select a city.');
-      (event.target as HTMLInputElement).checked = false; 
-      return;
+      alert('Please select a city.')
+      ;(event.target as HTMLInputElement).checked = false
+      return
     }
 
+    const isCheckInCheckOutValid =
+      this.hotelSearchService.CheckInCheckOutValid()
+    const hotelCount = this.hotelSearchService.getHotelCount()
+    if (hotelCount < 0) {
+      // alert('Please ensure the check-in date is before the check-out date.')
+      // ;(event.target as HTMLInputElement).checked = false
+      // return
 
-    const isCheckInCheckOutValid = this.hotelSearchService.CheckInCheckOutValid();
-  if (!isCheckInCheckOutValid) {
-    alert('Please ensure the check-in date is before the check-out date.');
-    (event.target as HTMLInputElement).checked = false;  
-    return;
-  }
-
-    if (!this.hotelFilter.details.amenities) {
-      this.hotelFilter.details.amenities = [];
-    }
-    const isChecked = (event.target as HTMLInputElement).checked;
-    if (isChecked) {
-      this.hotelFilter.details.amenities.push({ amenitiesId: amenityId });
+      if (!this.hotelFilter.details.amenities) {
+        this.hotelFilter.details.amenities = []
+      }
+      const isChecked = (event.target as HTMLInputElement).checked
+      if (isChecked) {
+        this.hotelFilter.details.amenities.push({ amenitiesId: amenityId })
+      } else {
+        this.hotelFilter.details.amenities =
+          this.hotelFilter.details.amenities.filter(
+            (a: { amenitiesId: number }) => a.amenitiesId !== amenityId
+          )
+      }
+      return
     } else {
-      this.hotelFilter.details.amenities = this.hotelFilter.details.amenities.filter(
-        (        a: { amenitiesId: number }) => a.amenitiesId !== amenityId
-      );
-    }
-    this.applyFilter();
+      if (!isCheckInCheckOutValid) {
+        alert('Please ensure the check-in date is before the check-out date.')
+        ;(event.target as HTMLInputElement).checked = false
+        return
+      }
+        if (!this.hotelFilter.details.amenities) {
+          this.hotelFilter.details.amenities = []
+        }
+        const isChecked = (event.target as HTMLInputElement).checked
+        if (isChecked) {
+          this.hotelFilter.details.amenities.push({ amenitiesId: amenityId })
+        } else {
+          this.hotelFilter.details.amenities =
+            this.hotelFilter.details.amenities.filter(
+              (a: { amenitiesId: number }) => a.amenitiesId !== amenityId
+            )
+
+          this.applyFilter()
+        }
+      }
+    
   }
-
-
 
   onCheckBoxChanges(
     filterKey:
@@ -236,82 +326,142 @@ export class FilterbarComponent implements OnInit{
     id: number,
     event: Event
   ) {
-    const cityId = this.hotelSearchService.getCityId();
+    const cityId = this.hotelSearchService.getCityId()
     if (!cityId) {
-      alert('Please select a city.');
-      (event.target as HTMLInputElement).checked = false; 
-      return;
+      alert('Please select a city.')
+      ;(event.target as HTMLInputElement).checked = false
+      return
     }
 
-    
-    const isCheckInCheckOutValid = this.hotelSearchService.CheckInCheckOutValid();
-  if (!isCheckInCheckOutValid) {
-    alert('Please ensure the check-in date is before the check-out date.');
-    (event.target as HTMLInputElement).checked = false;  
-    return;
-  }
+    const isCheckInCheckOutValid =
+      this.hotelSearchService.CheckInCheckOutValid()
+    const hotelCount = this.hotelSearchService.getHotelCount()
+    if (hotelCount < 0) {
+      // if (!isCheckInCheckOutValid) {
+      //   alert('Please ensure the check-in date is before the check-out date.')
+      //   ;(event.target as HTMLInputElement).checked = false
+      //   return
 
-    const isChecked = (event.target as HTMLInputElement).checked;
-  
-    if (!this.hotelFilter.details[filterKey]) {
-      this.hotelFilter.details[filterKey] = [];
-    }
-  
-    const array = this.hotelFilter.details[filterKey] as { id: number }[];
-  
-    if (isChecked) {
-      array.push({ id });
+      const isChecked = (event.target as HTMLInputElement).checked
+
+      if (!this.hotelFilter.details[filterKey]) {
+        this.hotelFilter.details[filterKey] = []
+      }
+
+      const array = this.hotelFilter.details[filterKey] as { id: number }[]
+
+      if (isChecked) {
+        array.push({ id })
+      } else {
+        this.hotelFilter.details[filterKey] = array.filter(
+          (item) => item.id !== id
+        )
+      }
     } else {
-      this.hotelFilter.details[filterKey] = array.filter((item) => item.id !== id);
+      if (!isCheckInCheckOutValid) {
+        alert('Please ensure the check-in date is before the check-out date.')
+        ;(event.target as HTMLInputElement).checked = false
+        return
+      }
+
+      const isChecked = (event.target as HTMLInputElement).checked
+
+      if (!this.hotelFilter.details[filterKey]) {
+        this.hotelFilter.details[filterKey] = []
+      }
+
+      const array = this.hotelFilter.details[filterKey] as { id: number }[]
+
+      if (isChecked) {
+        array.push({ id })
+      } else {
+        this.hotelFilter.details[filterKey] = array.filter(
+          (item) => item.id !== id
+        )
+      }
+
+      this.applyFilter()
     }
-  
-    this.applyFilter();
   }
-  
-  
+
   applyFilter() {
-    const cityId = this.hotelSearchService.getCityId();
+    const cityId = this.hotelSearchService.getCityId()
     if (!cityId) {
-      alert('Please select a city.');
-      return;
+      alert('Please select a city.')
+      return
     }
-    
-    const isCheckInCheckOutValid = this.hotelSearchService.CheckInCheckOutValid();
-  if (!isCheckInCheckOutValid) {
-    alert('Please ensure the check-in date is before the check-out date.');    
-    return;
-  }
-    this.hotelSearchService.updateSidebar(this.hotelFilter);
+
+    const isCheckInCheckOutValid =
+      this.hotelSearchService.CheckInCheckOutValid()
+    if (!isCheckInCheckOutValid) {
+      alert('Please ensure the check-in date is before the check-out date.')
+      return
+    }
+    this.hotelSearchService.updateSidebar(this.hotelFilter)
   }
 
   isItemChecked(list: any[], id: any): boolean {
-    return list?.some(x => x === id || x.id === id);
+    return list?.some((x) => x === id || x.id === id)
   }
-  
 
   onPriceRangeChange(): void {
-    const cityId = this.hotelSearchService.getCityId();
+    const cityId = this.hotelSearchService.getCityId()
     if (!cityId) {
-      alert('Please select a city.');
+      alert('Please select a city.')
+      return
+    }
+    let fromPrice = Number(this.hotelFilter.details.priceRangeFrom ?? 0);
+    let toPrice = this.hotelFilter.details.priceRangeTo;
+    
+    if ((fromPrice > 0) && (toPrice === null || toPrice === undefined || Number(toPrice) === 0)) {
+      toPrice = 2000;
+    } else {
+      toPrice = Number(toPrice ?? 0);
+    }
+    
+    if (toPrice < fromPrice) {
+      alert('Maximum price must be greater than or equal to minimum price.');
       return;
     }
     
-    const isCheckInCheckOutValid = this.hotelSearchService.CheckInCheckOutValid();
-  if (!isCheckInCheckOutValid) {
-    alert('Please ensure the check-in date is before the check-out date.');    
-    return;
-  }
-
-    const availabilityData = {
-      cityId: this.hotelFilter.details.cityId,
-      checkIn: this.hotelFilter.details.checkIn,
-      checkOut: this.hotelFilter.details.checkOut,
-    //  guests: this.formValue.guests,
-      priceRangeFrom: this.hotelFilter.details.priceRangeFrom,
-      priceRangeTo: this.hotelFilter.details.priceRangeTo,
-    };
+    const isCheckInCheckOutValid =
+      this.hotelSearchService.CheckInCheckOutValid()
+      const hotelCount = this.hotelSearchService.getHotelCount()
+    if (hotelCount < 0) {
+      // alert('Please ensure the check-in date is before the check-out date.')
+      // return
+      const availabilityData = {
+        cityId: cityId,
+        checkIn: this.hotelSearchService.GetCheckInOutDates()?.checkIn,
+        checkOut: this.hotelSearchService.GetCheckInOutDates()?.checkOut,
+        //  guests: this.formValue.guests,
+        ratingId: this.hotelSearchService.getratingId(),
+        priceRangeFrom: fromPrice,
+        priceRangeTo: toPrice,
+      }
   
-    this.hotelSearchService.updateAvailability(availabilityData);
+    this.hotelSearchService.updateAvailabilityWithPriceRange(availabilityData)
+return  
+    }
+    else{
+      const availabilityData = {
+        cityId: cityId,
+        checkIn: this.hotelSearchService.GetCheckInOutDates()?.checkIn,
+        checkOut: this.hotelSearchService.GetCheckInOutDates()?.checkOut,
+        //  guests: this.formValue.guests,
+        ratingId: this.hotelSearchService.getratingId(),
+        priceRangeFrom: fromPrice,
+        priceRangeTo: toPrice,
+      }
+  
+    this.hotelSearchService.updateAvailabilityWithPriceRange(availabilityData)
+      if (!isCheckInCheckOutValid) {
+        alert('Please ensure the check-in date is before the check-out date.')
+        return
+      }
+    this.applyFilter();
+
+  }
   }
 
   clearAll() {
@@ -319,32 +469,26 @@ export class FilterbarComponent implements OnInit{
       details: {
         checkIn: null as Date | null,
         checkOut: null as Date | null,
-        cityId:null,
+        cityId: null,
         priceRangeFrom: null,
         priceRangeTo: null,
         ratingId: null,
         hotelTypes: [],
         amenities: [],
-        beachAccess:[],
-        entirePlaces:[],
-        funThingsToDo:[],
-        facilities:[],
-        popularFilter:[],
-        propertyType:[],
-        propertyAccessibility:[],
-        roomAccessibility:[],
-        roomFacilities:[],
+        beachAccess: [],
+        entirePlaces: [],
+        funThingsToDo: [],
+        facilities: [],
+        popularFilter: [],
+        propertyType: [],
+        propertyAccessibility: [],
+        roomAccessibility: [],
+        roomFacilities: [],
       },
       paginationInfo: {
         page: 0,
-        rowsPerPage: 0
-      }
-    };
+        rowsPerPage: 0,
+      },
+    }
   }
-
-  
-  
-
-
-
 }

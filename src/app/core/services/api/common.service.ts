@@ -14,6 +14,10 @@ export class CommonService extends BaseHttpService {
     return this.get('GetAllCountryList');
   }
 
+  GetAllCityList(): Observable<any> {
+    return this.get(`GetAllCityList`);
+  }
+
   GetStateByCountryId(countryId: number): Observable<any> {
     return this.get(`GetStateByCountryId/${countryId}`);
   }
@@ -21,10 +25,11 @@ export class CommonService extends BaseHttpService {
   GetCityByCountryId(countryId: number): Observable<any> {
     return this.get(`GetCityByCountryId/${countryId}`);
   }
+
   GetCityByStateId(stateId: number): Observable<any> {
     return this.get(`GetCityByStateId/${stateId}`);
   }
-  
+
   GetCurrencyBycountryId(countryId: number): Observable<any> {
     return this.get(`GetCurrencyBycountryId/${countryId}`);
   }

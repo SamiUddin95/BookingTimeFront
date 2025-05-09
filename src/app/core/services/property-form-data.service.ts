@@ -8,6 +8,7 @@ export class PropertyFormDataService {
   private Key = 'propertyFormData'
   
   private roomImages: File[] = []; 
+  private roomImagesMap: { [roomIndex: number]: File[] } = {};
   private thumbnail: any; 
   private countryId: any; 
 
@@ -87,7 +88,29 @@ export class PropertyFormDataService {
   //   return new Blob([new Uint8Array(byteNumbers)], { type: "image/jpeg" });
   // }  
 
-  getAllRoomImages(): File[] {
-    return this.roomImages;
+  setRoomImages(index: number, files: File[]) {
+    this.roomImagesMap[index] = files;
+  }
+  
+  addRoomImage(index: number, file: File) {
+    if (!this.roomImagesMap[index]) {
+      this.roomImagesMap[index] = [];
+    }
+    this.roomImagesMap[index].push(file);
+  }
+  
+  getRoomImages(index: number): File[] {
+    return this.roomImagesMap[index] || [];
+  }
+
+  setRoomGalleryImage(roomIndex: number, file: File) {
+    if (!this.roomImagesMap[roomIndex]) {
+      this.roomImagesMap[roomIndex] = [];
+    }
+    this.roomImagesMap[roomIndex].push(file);
+  }
+  
+  getRoomGalleryImages(roomIndex: number): File[] {
+    return this.roomImagesMap[roomIndex] || [];
   }
 }

@@ -119,7 +119,7 @@ export class Step3Component {
     // for (const [key, value] of (formData as any).entries()) {
     //   console.log(`${key}:`, value);
     // }
-    // console.log(this.category, 'data')
+    // return
     this.api.AddListingProperty(formData).subscribe({
       next: (res) => {
         if (res.success === true) {
@@ -243,31 +243,43 @@ debugger
 
     if (Array.isArray(formDataJson.page2?.rooms)) {
       formDataJson.page2.rooms.forEach((room: any, roomIndex: number) => {
-        formData.append(`Rooms[${roomIndex}].name`, room.roomName?.trim() || '')
-        formData.append(`Rooms[${roomIndex}].price`, String(room.roomPrice))
-        formData.append(`Rooms[${roomIndex}].discount`, String(room.discount))
-        formData.append(
-          `Rooms[${roomIndex}].additionalInfoId`,
-          room.additionalInfo?.trim() || ''
-        )
+        formData.append(`Rooms[${roomIndex}].name`, room.roomName?.trim() || '');
+        formData.append(`Rooms[${roomIndex}].price`, String(room.roomPrice || ''));
+        formData.append(`Rooms[${roomIndex}].discount`, String(room.discount || ''));
+        formData.append(`Rooms[${roomIndex}].additionalInfo`, room.additionalInfo?.trim() || '');
+    
+        // Room Accessibility
         if (Array.isArray(room.roomAccessibility)) {
-          room.roomAccessibility.forEach((access: any, index: number) => {//
-            formData.append(`Rooms[${roomIndex}].roomAccessibility[${index}].id`, String(access.id));
+          room.roomAccessibility.forEach((access: any, accessIndex: number) => {
+            formData.append(`Rooms[${roomIndex}].roomAccessibility[${accessIndex}].id`, String(access.id));
           });
         }
-  
-        // Map room facilities
+    
+        // Room Facilities
         if (Array.isArray(room.roomFacilities)) {
-          room.roomFacilities.forEach((facility: any, index: number) => {//
-            formData.append(`Rooms[${roomIndex}].roomFacilities[${index}].id`, String(facility.id));
+          room.roomFacilities.forEach((facility: any, facilityIndex: number) => {
+            formData.append(`Rooms[${roomIndex}].roomFacilities[${facilityIndex}].id`, String(facility.id));
           });
         }
-        const roomImage = this.formDataService.getRoomImage(roomIndex)
-        if (roomImage) {
-          formData.append(`Rooms[${roomIndex}].image`, roomImage, roomImage.name)
+    
+        // Main Room Image (single thumbnail)
+        const mainImage = this.formDataService.getRoomImage(roomIndex);
+        if (mainImage) {
+          formData.append(`Rooms[${roomIndex}].image`, mainImage, mainImage.name);
         }
-      })
+    
+        const galleryImages =
+          this.formDataService.getRoomGalleryImages(roomIndex)
+        if (Array.isArray(galleryImages)) {
+          galleryImages.forEach((file: File, imgIndex: number) => {
+            formData.append(`Rooms[${roomIndex}].roomImages[${imgIndex}].image`,file)
+            formData.append(`Rooms[${roomIndex}].roomImages[${imgIndex}].name`, file.name)
+          })
+        }
+
+      });
     }
+    
     return formData
   }
 }

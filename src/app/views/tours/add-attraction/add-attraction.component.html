@@ -1,0 +1,166 @@
+<main class="card">
+  <section class="container pb-0">
+
+    <div class="row">
+      <div class="col-12 text-center">
+        <h1 class="fs-2 mb-2">Create Attracton</h1>
+        <p class="mb-0">
+          Register Your Car Effortlessly – Add Your Vehicle to the Portal Today!
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-4">
+      <div class="d-flex justify-content-center align-items-center gap-6" role="tablist">
+
+        @for (item of steps; track $index) {
+        <div class="step" [ngClass]="{'active': currentStep === item.id}" (click)="goToStep(item.id)">
+          <div class="text-center">
+            <button type="button" class="btn btn-link step-trigger mb-0" role="tab">
+              <span class="bs-stepper-circle">{{item.id}}</span>
+            </button>
+            <p class="text-wrap d-none d-md-block">{{item.label}}</p>
+          </div>
+        </div>
+        <!--         <div class="line"></div> -->
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="container pb-0">
+
+    <div class="">
+
+      <div class="card shadow" *ngIf="currentStep==1">
+        <div class="card-header border-bottom">
+          <h5 class="mb-0">Basic Information</h5>
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+
+            <div class="col-md-6">
+              <label class="form-label">City *</label>
+              <select class="form-select" [(ngModel)]="attractionForm.cityId" name="cityId" required #cityId="ngModel"
+                [ngClass]="{'is-invalid': cityId.invalid && (cityId.touched || isSubmitted)}">
+                <option [ngValue]="null" disabled>Select a city</option>
+                <option *ngFor="let city of cities" [ngValue]="city.cityId">{{city.cityName}}</option>
+              </select>
+              <div class="invalid-feedback">Please select a city.</div>
+            </div>
+
+
+            <div class="col-md-6">
+              <label class="form-label">Select Category *</label>
+              <select class="form-select" [(ngModel)]="attractionForm.categoryId" name="categoryId" required
+                #categoryId="ngModel"
+                [ngClass]="{'is-invalid': categoryId.invalid && (categoryId.touched || isSubmitted)}">
+                <option [ngValue]="null" disabled>Select a category</option>
+                <option *ngFor="let cat of categories" [ngValue]="cat.id">{{cat.name}}</option>
+              </select>
+              <div class="invalid-feedback">Category is required.</div>
+            </div>
+
+          </div>
+
+
+
+          <div class="row g-3">
+            <div class="col-md-12">
+              <label class="form-label">Title *</label>
+              <input class="form-control" type="text" [(ngModel)]="attractionForm.title" name="title" required
+                #title="ngModel" [ngClass]="{'is-invalid': title.invalid && (title.touched || isSubmitted)}">
+              <div class="invalid-feedback">Please enter a title.</div>
+            </div>
+
+            <div class="col-md-12">
+              <label class="form-label">Short Description *</label>
+              <input class="form-control" type="text" [(ngModel)]="attractionForm.shortDescription"
+                name="shortDescription" required #shortDesc="ngModel"
+                [ngClass]="{'is-invalid': shortDesc.invalid && (shortDesc.touched || isSubmitted)}">
+              <div class="invalid-feedback">Please provide a short description.</div>
+            </div>
+
+            <div class="col-md-12">
+              <label class="form-label">Detailed Description *</label>
+              <textarea class="form-control" rows="4" [(ngModel)]="attractionForm.detailedDescription"
+                name="detailedDescription" required #detailedDesc="ngModel"
+                [ngClass]="{'is-invalid': detailedDesc.invalid && (detailedDesc.touched || isSubmitted)}"></textarea>
+              <div class="invalid-feedback">Please provide a detailed description.</div>
+            </div>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Price (USD)</label>
+              <input class="form-control" type="number" [(ngModel)]="attractionForm.price" name="price" min="0"
+                placeholder="e.g. 19.99">
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Rating (1–5)</label>
+              <input class="form-control" type="number" [(ngModel)]="attractionForm.rating" name="rating" min="1"
+                max="5" placeholder="Optional">
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- <div class="card shadow">
+        <div class="card-header border-bottom">
+          <h5 class="mb-0">Photos</h5>
+        </div>
+        <div class="card-body">
+          <input type="file" multiple accept="image/*">
+          <p class="text-muted mt-2">You can upload multiple JPG/PNG images.</p>
+
+          <div class="row mt-3" *ngIf="attractionForm.imageUrls?.length">
+            <div class="col-md-3" *ngFor="let url of attractionForm.imageUrls">
+              <img [src]="url" class="img-thumbnail" />
+            </div>
+          </div>
+        </div>
+      </div> -->
+
+
+      <div class="card shadow mt-3" *ngIf="currentStep==2">
+        <div class="card-header border-bottom">
+          <h5 class="mb-0">Upload Images</h5>
+        </div>
+
+        <div class="card-body">
+          <div class="row g-3">
+
+            <div class="col-12">
+              <label class="form-label">Upload image gallery *</label>
+              <dropzone class="dropzone new-listing-drop" [config]="dropzoneConfig"
+                [message]="'Drop files here or click to upload.'" (addedFile)="onGalleryImageAdded($event)">
+              </dropzone>
+
+              <p class="small mb-0 mt-2">
+                <b>Note:</b> Only JPG, JPEG, and PNG. Our suggested dimensions are
+                600px * 450px. The larger image will be cropped to 4:3 to fit our
+                thumbnails/previews.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4 d-flex justify-content-between align-items-center">
+
+        <div class="text-end" [class.invisible]="currentStep === 1">
+          <button type="button" class="btn btn-primary" (click)="prevStep()">Back</button>
+        </div>
+
+        <div class=" text-end">
+          <button type="button" class="btn btn-primary" (click)="nextStep()"> {{ currentStep === totalSteps ? 'Submit' :
+            'Continue' }}</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+<home-footer1 />

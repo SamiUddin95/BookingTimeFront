@@ -75,7 +75,7 @@
             prefix: 'entire_'
           }"></ng-container>
         </ng-container>
-        
+
         <ng-container *ngIf="facility.length">
           <ng-container *ngTemplateOutlet="checkboxGroup; context: {
             label: 'Facilities',
@@ -127,9 +127,8 @@
             <div class="d-flex flex-wrap">
               <div class="form-check me-4" *ngFor="let item of items">
                 <input class="form-check-input" type="checkbox" [id]="prefix + item.id"
-                  [checked]="isItemSelected(item.id, fieldName)" 
-                  (change)="onCheckboxChange($event, item, fieldName)">
-        
+                  [checked]="isItemSelected(item.id, fieldName)" (change)="onCheckboxChange($event, item, fieldName)">
+
                 <label class="form-check-label" [for]="prefix + item.id">
                   {{ item.name }}
                 </label>
@@ -141,8 +140,8 @@
       </div>
     </div>
 
-   
-  
+
+
   </div>
 
   <!-- Size Of Listing -->
@@ -170,108 +169,117 @@
     </div>
   </div>
 
- <!-- Room Options -->
-<div class="card shadow">
-  <div class="card-header border-bottom">
-    <h5 class="mb-0">Room Options</h5>
-  </div>
-  <div class="card-body">
+  <!-- Room Options -->
+  <div class="card shadow">
+    <div class="card-header border-bottom">
+      <h5 class="mb-0">Room Options</h5>
+    </div>
+    <div class="card-body">
 
-    <!-- Repeat for each room -->
-    <div *ngFor="let room of listingForm.rooms; let i = index">
-      <div class="row g-4">
-        <div class="col-md-6">
-          <label class="form-label">Room name *</label>
-          <input type="text" [(ngModel)]="room.roomName" class="form-control" placeholder="Enter name" />
-        </div>
+      <!-- Repeat for each room -->
+      <div *ngFor="let room of listingForm.rooms; let i = index">
+        <div class="row g-4">
+          <div class="col-md-6">
+            <label class="form-label">Room name *</label>
+            <input type="text" [(ngModel)]="room.roomName" class="form-control" placeholder="Enter name" />
+          </div>
 
-        <div class="col-md-6">
-          <label class="form-label">Room thumbnail image *</label>
-          <input class="form-control" type="file" accept="image/gif, image/jpeg, image/png"
-            (change)="onFileSelected($event, i)" />
-        </div>
+          <div class="col-md-6">
+            <label class="form-label">Room thumbnail image *</label>
+            <input class="form-control" type="file" accept="image/gif, image/jpeg, image/png"
+              (change)="onFileSelected($event, i)" />
+          </div>
 
-        <div class="col-md-6">
-          <label class="form-label">Room Price *</label>
-          <input type="text" [(ngModel)]="room.roomPrice" class="form-control" placeholder="Enter price" />
-        </div>
+          <div class="col-md-6">
+            <label class="form-label">Room Price *</label>
+            <input type="text" [(ngModel)]="room.roomPrice" class="form-control" placeholder="Enter price" />
+          </div>
 
-        <div class="col-md-6">
-          <label class="form-label">Discount *</label>
-          <input type="text" [(ngModel)]="room.discount" class="form-control" placeholder="Enter discount" />
-        </div>
+          <div class="col-md-6">
+            <label class="form-label">Discount *</label>
+            <input type="text" [(ngModel)]="room.discount" class="form-control" placeholder="Enter discount" />
+          </div>
 
-        <div class="col-md-6">
-          <label class="form-label">Additional Info</label>
-          <select [(ngModel)]="room.additionalInfo" name="additionalInfo{{i}}" class="form-select" required #additionalInfo="ngModel">
-            <option value="" disabled>Select additional info</option>
-            <option *ngFor="let type of additionalInfoList" [value]="type.id">{{ type.name }}</option>
-          </select>
-          <div *ngIf="additionalInfo.invalid && additionalInfo.touched" class="text-danger">
-            Please select additional info.
+          <div class="col-md-6">
+            <label class="form-label">Additional Info</label>
+            <select [(ngModel)]="room.additionalInfo" name="additionalInfo{{i}}" class="form-select" required
+              #additionalInfo="ngModel">
+              <option value="" disabled>Select additional info</option>
+              <option *ngFor="let type of additionalInfoList" [value]="type.id">{{ type.name }}</option>
+            </select>
+            <div *ngIf="additionalInfo.invalid && additionalInfo.touched" class="text-danger">
+              Please select additional info.
+            </div>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Upload image gallery *</label>
+            <dropzone class="dropzone new-listing-drop" [config]="dropzoneConfig"
+              [message]="'Drop files here or click to upload.'" (addedFile)="onGalleryImageAdded($event, i)"></dropzone>
+
+            <p class="small mb-0 mt-2">
+              <b>Note:</b> Only JPG, JPEG, and PNG. Our suggested dimensions are
+              600px * 450px. The larger image will be cropped to 4:3 to fit our
+              thumbnails/previews.
+            </p>
+          </div>
+          <!-- Room Accessibility -->
+          <div class="col-12">
+            <label class="form-label">Room Accessibility</label>
+            <div class="d-flex flex-wrap">
+              <div class="form-check me-4 mb-2" *ngFor="let access of roomAccess">
+                <input class="form-check-input" type="checkbox" [id]="'roomAccess_' + i + '_' + access.id"
+                  [checked]="isItemChecked(room.roomAccessibility, access.id)"
+                  (change)="onRoomCheckboxChange($event, room.roomAccessibility, access)">
+                <label class="form-check-label" [for]="'roomAccess_' + i + '_' + access.id">
+                  {{ access.name }}
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Room Facilities -->
+          <div class="col-12">
+            <label class="form-label">Room Facilities</label>
+            <div class="d-flex flex-wrap">
+              <div class="form-check me-4 mb-2" *ngFor="let facility of roomFacility">
+                <input class="form-check-input" type="checkbox" [id]="'roomFacility_' + i + '_' + facility.id"
+                  [checked]="isItemChecked(room.roomFacilities, facility.id)"
+                  (change)="onRoomCheckboxChange($event, room.roomFacilities, facility)">
+                <label class="form-check-label" [for]="'roomFacility_' + i + '_' + facility.id">
+                  {{ facility.name }}
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Remove Room Button -->
+          <div class="text-end mt-3">
+            <button *ngIf="listingForm.rooms.length > 1" (click)="removeRoom(i)" type="button"
+              class="btn btn-sm btn-danger">
+              <i class="bi bi-trash me-2"></i> Remove Room
+            </button>
           </div>
         </div>
 
-<!-- Room Accessibility -->
-<div class="col-12">
-  <label class="form-label">Room Accessibility</label>
-  <div class="d-flex flex-wrap">
-    <div class="form-check me-4 mb-2" *ngFor="let access of roomAccess">
-      <input class="form-check-input" type="checkbox"
-             [id]="'roomAccess_' + i + '_' + access.id"
-             [checked]="isItemChecked(room.roomAccessibility, access.id)"
-             (change)="onRoomCheckboxChange($event, room.roomAccessibility, access)">
-      <label class="form-check-label" [for]="'roomAccess_' + i + '_' + access.id">
-        {{ access.name }}
-      </label>
-    </div>
-  </div>
-</div>
-
-<!-- Room Facilities -->
-<div class="col-12">
-  <label class="form-label">Room Facilities</label>
-  <div class="d-flex flex-wrap">
-    <div class="form-check me-4 mb-2" *ngFor="let facility of roomFacility">
-      <input class="form-check-input" type="checkbox"
-             [id]="'roomFacility_' + i + '_' + facility.id"
-             [checked]="isItemChecked(room.roomFacilities, facility.id)"
-             (change)="onRoomCheckboxChange($event, room.roomFacilities, facility)">
-      <label class="form-check-label" [for]="'roomFacility_' + i + '_' + facility.id">
-        {{ facility.name }}
-      </label>
-    </div>
-  </div>
-</div>
-
-        <!-- Remove Room Button -->
-        <div class="text-end mt-3">
-          <button *ngIf="listingForm.rooms.length > 1" (click)="removeRoom(i)" type="button"
-            class="btn btn-sm btn-danger">
-            <i class="bi bi-trash me-2"></i> Remove Room
-          </button>
-        </div>
+        <hr class="my-4" *ngIf="i !== listingForm.rooms.length - 1" />
       </div>
 
-      <hr class="my-4" *ngIf="i !== listingForm.rooms.length - 1" />
-    </div>
+      <!-- Add Room Button -->
+      <div class="text-start mt-3">
+        <button (click)="addRoom()" type="button" class="btn btn-sm btn-primary">
+          <i class="bi bi-plus-circle me-2"></i> Add New Room
+        </button>
+      </div>
 
-    <!-- Add Room Button -->
-    <div class="text-start mt-3">
-      <button (click)="addRoom()" type="button" class="btn btn-sm btn-primary">
-        <i class="bi bi-plus-circle me-2"></i> Add New Room
-      </button>
     </div>
-
   </div>
-</div>
 
-<!-- Navigation Buttons -->
-<div class="hstack gap-2 flex-wrap justify-content-between mt-4">
-  <button (click)="goToPrevious()" type="button" class="btn btn-secondary prev-btn mb-0">
-    Previous
-  </button>
-  <button (click)="goToNext()" type="button" class="btn btn-primary next-btn mb-0">
-    Next
-  </button>
-</div>
+  <!-- Navigation Buttons -->
+  <div class="hstack gap-2 flex-wrap justify-content-between mt-4">
+    <button (click)="goToPrevious()" type="button" class="btn btn-secondary prev-btn mb-0">
+      Previous
+    </button>
+    <button (click)="goToNext()" type="button" class="btn btn-primary next-btn mb-0">
+      Next
+    </button>
+  </div>
