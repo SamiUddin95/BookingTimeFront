@@ -1,4 +1,10 @@
-import { Component, inject, ViewChild, type TemplateRef, Input } from '@angular/core'
+import {
+  Component,
+  inject,
+  ViewChild,
+  type TemplateRef,
+  Input,
+} from '@angular/core'
 import { hotelRooms, type HotelsRoomType } from '../../data'
 import { TinySliderComponent } from '@/app/components/tiny-slider/tiny-slider.component'
 import type { TinySliderSettings } from 'tiny-slider'
@@ -6,6 +12,10 @@ import { CommonModule } from '@angular/common'
 import { SelectFormInputDirective } from '@/app/components/form/select-form-input.directive'
 import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap'
 import { currency } from '@/app/store'
+import {
+  PropertyDetailsModelResponseModel,
+  RoomDetailModel,
+} from '@/app/core/models/property-detail-model.model'
 
 @Component({
   selector: 'detail-room',
@@ -24,13 +34,47 @@ import { currency } from '@/app/store'
   `,
 })
 export class RoomComponent {
-  roomList = hotelRooms
+  @Input() data: PropertyDetailsModelResponseModel = {
+    rooms: [],
+  }
+  expandedFacilities: { [roomId: number]: boolean } = {}
+  @ViewChild('roomDetail', { static: true }) roomDetail!: TemplateRef<any>
+
+  get roomList() {
+    return this.data?.rooms || []
+  }
   currencyType = currency
-  hotelroomDetail: HotelsRoomType = hotelRooms[0]
+  hotelroomDetail: RoomDetailModel | null = null
 
-  @Input() data: any = {};
+  getRoomImages(roomId: number) {
+    return this.data?.roomImageList?.filter((img) => img.roomId === roomId) || []
+  }
+  
+ 
 
-  @ViewChild('roomSlider', { static: false }) roomSlider: any
+  getRoomfacilities(roomId: number) {
+    return (
+      this.data?.roomFacilities?.filter(
+        (facility) => facility.roomId === roomId
+      ) || []
+    )
+  }
+
+  getroomAccessibility(roomId: number) {
+    return (
+      this.data?.roomAccessibility?.filter(
+        (access) => access.roomId === roomId
+      ) || []
+    )
+  }
+
+  toggleFacilities(roomId: number): void {
+    this.expandedFacilities[roomId] = !this.expandedFacilities[roomId]
+  }
+
+  isExpanded(roomId: number): boolean {
+    return this.expandedFacilities[roomId]
+  }
 
   private modalService = inject(NgbModal)
 
@@ -45,8 +89,11 @@ export class RoomComponent {
     ],
   }
 
-  openDetail(content: TemplateRef<any>, data: HotelsRoomType) {
-    this.hotelroomDetail = data
-    this.modalService.open(content, { centered: true })
+  openDetail(content: TemplateRef<any>, roomId: number) {
+    this.hotelroomDetail =
+      this.data?.rooms.find((room) => room.id === roomId) || null
+    if (this.hotelroomDetail) {
+      this.modalService.open(content, { centered: true })
+    }
   }
 }

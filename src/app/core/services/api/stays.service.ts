@@ -3,14 +3,21 @@ import { BaseHttpService } from './base-http.service';
 import { Observable } from 'rxjs';
 import { PropertyDetail } from '../../models/property-detail.model';
 import { ReviewRequest, AddReviewRequest } from '../../models/requestModels/review.model';
+import { propertydetailsmodel } from '../../models/requestModels/property-details-model';
+import { PropertyDetailsModelResponseModel } from '../../models/property-detail-model.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StaysService extends BaseHttpService{
 
-    GetListingPropertyById(propertyId: number): Observable<PropertyDetail> {
-      return this.get(`GetListingPropertyById?id=${propertyId}`);
+    // GetListingPropertyById(propertyId: number): Observable<PropertyDetail> {
+    //   return this.get(`GetListingPropertyById?id=${propertyId}`);
+    // }
+    
+    
+    GetListingPropertyDetailById(propertyId: number): Observable<PropertyDetailsModelResponseModel> {
+      return this.get(`GetListingPropertyDetailById?propertyId=${propertyId}`);
     }
 
     GetReviewList(reqBody: ReviewRequest):Observable<any> {

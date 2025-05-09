@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core'
 import { amenities } from '../../data'
 import { CommonModule } from '@angular/common'
+import { PropertyDetailsModelResponseModel } from '@/app/core/models/property-detail-model.model';
 
 @Component({
   selector: 'detail-amenities',
@@ -14,6 +15,8 @@ import { CommonModule } from '@angular/common'
   `,
 })
 export class AmenitiesComponent {
-
-  @Input() data: any = {}; 
+  
+  @Input() data: PropertyDetailsModelResponseModel = {
+    rooms: []
+  }; 
 }

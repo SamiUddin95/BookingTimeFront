@@ -4,10 +4,10 @@
       <div class="col-12">
         <div class="d-lg-flex justify-content-lg-between mb-1">
           <div class="mb-2 mb-lg-0">
-            <h1 class="fs-2">{{data?.listName}}</h1>
+            <h1 class="fs-2"></h1>
 
             <p class="fw-bold mb-0">
-              <i class="bi bi-geo-alt me-2"></i>{{data?.countryName}} - {{data?.cityName}}
+              <!-- <i class="bi bi-geo-alt me-2"></i>{{data?.countryName}} - {{data?.cityName}} -->
               <!-- <a
                 class="ms-2 text-decoration-underline"
                 (click)="open(mapmodal)"
@@ -17,7 +17,7 @@
             </p>
           </div>
 
-<!--           <ul class="list-inline text-end">
+          <!--           <ul class="list-inline text-end">
             <li class="list-inline-item me-2">
               <a href="javascript:void(0);" class="btn btn-sm btn-light px-2"
                 ><i class="fa-solid fa-fw fa-heart"></i
@@ -68,7 +68,7 @@
       </div>
     </div>
 
-<!--     @if (staticAlert) {
+    <!--     @if (staticAlert) {
       <ngb-alert
         type="danger"
         [dismissible]="false"
@@ -99,24 +99,80 @@
   <div class="container">
     <lightgallery [settings]="settings">
       <div class="row g-2">
+        <ng-container *ngFor="let img of getThumbnail(); let i = index">
+          <!-- Large image (first one) -->
+          <div class="col-md-6" *ngIf="i === 0">
+            <a data-glightbox data-gallery="gallery" [href]="img">
+              <div class="card card-grid-lg card-element-hover card-overlay-hover overflow-hidden"
+                [ngStyle]="{
+                  'background-image': 'url(' + img + ')',
+                  'background-position': 'center left',
+                  'background-size': 'cover'
+                }">
+                <div class="hover-element position-absolute w-100 h-100">
+                  <i class="bi bi-fullscreen fs-6 text-white position-absolute top-50 start-50 translate-middle bg-dark rounded-1 p-2 lh-1"></i>
+                </div>
+              </div>
+            </a>
+          </div>
+      
+          <!-- Smaller images (2 to 4) -->
+          <div class="col-md-6" *ngIf="i === 1">
+            <div class="row g-2">
+              <ng-container *ngFor="let subImg of getThumbnail().slice(1, 4); let j = index">
+                <div [class.col-12]="j === 0" [class.col-md-6]="j > 0">
+                  <a data-glightbox data-gallery="gallery" [href]="subImg">
+                    <div class="card card-grid-sm card-element-hover card-overlay-hover overflow-hidden"
+                      [ngStyle]="{
+                        'background-image': 'url(' + subImg + ')',
+                        'background-position': 'center left',
+                        'background-size': 'cover'
+                      }">
+                      <div class="hover-element position-absolute w-100 h-100">
+                        <i class="bi bi-fullscreen fs-6 text-white position-absolute top-50 start-50 translate-middle bg-dark rounded-1 p-2 lh-1"></i>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </ng-container>
+      
+        <!-- "View all" overlay (if more than 4 images) -->
+        <div class="col-md-6" *ngIf="getThumbnail().length > 4">
+          <div class="card card-grid-sm overflow-hidden"
+            [ngStyle]="{
+              'background-image': 'url(' + getThumbnail()[4] + ')',
+              'background-position': 'center left',
+              'background-size': 'cover'
+            }">
+            <div class="bg-overlay bg-dark opacity-7"></div>
+      
+            <ng-container *ngFor="let extraImg of getThumbnail().slice(4)">
+              <a data-gallery="gallery" [href]="extraImg"></a>
+            </ng-container>
+      
+            <div class="card-img-overlay d-flex h-100 w-100">
+              <h6 class="card-title m-auto fw-light text-decoration-underline">
+                <div class="text-white">View all</div>
+              </h6>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- <div class="row g-2">
         <div class="col-md-6">
-          <a
-            data-glightbox
-            data-gallery="gallery"
-            href="assets/images/gallery/14.jpg"
-          >
-            <div
-              class="card card-grid-lg card-element-hover card-overlay-hover overflow-hidden"
-              style="
+          <a data-glightbox data-gallery="gallery" href="assets/images/gallery/02.jpg">
+            <div class="card card-grid-lg card-element-hover card-overlay-hover overflow-hidden" style="
                 background-image: url(assets/images/gallery/14.jpg);
                 background-position: center left;
                 background-size: cover;
-              "
-            >
+              ">
               <div class="hover-element position-absolute w-100 h-100">
                 <i
-                  class="bi bi-fullscreen fs-6 text-white position-absolute top-50 start-50 translate-middle bg-dark rounded-1 p-2 lh-1"
-                ></i>
+                  class="bi bi-fullscreen fs-6 text-white position-absolute top-50 start-50 translate-middle bg-dark rounded-1 p-2 lh-1"></i>
               </div>
             </div>
           </a>
@@ -125,80 +181,49 @@
         <div class="col-md-6">
           <div class="row g-2">
             <div class="col-12">
-              <a
-                data-glightbox
-                data-gallery="gallery"
-                href="assets/images/gallery/13.jpg"
-              >
-                <div
-                  class="card card-grid-sm card-element-hover card-overlay-hover overflow-hidden"
-                  style="
-                    background-image: url(assets/images/gallery/13.jpg);
+              <a data-glightbox data-gallery="gallery" href="assets/images/gallery/02.jpg">
+                <div class="card card-grid-sm card-element-hover card-overlay-hover overflow-hidden" style="
+                    background-image: url(assets/images/gallery/02.jpg);
                     background-position: center left;
                     background-size: cover;
-                  "
-                >
+                  ">
                   <div class="hover-element position-absolute w-100 h-100">
                     <i
-                      class="bi bi-fullscreen fs-6 text-white position-absolute top-50 start-50 translate-middle bg-dark rounded-1 p-2 lh-1"
-                    ></i>
+                      class="bi bi-fullscreen fs-6 text-white position-absolute top-50 start-50 translate-middle bg-dark rounded-1 p-2 lh-1"></i>
                   </div>
                 </div>
               </a>
             </div>
 
             <div class="col-md-6">
-              <a
-                data-glightbox
-                data-gallery="gallery"
-                href="assets/images/gallery/12.jpg"
-              >
-                <div
-                  class="card card-grid-sm card-element-hover card-overlay-hover overflow-hidden"
-                  style="
+              <a data-glightbox data-gallery="gallery" href="assets/images/gallery/12.jpg">
+                <div class="card card-grid-sm card-element-hover card-overlay-hover overflow-hidden" style="
                     background-image: url(assets/images/gallery/12.jpg);
                     background-position: center left;
                     background-size: cover;
-                  "
-                >
+                  ">
                   <div class="hover-element position-absolute w-100 h-100">
                     <i
-                      class="bi bi-fullscreen fs-6 text-white position-absolute top-50 start-50 translate-middle bg-dark rounded-1 p-2 lh-1"
-                    ></i>
+                      class="bi bi-fullscreen fs-6 text-white position-absolute top-50 start-50 translate-middle bg-dark rounded-1 p-2 lh-1"></i>
                   </div>
                 </div>
               </a>
             </div>
 
             <div class="col-md-6">
-              <div
-                class="card card-grid-sm overflow-hidden"
-                style="
+              <div class="card card-grid-sm overflow-hidden" style="
                   background-image: url(assets/images/gallery/11.jpg);
                   background-position: center left;
                   background-size: cover;
-                "
-              >
+                ">
                 <div class="bg-overlay bg-dark opacity-7"></div>
 
-                <a
-                  data-gallery="gallery"
-                  href="assets/images/gallery/11.jpg"
-                  class="stretched-link z-index-9"
-                ></a>
-                <a
-                  data-gallery="gallery"
-                  href="assets/images/gallery/15.jpg"
-                ></a>
-                <a
-                  data-gallery="gallery"
-                  href="assets/images/gallery/16.jpg"
-                ></a>
+                <a data-gallery="gallery" href="assets/images/gallery/11.jpg" class="stretched-link z-index-9"></a>
+                <a data-gallery="gallery" href="assets/images/gallery/15.jpg"></a>
+                <a data-gallery="gallery" href="assets/images/gallery/16.jpg"></a>
 
                 <div class="card-img-overlay d-flex h-100 w-100">
-                  <h6
-                    class="card-title m-auto fw-light text-decoration-underline"
-                  >
+                  <h6 class="card-title m-auto fw-light text-decoration-underline">
                     <div class="text-white">View all</div>
                   </h6>
                 </div>
@@ -206,32 +231,21 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </lightgallery>
   </div>
 </section>
 
-<ng-template #mapmodal let-modal>
+<!-- <ng-template #mapmodal let-modal>
   <div class="modal-header">
     <h5 class="modal-title" id="mapmodalLabel">View Our Hotel Location</h5>
-    <button
-      type="button"
-      class="btn-close"
-      data-bs-dismiss="modal"
-      aria-label="Close"
-      (click)="modal.close()"
-    ></button>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="modal.close()"></button>
   </div>
 
   <div class="modal-body p-0">
-    <iframe
-      class="w-100"
-      height="400"
+    <iframe class="w-100" height="400"
       src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.9663095343008!2d-74.00425878428698!3d40.74076684379132!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259bf5c1654f3%3A0xc80f9cfce5383d5d!2sGoogle!5e0!3m2!1sen!2sin!4v1586000412513!5m2!1sen!2sin"
-      style="border: 0"
-      aria-hidden="false"
-      tabindex="0"
-    ></iframe>
+      style="border: 0" aria-hidden="false" tabindex="0"></iframe>
   </div>
 
   <div class="modal-footer">
@@ -239,4 +253,4 @@
       <i class="bi fa-fw bi-pin-map-fill me-2"></i>View In Google Map
     </button>
   </div>
-</ng-template>
+</ng-template> -->

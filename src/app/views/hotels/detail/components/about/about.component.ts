@@ -1,3 +1,4 @@
+import { PropertyDetailsModelResponseModel } from '@/app/core/models/property-detail-model.model';
 import { Component, Input } from '@angular/core'
 import { NgbCollapseModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap'
 
@@ -15,5 +16,8 @@ import { NgbCollapseModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap'
 export class AboutComponent {
   isCollapsed = true
 
-  @Input() data: any = {};
+  @Input() data: PropertyDetailsModelResponseModel = {
+    rooms: []
+  };
+
 }
