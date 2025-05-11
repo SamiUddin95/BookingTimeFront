@@ -5,7 +5,7 @@ import {
   Renderer2,
   type TemplateRef,
 } from '@angular/core'
-import { TopbarComponent } from './components/topbar/topbar.component'
+import { TopbarComponent } from '../home/components/topbar/topbar.component'
 import { HeroComponent } from './components/hero/hero.component'
 import { CablistComponent } from './components/cablist/cablist.component'
 import { CablistfilterComponent } from './components/cablistfilter/cablistfilter.component'
@@ -19,7 +19,9 @@ import {
 } from '@ng-bootstrap/ng-bootstrap'
 import { footerLinks, topLinks } from '@/assets/data/footer-items'
 import { NgxSliderModule, type Options } from '@angular-slider/ngx-slider'
-import { RouterModule } from '@angular/router'
+import { ActivatedRoute, RouterModule } from '@angular/router'
+import { BannerComponent } from "./components/banner/banner.component";
+import { CarRentalsService } from '@/app/core/services/api/car-rentals.service'
 
 @Component({
   selector: 'app-list',
@@ -35,6 +37,7 @@ import { RouterModule } from '@angular/router'
     NgbRatingModule,
     NgxSliderModule,
     RouterModule,
+    BannerComponent
   ],
   templateUrl: './list.component.html',
   styles: ``,
@@ -52,8 +55,29 @@ export class ListComponent implements OnInit {
   }
 
   private offcanvasService = inject(NgbOffcanvas)
+  private route = inject(ActivatedRoute)
+  private carService = inject(CarRentalsService)
 
-  ngOnInit() {}
+  carFilter: any = {};
+  carList: any = {};
+
+  ngOnInit() {
+    this.route.queryParams.subscribe((params) => {
+      this.carFilter = params;
+      this.getFilteredCars();
+    });
+  }
+
+  getFilteredCars() {
+    this.carService.FilteredCarList(this.carFilter).subscribe((res) => {
+      this.carList = res;
+      console.log(this.carList)
+    });
+  }
+
+  updateList(updatedList: any) {
+    this.carList = updatedList
+  }
 
   openFilter(content: TemplateRef<any>) {
     this.offcanvasService.open(content, { position: 'end' })
