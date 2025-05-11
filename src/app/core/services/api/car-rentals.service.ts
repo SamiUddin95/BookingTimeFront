@@ -57,6 +57,18 @@ export class CarRentalsService extends BaseHttpService {
     GetCarDetailsList(reqBody: any): Observable<any> {
         return this.post('GetCarDetailsList', reqBody);
     }
+    
+    GetCitiesHavingCars(): Observable<any> {
+        return this.get('cities/having-cars');
+    }
+
+    FilteredCarList(reqBody: any): Observable<any> {
+        return this.post('filter-cars-list', reqBody);
+    }
+
+    GetAllCarCategories(): Observable<any> {
+        return this.get('car-categories');
+    }
 
     
 }

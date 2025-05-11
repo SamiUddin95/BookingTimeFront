@@ -1,0 +1,17 @@
+<div class="d-flex flex-row overflow-auto gap-3 py-3">
+  <div
+    class="card text-center flex-shrink-0 shadow"
+    *ngFor="let category of categories"
+    [attr.data-id]="category.id"
+  >
+    <img
+      [src]="category.icon"
+      class="card-img-top p-2"
+      [alt]="category.name"
+      style="height: 50px; object-fit: contain;"
+    />
+    <div class="card-body p-2">
+      <h6 class="card-title mb-0">{{ category.name }}</h6>
+    </div>
+  </div>
+</div>

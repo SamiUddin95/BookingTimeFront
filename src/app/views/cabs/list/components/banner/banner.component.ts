@@ -1,7 +1,7 @@
 import { DateFormInputDirective } from '@/app/components/form/date-form-input.directive'
 import { SelectFormInputDirective } from '@/app/components/form/select-form-input.directive'
 import { CommonModule } from '@angular/common'
-import { Component, inject, Input, OnInit } from '@angular/core'
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core'
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap'
 import { FormsModule } from '@angular/forms'
 import { CarRentalsService } from '@/app/core/services/api/car-rentals.service'
@@ -32,10 +32,10 @@ export class BannerComponent implements OnInit {
   private carService = inject(CarRentalsService)
 
   locations: any
-  carFilter: any
+  @Input() carFilter: any
+  @Output() carList = new EventEmitter<any>(); 
 
   ngOnInit(): void {
-    this.initFilterform();
     this.loadCities();
   }
 
@@ -57,8 +57,9 @@ export class BannerComponent implements OnInit {
   }
 
   search() {
-    console.log("payload: ", this.carFilter)
-    this.router.navigate(['/cabs/list'], { queryParams: this.carFilter });
+    this.carService.FilteredCarList(this.carFilter).subscribe((res=> {
+      this.carList.emit(res);
+    }))
 
   }
 }

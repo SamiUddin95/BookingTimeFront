@@ -8,7 +8,7 @@ import { CarRegistrationSuccessComponent } from './car-registration/components/s
 
 export const CABS_ROUTES: Route[] = [
   { path: 'home', component: HomeComponent, data: { title: 'Cab - Home' } },
-  { path: 'list', component: ListComponent, data: { title: 'Cab - List' } },
+  /* { path: 'list', component: ListComponent, data: { title: 'Cab - List' } }, */
   {
     path: 'detail',
     component: DetailComponent,
