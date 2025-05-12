@@ -133,7 +133,7 @@
 
 <main>
   <div class="card mt-n5">
-    <cab-list *ngIf="showList" [carList]="carList"/>
+    <cab-list *ngIf="showList" [carList]="carList" [allCategories]="categoryList"/>
     <home-whychoose *ngIf="!showList"/>
   </div>
 

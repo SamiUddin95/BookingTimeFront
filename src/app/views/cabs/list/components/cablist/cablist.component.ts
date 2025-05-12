@@ -37,7 +37,7 @@ import { CarRentalsService } from '@/app/core/services/api/car-rentals.service'
     StickyDirective,
     CabCategoriesComponent,
     CommonModule
-],
+  ],
   templateUrl: './cablist.component.html',
   styles: `
     :host(cab-list) {
@@ -46,11 +46,12 @@ import { CarRentalsService } from '@/app/core/services/api/car-rentals.service'
   `,
 })
 export class CablistComponent implements OnInit {
-  cabsLists = cabsLists
-  currencyType = currency
 
   @Input() carList: any = [];
-  categories: any[] = []
+  filteredList: any = [];
+  
+  @Input() allCategories: any[] = []
+  selectedCategoryId: any
 
   private carService = inject(CarRentalsService)
 
@@ -59,16 +60,15 @@ export class CablistComponent implements OnInit {
   private offcanvasService = inject(NgbOffcanvas)
 
   ngOnInit() {
-    this.loadCarCategories();
+    this.filteredList = this.carList
   }
 
   openFilter(content: TemplateRef<any>) {
     this.offcanvasService.open(content, { position: 'end' })
   }
 
-  loadCarCategories() {
-    this.carService.GetAllCarCategories().subscribe((res=> {
-      this.categories = res;
-    }))
+  selectCategory(categoryId: number) {
+    this.selectedCategoryId = categoryId;
+    this.filteredList = this.carList.filter((car: { categoryId: number }) => car.categoryId === categoryId);
   }
 }

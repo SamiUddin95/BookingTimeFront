@@ -45,17 +45,30 @@ export class HomeComponent {
   showDropoffLocation = false;
   showList = false;
   private router = inject(Router);
-  private route = inject(ActivatedRoute)
+  private route = inject(ActivatedRoute);
+  private carService = inject(CarRentalsService);
 
-
-  private carService = inject(CarRentalsService)
-
-  locations: any
-  carFilter: any
-  carList: any
+  locations: any;
+  carFilter: any;
+  carList: any;
+  categoryList: any
 
   ngOnInit(): void {
-    this.initFilterform();
+    this.route.queryParams.subscribe(params => {
+      this.carFilter = {
+        pickupLocation: params['pickupLocation'] || 0,
+        dropoffLocation: params['dropoffLocation'] || 0,
+        pickupDate: params['pickupDate'] || '',
+        pickupTime: params['pickupTime'] || '',
+        dropoffDate: params['dropoffDate'] || '',
+        dropoffTime: params['dropoffTime'] || '',
+      };
+
+      if (params['pickupLocation']) {
+        this.search();
+      }
+    });
+
     this.loadCities();
   }
 
@@ -71,15 +84,23 @@ export class HomeComponent {
   }
 
   loadCities() {
-    this.carService.GetCitiesHavingCars().subscribe((res => {
+    this.carService.GetCitiesHavingCars().subscribe(res => {
       this.locations = res;
-    }))
+    });
   }
 
   search() {
-    this.carService.FilteredCarList(this.carFilter).subscribe((res) => {
-      this.carList = res;
-      this.showList = true
+    this.carService.FilteredCarList(this.carFilter).subscribe(res => {
+      this.carList = res.cars;
+      this.categoryList = res.categories;
+      this.showList = true;
+    });
+
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: this.carFilter,
+      queryParamsHandling: 'merge',
     });
   }
+
 }

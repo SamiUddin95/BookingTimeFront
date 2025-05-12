@@ -1,11 +1,22 @@
-<section class="pt-6">
+<style>
+  .active {
+    border-bottom: 2px solid rgb(20, 192, 255);
+    box-shadow: 0 0 5px rgb(182, 182, 182);
+  }
+
+  .hover:hover {
+    box-shadow: 0 0 5px rgb(182, 182, 182);
+    transition: all 0.2s ease;
+  }
+</style>
+
+<section class="">
   <div class="container position-relative">
     <div class="row">
       <div class="col-12">
         <div class="d-sm-flex justify-content-sm-between align-items-center">
-          <div class="mb-2 mb-sm-0">
-            <h1 class="fs-3 mb-2">{{carList.length}} Cars Available</h1>
-
+          <div class="">
+            <h1 class="fs-3">{{carList.length}} Cars Available</h1>
           </div>
 
           <button class="btn btn-primary-soft btn-primary-check d-xl-none mb-0" type="button"
@@ -44,24 +55,24 @@
       </aside>
 
       <div class="col-xl-8 col-xxl-9">
+
         <div class="vstack gap-4">
 
-          <div class="d-flex flex-row overflow-auto gap-3 py-3">
-            <div class="card text-center flex-shrink-0" *ngFor="let category of categories"
-              [attr.data-id]="category.id">
+          <div class="d-flex flex-row overflow-auto gap-3 p-1">
+
+            <div class="card text-center flex-shrink-0 rounded-1 px-1 hover" *ngFor="let category of allCategories"
+              (click)="selectCategory(category.id)" style="cursor: pointer;" [attr.data-id]="category.id"
+              [class.active]="selectedCategoryId === category.id">
               <img [src]="category.icon" class="card-img-top p-2" [alt]="category.name"
-                style="height: 50px; object-fit: contain;" />
+                style="height: 40px; object-fit: contain;" />
               <div class="card-body p-2">
                 <p class="card-title mb-0">{{ category.name }}</p>
               </div>
             </div>
           </div>
-
-
-
-          <div *ngFor="let item of carList" class="card border p-4">
+          <div *ngFor="let item of filteredList; let i = index" class="card rounded-1 border p-2">
             <div class="card-body p-0">
-              <div class="row g-2 g-sm-4 mb-4">
+              <div class="row g-2 g-sm-4">
                 <div class="col-md-4 col-xl-3">
                   <div class="bg-light rounded-3 px-4 py-5">
                     <img [src]="item.carImageBase64" alt="" />
@@ -69,61 +80,71 @@
                 </div>
 
                 <div class="col-sm-6 col-md-4 col-xl-6">
-                  <h4 class="card-title mb-2">
-                    <a routerLink="/cabs/detail" class="stretched-link">{{
-                      item.name
-                      }}</a>
-                  </h4>
 
-                  <ul class="nav flex-column mb-2">
-                    <li class="nav-item mb-2">
+                  <div *ngIf="i === 0" class="mb-2">
+                    <span class="badge bg-primary">Top Pick</span>
+                  </div>
+
+                  <h5 class="card-title mb-2">
+                    <a routerLink="/cabs/detail" class="stretched-link">{{
+                      item.name}}
+                    </a>
+                  </h5>
+
+                  <div class="row g-2">
+                    <div class="col-6">
                       <i class="fa fa-user"></i>
                       {{ item.passengerCapacity }} seats
-                    </li>
+                    </div>
 
-                    <li class="nav-item mb-2">
+                    <div class="col-6">
                       <i class="fa-solid fa-cogs"></i>
                       {{ item.transmission }}
-                    </li>
+                    </div>
 
-                    <li class="nav-item mb-2">
+                    <div class="col-6">
                       <i class="fa-solid fa-road"></i>
                       {{ item.mileageLimit }}Km mileage limit
-                    </li>
+                    </div>
 
-                  </ul>
+                  </div>
 
-                  <p class="text-primary m-0">{{item.pickupLocation}}</p>
+                  <p class="text-primary m-0 mt-2">{{item.pickupLocation}}</p>
 
                 </div>
 
-                <div class="col-sm-6 col-md-4 col-xl-3 text-sm-end">
+                <div class="col-sm-6 col-md-4 col-xl-3 text-end d-flex align-items-end justify-content-end">
 
-                  <div class="mb-1">
-                    <small class=" me-2">
+                  <div class="">
+                    <small class="me-2 my-1">
                       Price for {{item.days}} days:
                     </small>
-                    <p class=" h5 m-0">
+                    <p class="h4 p-0 my-0">
                       {{ item.currency }} {{ item.totalRent | number:'1.0-0' }}
                     </p>
+                    <small class="text-dark-green my-1">
+                      Free cancellation
+                    </small>
+                    <button href="javascript:void(0);" class="rounded-1 btn btn-primary px-3 my-1">
+                      <small>View Deal</small>
+                    </button>
                   </div>
-                  <a href="javascript:void(0);" class="btn btn-dark mb-0">View Deal</a>
+
                 </div>
+
               </div>
             </div>
 
 
           </div>
 
-
-          <!-- <nav class="d-flex justify-content-center" aria-label="navigation">
-            <ngb-pagination class="pagination pagination-primary-soft d-inline-block d-md-flex rounded mb-0" [page]="2"
-              [collectionSize]="60" [maxSize]="2">
-              <ng-template ngbPaginationPrevious><i class="fa-solid fa-angle-left"></i></ng-template>
-              <ng-template ngbPaginationNext><i class="fa-solid fa-angle-right"></i></ng-template>
-            </ngb-pagination>
-          </nav> -->
+          <div *ngIf="filteredList.length === 0">
+            <div class="text-center py-5">
+              <p>No results found.</p>
+            </div>
+          </div>
         </div>
+
       </div>
     </div>
   </div>
