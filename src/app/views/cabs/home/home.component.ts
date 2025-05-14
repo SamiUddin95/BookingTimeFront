@@ -52,6 +52,7 @@ export class HomeComponent {
   carFilter: any;
   carList: any;
   categoryList: any
+  resultSet: any
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
@@ -93,6 +94,10 @@ export class HomeComponent {
     this.carService.FilteredCarList(this.carFilter).subscribe(res => {
       this.carList = res.cars;
       this.categoryList = res.categories;
+      console.log(JSON.stringify(res, null, 2));
+
+
+      this.resultSet = res;
       this.showList = true;
     });
 

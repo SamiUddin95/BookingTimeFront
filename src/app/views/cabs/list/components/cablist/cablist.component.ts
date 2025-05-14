@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   ElementRef,
   HostListener,
@@ -23,6 +24,8 @@ import { currency } from '@/app/store'
 import { CabCategoriesComponent } from "../cab-categories/cab-categories.component";
 import { CommonModule } from '@angular/common'
 import { CarRentalsService } from '@/app/core/services/api/car-rentals.service'
+import { NgxSliderModule, Options } from '@angular-slider/ngx-slider'
+import { CarResponse } from '@/app/core/models/cars/car.model'
 
 @Component({
   selector: 'cab-list',
@@ -36,7 +39,8 @@ import { CarRentalsService } from '@/app/core/services/api/car-rentals.service'
     RouterModule,
     StickyDirective,
     CabCategoriesComponent,
-    CommonModule
+    CommonModule,
+    NgxSliderModule
   ],
   templateUrl: './cablist.component.html',
   styles: `
@@ -45,13 +49,23 @@ import { CarRentalsService } from '@/app/core/services/api/car-rentals.service'
     }
   `,
 })
-export class CablistComponent implements OnInit {
+export class CablistComponent implements OnInit  {
+
+  //meta
+  value: number = 700
+  highValue: number = 1500
+  options: Options = {
+    floor: 500,
+    ceil: 2000,
+  }
 
   @Input() carList: any = [];
   filteredList: any = [];
-  
+
   @Input() allCategories: any[] = []
   selectedCategoryId: any
+
+  @Input() data!: CarResponse;
 
   private carService = inject(CarRentalsService)
 
@@ -71,4 +85,5 @@ export class CablistComponent implements OnInit {
     this.selectedCategoryId = categoryId;
     this.filteredList = this.carList.filter((car: { categoryId: number }) => car.categoryId === categoryId);
   }
+
 }
