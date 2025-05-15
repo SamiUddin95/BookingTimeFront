@@ -8,7 +8,7 @@
 
       <div class="card-body pt-4 p-0">
         <ul class="list-group list-group-borderless mt-2 mb-0">
-          @for (amenity of data?.amenities; track $index) {
+          @for (amenity of data.amenities; track $index) {
             <li class="list-group-item pb-0">
               <i class="fa-solid fa-check-circle text-success me-2"></i>
               {{ amenity }}
@@ -28,7 +28,7 @@
 
       <div class="card-body pt-4 p-0">
         <ul class="list-group list-group-borderless mt-2 mb-0">
-          @for (facility of data?.facilities; track $index) {
+          @for (facility of data.facilities; track $index) {
             <li class="list-group-item pb-0">
               <i class="fa-solid fa-check-circle text-success me-2"></i>
               {{ facility }}

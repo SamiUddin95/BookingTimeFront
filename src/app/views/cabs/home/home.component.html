@@ -133,11 +133,11 @@
 
 <main>
   <div class="card mt-n5">
-    <cab-list *ngIf="showList" [carList]="carList" [allCategories]="categoryList" [data]="resultSet"/>
+    <cab-list *ngIf="showList" [data]="resultSet"/>
     <home-whychoose *ngIf="!showList"/>
   </div>
 
-  <home-faqs />
+  <home-faqs *ngIf="!showList"/>
 
 </main>
 <home-footer1 />
