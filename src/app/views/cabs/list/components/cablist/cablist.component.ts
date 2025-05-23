@@ -25,6 +25,7 @@ import { CabCategoriesComponent } from "../cab-categories/cab-categories.compone
 import { CommonModule } from '@angular/common'
 import { NgxSliderModule, Options } from '@angular-slider/ngx-slider'
 import { CarResponse } from '@/app/core/models/cars/car.model'
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'cab-list',
@@ -72,6 +73,7 @@ export class CablistComponent implements OnChanges {
   public renderer = inject(Renderer2)
   public eleRef = inject(ElementRef)
   private offcanvasService = inject(NgbOffcanvas)
+  private router = inject(Router)
 
   ngOnChanges(changes: SimpleChanges): void {
 
@@ -151,6 +153,12 @@ export class CablistComponent implements OnChanges {
     this.filters.priceRange.max = this.sliderOptions.ceil!;
 
     this.applyFilters();
+  }
+
+  navigateToDeal(deal: any) {
+    this.router.navigate([`/cabs/deal/${deal.id}`], { 
+      state: deal, 
+    });
   }
 
 }

@@ -1,7 +1,7 @@
 import { StickyDirective } from '@/app/directives/sticky.directive'
 import { currency } from '@/app/store'
 
-import { Component } from '@angular/core'
+import { Component, Input } from '@angular/core'
 import { RouterModule } from '@angular/router'
 
 @Component({
@@ -16,5 +16,8 @@ import { RouterModule } from '@angular/router'
   `,
 })
 export class SidebarComponent {
+
+  @Input() deal: any
+  
   currencyType = currency
 }
