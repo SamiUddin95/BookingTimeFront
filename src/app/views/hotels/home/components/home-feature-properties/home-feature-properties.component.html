@@ -46,7 +46,10 @@
             </div>
             <div class="card-body px-2">
               <h5 class="card-title d-flex justify-content-between gap-2">
-                <a [routerLink]="['/hotels/detail', data.id]" class="fs-6">{{ data.listName }}</a>
+                <a (click)="goToHotelDetail(data.cityId)" class="fs-6" style="cursor: pointer;">
+                  {{ data.listName }}
+                </a>
+                
                 <div>
                   <i class="fa fa-star text-warning fs-6"
                     *ngFor="let _ of [].constructor(roundOff(data.rating)); let i = index">
@@ -55,7 +58,7 @@
               </h5>
               <p class="mb-0 w-auto px-2 text-end">
                 <small class="text-dark mr-1">From </small>
-                <span class="fs-5 text-dark-blue fw-bold">{{ currencyType }}{{ data.basePrice }}</span>
+                <span class="fs-5 text-dark-blue fw-bold">{{ data.currencySymbol }} {{ data.basePrice }}</span>
               </p>
             </div>
           </div>

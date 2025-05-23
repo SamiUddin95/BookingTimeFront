@@ -68,6 +68,7 @@ export class RegisterTaxiComponent {
 
   taxiRegistrationForm!: RegisterTaxiForm
 
+
   constructor(
     private router: Router,
     private route: ActivatedRoute
@@ -75,6 +76,7 @@ export class RegisterTaxiComponent {
 
   initialiseForm() {
     this.taxiRegistrationForm = {
+      companyName: '',
       operatingAirport: '',
       countryId: 0,
       cityId: 0,
@@ -89,7 +91,7 @@ export class RegisterTaxiComponent {
       website: '',
       capacity: 0,
       basePrice: 0,
-      currency: 'Select Currency',
+      currency: 0,
       availabilityStatus: '',
       status: 'Approved',
       description: '',
@@ -173,14 +175,17 @@ export class RegisterTaxiComponent {
     })
   }
 
-  loadCitiesAndStates(countryId: number) {
-    this.commonService.GetCityByCountryId(countryId).subscribe((res) => {
-      this.cities = res
-    })
-
+  loadState(countryId: number) {
     this.commonService.GetStateByCountryId(countryId).subscribe((res) => {
       this.states = res
     })
+    this.loadCurrencies(countryId);
+  }
+  loadCity(stateId: number) {
+    this.commonService.GetCityByStateId(stateId).subscribe((res) => {
+      this.cities = res
+    })
+
   }
 
   isFormValid(): boolean {
@@ -227,13 +232,15 @@ export class RegisterTaxiComponent {
     { value: 'Inactive', label: 'Inactive' },
   ]
 
-  currencies = [
-    { id: 'Select Currency', name: 'Select Currency' },
-    { id: 'USD', name: 'USD' },
-    { id: 'EURO', name: 'EURO' },
-    { id: 'VND', name: 'VND' },
-  ]
-
+  currencies:any = [
+    { id: 0, name: 'Select Currency' },
+    ]
+  loadCurrencies(countryId: any) 
+  {
+    this.commonService.GetCurrencyBycountryId(countryId).subscribe((res) => {
+      this.currencies=res
+    })
+  }
   goToStep(stepId: number): void {
     this.currentStep = stepId
   }

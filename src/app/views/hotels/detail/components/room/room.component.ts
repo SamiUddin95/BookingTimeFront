@@ -88,7 +88,9 @@ export class RoomComponent {
       '<i class="bi bi-arrow-right"></i>',
     ],
   }
-
+  onImageError(event: Event) {
+    (event.target as HTMLImageElement).src = 'assets/images/gallery/01.jpg';
+  }
   openDetail(content: TemplateRef<any>, roomId: number) {
     this.hotelroomDetail =
       this.data?.rooms.find((room) => room.id === roomId) || null

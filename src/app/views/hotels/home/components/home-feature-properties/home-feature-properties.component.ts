@@ -3,8 +3,9 @@ import { featuredHotelsData, featuredPropertiesData, claims } from '../../data'
 import { currency } from '@/app/store'
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { StaysService } from '@/app/core/services/api/stays.service';
+import { HotelSearchService } from '@/app/core/services/hotel-search.service';
 
 
 @Component({
@@ -29,7 +30,7 @@ export class HomeFeaturePropertiesComponent {
     this.loadFeaturedHotels();
   }
 
-  // filterProperties(location: string) {
+  // filterProperties(location: string) { 
   //   if (!this.properties.length) return; // Ensure properties is loaded before filtering
   //   this.selectedLocation = location;
   //   this.filteredProperties = this.properties.filter(
@@ -49,6 +50,8 @@ export class HomeFeaturePropertiesComponent {
   
 
   private staysService = inject(StaysService);
+  private hotelSearchService = inject(HotelSearchService)
+  constructor(private router: Router) {}
 
   loadFeaturedHotels(): void {
     this.staysService.GetFeaturedHotel().subscribe((res: any[]) => {
@@ -70,6 +73,11 @@ export class HomeFeaturePropertiesComponent {
     this.filteredProperties = cityData ? cityData.properties : [];
   }
   
-
+  goToHotelDetail(hotelId: number) {
+    const availabilityData = {
+      cityId: hotelId}
+ this.hotelSearchService.updateAvailabilityWithPriceRange(availabilityData);
+    this.router.navigate(['/hotels/list']);
+  }
 
 }

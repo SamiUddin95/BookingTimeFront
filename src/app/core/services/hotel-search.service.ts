@@ -58,8 +58,6 @@ export class HotelSearchService {
   }
 
   updateAvailabilityWithPriceRange(availabilityData: any): void {
-    debugger
-
     const dt = this.currentState.availability
         const data = {
       cityId:  availabilityData.cityId,
