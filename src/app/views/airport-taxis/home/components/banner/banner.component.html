@@ -16,7 +16,7 @@
     </h5>
 
     <div class="bg-white shadow pb-0 rounded">
-      <form class="card-body form-control-border p-3 p-sm-4 px-md-3 pt-md-3 pb-md-1">
+      <div class="card-body form-control-border p-3 p-sm-4 px-md-3 pt-md-3 pb-md-1">
 
 
         <div class="row g-2 g-md-2 pb-3">
@@ -26,16 +26,17 @@
 
             <div class="form-fs-lg form-control-transparent">
               <label class="form-label small">Pickup</label>
-              <select selectFormInput class="form-select js-choice" data-search-enabled="true">
-                <option value="">Select location</option>
-                <option>New York</option>
-                <option>Canada</option>
-                <option>Paris</option>
+              <select class="form-select custom-select" data-search-enabled="true"
+                [(ngModel)]="requestModel.detail.cityId" name="pickupCity">
+                <option value="-1" disabled selected>Select location</option>
+                <option *ngFor="let city of cities" [value]="city.id">
+                  {{ city.name }}
+                </option>
               </select>
             </div>
 
             <div class="btn-flip-icon z-index-9 mt-2 mt-md-1">
-              <button class="btn btn-secondary shadow btn-round mb-0 text-dark-green">
+              <button class="btn btn-secondary shadow btn-round mb-0 text-dark-green"  (click)="swapCities()" >
                 <i class="fa-solid fa-right-left"></i>
               </button>
             </div>
@@ -46,11 +47,12 @@
           <div class="col-md-3 text-md-end">
             <div class="form-fs-lg form-control-transparent">
               <label class="form-label small ms-3 ms-md-0 me-md-3">Drop</label>
-              <select selectFormInput class="form-select js-choice" data-search-enabled="true">
-                <option value="">Select Location</option>
-                <option>Canada</option>
-                <option>New York</option>
-                <option>Paris</option>
+              <select class="form-select custom-select" data-search-enabled="true"
+                [(ngModel)]="requestModel.detail.dropCityId" name="dropCity" [ngModelOptions]="{ standalone: true }">
+                <option value="-1" disabled selected>Select location</option>
+                <option *ngFor="let city of cities" [value]="city.id">
+                  {{ city.name }}
+                </option>
               </select>
             </div>
           </div>
@@ -59,7 +61,8 @@
           <div class="col-md-3">
             <div class="form-fs-lg form-control-transparent">
               <label class="form-label small">Pickup Date</label>
-              <input mwlFlatpickr type="text" class="form-control flatpickr" placeholder="Select date" />
+              <input mwlFlatpickr type="text" class="form-control flatpickr" [flatpickrOptions]="flatpickrOptions"
+                [(ngModel)]="requestModel.detail.pickUpDate" placeholder="Select date" />
             </div>
           </div>
 
@@ -72,27 +75,20 @@
                               noCalendar: true,
                               dateFormat: 'H:i'
                             }" type="text" class="form-control flatpickr text-md-end" data-enableTime="true"
-                data-noCalendar="true" placeholder="Select time" />
+                [(ngModel)]="requestModel.detail.pickUpTime" data-noCalendar="true" placeholder="Select time" />
             </div>
           </div>
 
           <!-- search icon button -->
           <div class="col-md-1 col-12 d-flex justify-content-end align-items-end d-none d-md-flex">
             <button class="icon-lg btn btn-secondary mb-0 d-flex align-items-center justify-content-center"
-              href="javascript:void()">
+              (click)="searchTaxis()">
               <i class="bi bi-search fa-fw fs-5 text-dark-green"></i>
             </button>
           </div>
 
         </div>
-
-        <div class="d-grid d-block d-md-none">
-          <button class="btn btn-secondary fw-bold text-dark-green">
-            Search
-          </button>
-        </div>
-
-      </form>
+      </div>
     </div>
 
   </div>

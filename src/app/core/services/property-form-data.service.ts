@@ -11,12 +11,29 @@ export class PropertyFormDataService {
   private roomImagesMap: { [roomIndex: number]: File[] } = {};
   private thumbnail: any; 
   private countryId: any; 
+  private clearTimeoutHandle: any = null;
+  private timeoutDurationMs = 10 * 60 * 1000;
 
   private countryChangedSource = new Subject<any>();
   countryChanged$ = this.countryChangedSource.asObservable();
 
   constructor() {
     this.initializeFormData()
+  }
+
+  private startClearTimeout() {
+    if (this.clearTimeoutHandle) {
+      clearTimeout(this.clearTimeoutHandle);
+    }
+  
+    this.clearTimeoutHandle = setTimeout(() => {
+      this.clearFormDataIfStale();
+    }, this.timeoutDurationMs);
+  }
+
+  private clearFormDataIfStale() {
+    console.warn('Form data was stale. Clearing local storage...');
+    this.resetFormData();
   }
 
   private initializeFormData() {
@@ -31,6 +48,7 @@ export class PropertyFormDataService {
     const formData = this.getFormData()
     formData[page] = data
     localStorage.setItem(this.Key, JSON.stringify(formData))
+    this.startClearTimeout();
   }
 
 
@@ -45,14 +63,17 @@ export class PropertyFormDataService {
 
   setRoomImage(index: number, file: File) {
     this.roomImages[index] = file;
+    this.startClearTimeout();
   }
 
   getRoomImage(index: number): File | null {
     return this.roomImages[index] || null;
+    
   }
   
   setThumbnail(file: File) {
     this.thumbnail = file;
+    this.startClearTimeout();
   }
 
   getThumbnail(): File | null {
@@ -60,6 +81,7 @@ export class PropertyFormDataService {
   }
 
   setCountryId(countryId: any) {
+    this.startClearTimeout();
     this.countryId = countryId;
     this.countryChangedSource.next(countryId);  
   }
@@ -89,10 +111,12 @@ export class PropertyFormDataService {
   // }  
 
   setRoomImages(index: number, files: File[]) {
+    this.startClearTimeout();
     this.roomImagesMap[index] = files;
   }
   
   addRoomImage(index: number, file: File) {
+    this.startClearTimeout();
     if (!this.roomImagesMap[index]) {
       this.roomImagesMap[index] = [];
     }
@@ -104,6 +128,7 @@ export class PropertyFormDataService {
   }
 
   setRoomGalleryImage(roomIndex: number, file: File) {
+    this.startClearTimeout();
     if (!this.roomImagesMap[roomIndex]) {
       this.roomImagesMap[roomIndex] = [];
     }

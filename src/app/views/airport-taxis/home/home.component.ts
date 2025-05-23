@@ -3,11 +3,12 @@ import { Footer1Component } from '../../hotels/home/components/footer1/footer1.c
 import { TopNavHeaderComponent } from "../../../components/top-nav-header/top-nav-header.component";
 import { BannerComponent } from './components/banner/banner.component';
 import { TopbarComponent } from './components/topbar/topbar.component';
+import { AirportTaxiListComponent } from "../airport-taxi-list/airport-taxi-list.component";
 
 @Component({
   selector: 'airport-taxi-home',
   standalone: true,
-  imports: [Footer1Component, TopNavHeaderComponent, BannerComponent, TopbarComponent],
+  imports: [Footer1Component, TopNavHeaderComponent, BannerComponent, TopbarComponent, AirportTaxiListComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

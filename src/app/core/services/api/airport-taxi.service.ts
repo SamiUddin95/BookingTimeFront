@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { BaseHttpService } from './base-http.service';
 import { Observable } from 'rxjs';
-import { RegisterTaxiForm } from "../../models/requestModels/register-airport-taxi.model";
+import { AirportTaxiDetailsRequestModel, RegisterTaxiForm, TaxiDetail } from "../../models/requestModels/register-airport-taxi.model";
 
 @Injectable({
     providedIn: 'root'
@@ -32,4 +32,9 @@ export class AirportTaxisService extends BaseHttpService {
     GetAllTaxiVechiletypesList(): Observable<any> {
         return this.get('GetAllTaxiVechiletypesList');
     }
+
+    GetAirportTaxiList(reqBody: AirportTaxiDetailsRequestModel):Observable<any> {
+      return this.post(`GetAirportTaxiList`, reqBody);
+    }
+
 }

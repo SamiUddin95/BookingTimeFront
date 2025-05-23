@@ -8,6 +8,8 @@ import { Component, inject, OnInit } from '@angular/core'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap'
 import { Options } from 'flatpickr/dist/types/options';
+import { Router } from '@angular/router';
+
 
 type AvailabilityFormType = {
   location: string
@@ -34,12 +36,33 @@ type AvailabilityFormType = {
 export class AvailabilityFilterComponent implements OnInit {
  
   ngOnInit(): void {
+    var cityId=this.hotelSearchService.getCityId();
+    if(cityId!=undefined||cityId!=null||cityId!="")
+    {
+      this.hotelFilter.details.cityId=cityId
+    }
+   
+    const savedDates = this.hotelSearchService.GetCheckInOutDates();
+
+  if (savedDates && savedDates.checkIn && savedDates.checkOut) {
+    this.dateRange = [
+      new Date(savedDates.checkIn),
+      new Date(savedDates.checkOut)
+    ];
+
+    this.flatpickrOptions = {
+      ...this.flatpickrOptions,
+      defaultDate: this.dateRange,
+    };
+  }
+
     this.loadCities()
   }
 
   private commonService = inject(CommonService)
   private hotelSearchService = inject(HotelSearchService);
 
+  constructor(private router: Router) {}
   hotelFilter :propertydetailsmodel = {
     details: {
       cityId: null,
@@ -72,6 +95,7 @@ export class AvailabilityFilterComponent implements OnInit {
   flatpickrOptions: Partial<Options> = {
     mode: 'range',
     dateFormat: 'd M Y',
+    defaultDate: [],
     onChange: (selectedDates: Date[]) => {
       this.onDateRangeChange(selectedDates);
     }
@@ -171,8 +195,10 @@ export class AvailabilityFilterComponent implements OnInit {
       alert('Please ensure the check-in date is before the check-out date.')
       return
     }
-  
-    // Update the shared service
+    if (this.router.url === '/hotels/home') {
+      this.router.navigate(['/hotels/list']);
+    }
+    
     this.hotelSearchService.updateAvailability(availabilityData);
 
   }
