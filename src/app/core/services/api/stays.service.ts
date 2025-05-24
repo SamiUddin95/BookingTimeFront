@@ -35,7 +35,9 @@ export class StaysService extends BaseHttpService{
     GetFeaturedHotel():Observable<any> {
       return this.get(`GetFeaturedHotel`);
     }
-
+    GetPopularAttraction():Observable<any> {
+      return this.get(`GetPopularAttraction`);
+    }
     AddListingProperty(reqBody:any):Observable<any> {
       return this.post(`AddListingProperty`,reqBody);
     }

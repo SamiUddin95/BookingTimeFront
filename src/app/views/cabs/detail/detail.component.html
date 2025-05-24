@@ -1,6 +1,105 @@
 <detail-topbar />
 <main>
-  <detail-banner />
-  <cab-detail />
+  <section class="pt-4">
+    <div class="container position-relative">
+      <div class="row">
+
+        <div class="col-6">
+
+          <div class="gap-3 p-3 px-4 rounded shadow-sm">
+
+            <div class="d-flex align-items-center gap-3">
+              <div class="text-start">
+                <div class="h5 mb-1">{{ deal.pickupLocation }}</div>
+                <div class="text-muted small">
+                  {{ deal.startDate | date: 'medium' }}
+                </div>
+              </div>
+
+              <div class="flex-grow-1 text-center">
+                <i class="bi bi-arrow-right fs-4 text-primary"></i>
+              </div>
+
+              <div class="text-end">
+                <div class="h5 mb-1">{{ deal.dropoffLocation }}</div>
+                <div class="text-muted small">
+                  {{ deal.endDate | date: 'medium' }}
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pt-0">
+    <div class="container" data-sticky-container>
+      <div class="row g-4">
+        <div class="col-xl-8">
+          <div class="vstack gap-5">
+
+            <div>
+              <a class="text-sm text-decoration-underline cursor-pointer" (click)="goBack()">Back to Search results</a>
+              <h2 class="fw-bold mt-2 mb-1" style="font-size:2rem;">Your deal</h2>
+            </div>
+
+            <div class="">
+              <div class="card-body p-0">
+                <div class="row g-2 g-sm-4">
+                  <div class="col-md-4 col-xl-3">
+                    <div class="bg-light rounded-3 px-4 py-5">
+                      <img [src]="deal.carImageBase64" alt="" />
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6 col-md-4 col-xl-6">
+
+                    <h5 class="card-title mb-2">
+                      <a class="text-primary">{{
+                        deal.name}}
+                      </a>
+                    </h5>
+
+                    <div class="row g-2">
+                      <div class="col-6">
+                        <i class="fa fa-user"></i>
+                        {{ deal.passengerCapacity }} seats
+                      </div>
+
+                      <div class="col-6">
+                        <i class="fa-solid fa-cogs"></i>
+                        {{ deal.transmission }}
+                      </div>
+
+                      <div class="col-6">
+                        <i class="fa-solid fa-road"></i>
+                        {{ deal.mileageLimit }}Km mileage limit
+                      </div>
+
+                    </div>
+
+                    <p class="text-primary m-0 mt-2">{{deal.pickupLocation}}</p>
+
+                  </div>
+
+
+
+                </div>
+              </div>
+            </div>
+
+            <detail-inclusion />
+          </div>
+        </div>
+        <aside class="col-xl-4">
+          <detail-sidebar [deal]="deal"/>
+        </aside>
+      </div>
+    </div>
+  </section>
+
 </main>
 <detail-footer1 />

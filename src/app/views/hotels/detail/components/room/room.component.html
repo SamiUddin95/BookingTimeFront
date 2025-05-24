@@ -21,7 +21,7 @@
                 <ng-tiny-slider [config]="roomSliderStting" #roomSlider>
                   <!-- @for (img of getRoomImages(data.id); track $index) {
                   } -->
-                  <div><img [src]="data.image" alt="Card image" /></div>
+                  <div><img [src]="data.image"  (error)="onImageError($event)"alt="Card image" /></div>
                 </ng-tiny-slider>
               </div>
             </div>

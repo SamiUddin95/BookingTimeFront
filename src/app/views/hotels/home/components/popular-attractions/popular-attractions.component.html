@@ -12,9 +12,9 @@
         </div>
 
         <div class="mb-3">
-            @for (location of locationFilters; track $index){
-            <button class="btn btn-outline-primary me-2" (click)="filterProperties(location)"
-                [class.active]="selectedLocation === location">{{location}}</button>
+            @for (city of cities; track $index){
+            <button class="btn btn-outline-primary me-2" (click)="filterProperties(city)"
+                [class.active]="selectedCity === city">{{city}}</button>
             }
         </div>
 
@@ -24,22 +24,25 @@
                 <div class="card card-img-scale overflow-hidden bg-white">
 
                     <div class="card-img-scale-wrapper" style="height: 200px;">
-                        <img src="{{ data.image }}" class="card-img" alt="hotel image" />
+                                      <!-- <img *ngIf="data.thumbnail" [src]="data.thumbnail" class="card-img" alt="hotel image" /> -->
+                        <img  src="assets/images/gallery/01.jpg" class="card-img" alt="default image" />
 
                     </div>
 
                     <div class="card-body px-2">
                         <h5 class="card-title">
-                            <a routerLink="/hotels/detail" class="fs-6">{{
-                                data.name
-                                }}</a>
+                            <a (click)="goToHotelDetail(data.id)" class="fs-6" style="cursor: pointer;">
+                                {{ data.listName }}
+                              </a>
+                              
                         </h5>
 
 
                         <div class="d-flex gap-2">
 
                             <p class="mb-0 bg-primary w-auto px-2 text-white rating-tag">
-                                <span class="fs-6">{{ data.ratings}}</span><small class="text-muted">/5</small>
+                                <span class="fs-6">{{ data.rating}}</span><small class="text-muted">/5</small>
+                                <!-- <span class="fs-6">{{4}}</span><small class="text-muted">/5</small> -->
                             </p>
 
                             <p class="text-primary fs-6">({{data.reviews}}+ reviews)</p>
@@ -48,8 +51,8 @@
 
                         <p class="mb-0 w-auto px-2 text-white text-end">
                             <small class="text-dark mr-1">From </small><span class="fs-5 text-dark-blue fw-bold">{{
-                                currencyType }}{{
-                                data.price
+                                data.currencySymbol }} {{
+                                data.basePrice
                                 }}</span>
                         </p>
 

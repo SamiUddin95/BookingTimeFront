@@ -40,11 +40,21 @@
 
         <div class="card-body">
           <div class="row g-3">
+            <div class="col-6">
+              <label class="form-label">Company/Taxi Name *</label>
+              <input class="form-control" type="text" name="companyName" [(ngModel)]="taxiRegistrationForm.companyName"
+                placeholder="Enter Company/Taxi Name" required #companyName="ngModel"
+                [ngClass]="{'is-invalid': taxiRegistrationForm.companyName == '' && (companyName.touched || isSubmitted)}">
+              <div class="invalid-feedback"
+                *ngIf="taxiRegistrationForm.companyName == '' && (companyName.touched || isSubmitted)">
+                Please enter an Company/Taxi Name.
+              </div>
+            </div>
             <div class="col-md-6">
               <label class="form-label">Country/Region *</label>
               <select class="form-select js-choice" required [(ngModel)]="taxiRegistrationForm.countryId"
                 [ngClass]="{'is-invalid': taxiRegistrationForm.countryId === 0 && (country.touched || isSubmitted)}"
-                (ngModelChange)="loadCitiesAndStates($event)" #country="ngModel">
+                (ngModelChange)="loadState($event)" #country="ngModel">
                 <option [value]="0" disabled selected>Select Country</option>
                 <option *ngFor="let country of countries" [value]="country.countryId">{{ country.countryName }}</option>
               </select>
@@ -58,7 +68,7 @@
               <label class="form-label">State *</label> 
               <select class="form-select js-choice" name="stateId" required [(ngModel)]="taxiRegistrationForm.stateId"
                 [ngClass]="{'is-invalid': taxiRegistrationForm.stateId === 0 && (state.touched || isSubmitted)}"
-                #state="ngModel">
+                #state="ngModel" (ngModelChange)="loadCity($event)">
                 <option [value]="0" disabled selected>Select State</option>
                 <option *ngFor="let state of states" [ngValue]="state.stateId">{{ state.stateName }}</option>
               </select>
@@ -68,7 +78,7 @@
               </div>
             </div>
 
-            <div class="col-md-12">
+            <div class="col-md-6">
               <label class="form-label">City *</label>
               <select class="form-select js-choice" name="city" required [(ngModel)]="taxiRegistrationForm.cityId"
                 #city="ngModel"
@@ -230,10 +240,10 @@
             <div class="col-md-6">
               <label class="form-label">Currency</label>
               <select class="form-select" [(ngModel)]="taxiRegistrationForm.currency" required #currency="ngModel"
-                [ngClass]="{'is-invalid': currency.touched && taxiRegistrationForm.currency === 'Select Currency'}">
+                [ngClass]="{'is-invalid': currency.touched && taxiRegistrationForm.currency === 0}">
                 <option *ngFor="let type of currencies" [ngValue]="type.id">{{ type.name }}</option>
               </select>
-              <div *ngIf="currency.touched && taxiRegistrationForm.currency === 'Select Currency'"
+              <div *ngIf="currency.touched && taxiRegistrationForm.currency === 0"
                 class="invalid-feedback">
                 Please select a valid Currency.
               </div>
@@ -248,7 +258,7 @@
               </div>
             </div>
             <div class="col-6">
-              <label class="form-label">Descripption *</label>
+              <label class="form-label">Description *</label>
               <input class="form-control" type="text"  [(ngModel)]="taxiRegistrationForm.description"
                 [ngClass]="{'is-invalid': !taxiRegistrationForm.description && isSubmitted}">
               <div *ngIf="!taxiRegistrationForm.description && isSubmitted" class="invalid-feedback">

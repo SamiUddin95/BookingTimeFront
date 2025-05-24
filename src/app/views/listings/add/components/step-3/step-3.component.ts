@@ -28,6 +28,9 @@ export class Step3Component {
   ) {}
 
   @Input() stepperInstance?: Stepper
+  
+   errors: ValidationError[] = [];
+  
 
   ngOnInit(): void {
 
@@ -120,6 +123,8 @@ export class Step3Component {
     //   console.log(`${key}:`, value);
     // }
     // return
+    if (!formData) return; 
+
     this.api.AddListingProperty(formData).subscribe({
       next: (res) => {
         if (res.success === true) {
@@ -144,7 +149,39 @@ export class Step3Component {
     });
     
   }
-  prepareFormData(): FormData {
+
+  validValue(value: any): boolean {
+    if (value === null || value === undefined) return false;
+  
+    if (typeof value === 'string') {
+      return value.trim() !== '';
+    }
+
+    if (typeof value === 'number') {
+      return !isNaN(value) && value > 0;
+    }
+  
+    
+
+    if (Array.isArray(value)) {
+      return value.length > 0;
+    }
+  
+  
+    return true; 
+  }
+  
+  gotoIfInvalid(condition: boolean, stepIndex: number, message: string): boolean {
+    if (condition) {
+      this.stepperInstance?.to(stepIndex);
+      alert(message);
+      return true;
+    }
+    return false;
+  }
+
+  prepareFormData(): FormData| undefined {
+    this.errors = [];
     const formData = new FormData()
     const formDataJson = this.formDataService.getFormData()
 
@@ -176,6 +213,58 @@ export class Step3Component {
       RatingId: Number(formDataJson.page3?.ratingId) || 0,
     }
 
+    if (!this.validValue(requestData.StateId))
+      this.errors.push({ step: 1, message: 'State is required' });
+
+    if (!this.validValue(requestData.PostalCode))
+      this.errors.push({ step: 1, message: 'Postal Code is required' });
+
+    if (!this.validValue(requestData.Street))
+      this.errors.push({ step: 1, message: 'Street address is required' });
+
+    if (!this.validValue(requestData.Latitude))
+      this.errors.push({ step: 1, message: 'Latitude is required' });
+
+    if (!this.validValue(requestData.Longitude))
+      this.errors.push({ step: 1, message: 'Longitude is required' });
+
+    if (!this.validValue(requestData.TotalFloor))
+      this.errors.push({ step: 2, message: 'Total Floors is required' });
+
+    if (!this.validValue(requestData.TotalRoom))
+      this.errors.push({ step: 2, message: 'Total Rooms is required' });
+
+    if (!this.validValue(requestData.RoomArea))
+      this.errors.push({ step: 2, message: 'Room Area is required' });
+
+    if (!this.validValue(requestData.CurrencyId))
+      this.errors.push({ step: 3, message: 'Currency is required' });
+
+    if (!this.validValue(requestData.BasePrice) || requestData.BasePrice <= 0)
+      this.errors.push({ step: 3, message: 'Base Price is required and must be greater than 0' });
+
+    if (!this.validValue(requestData.PolicyDesc))
+      this.errors.push({ step: 3, message: 'Policy Description is required' });
+
+    if (!this.validValue(requestData.RatingId))
+      this.errors.push({ step: 3, message: 'Rating is required' });
+
+
+    if (this.errors.length > 0) {
+      // Get first invalid step
+      const firstErrorStep = this.errors[0].step;
+      this.stepperInstance?.to(firstErrorStep);
+    
+      // Collect messages for that step
+      const stepErrors = this.errors
+        .filter(e => e.step === firstErrorStep)
+        .map(e => `- ${e.message}`)
+        .join('\n');
+    
+      alert(`Please fix the following:\n${stepErrors}`);
+      this.errors = [];
+      return;
+    }
     console.log('Prepared requestData:', requestData)
 
     Object.keys(requestData).forEach((key) => {
@@ -192,7 +281,6 @@ export class Step3Component {
         formData.append(`Amenities[${index}].AmenitiesId`, String(amenityId))
       })
     }
-debugger
     if (Array.isArray(formDataJson.page2?.beaches)) {
       formDataJson.page2.beaches.forEach((beach: any, index: number) => {
         formData.append(`BeachAccess[${index}].id`, String(beach.id));
@@ -282,4 +370,10 @@ debugger
     
     return formData
   }
+
+}
+
+interface ValidationError {
+  step: number;
+  message: string;
 }

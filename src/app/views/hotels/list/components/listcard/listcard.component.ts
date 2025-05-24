@@ -48,13 +48,15 @@ export class ListcardComponent implements OnInit {
   totalCount = 0
   hotelCount = -1
   ngOnInit() {
-    this.hotelSearchService.filter$.subscribe((filter: any) => {
+        this.hotelSearchService.filter$.subscribe((filter: any) => {
       if (filter) {
         this.callApiWith(filter)
       }
     })
   }
-
+  onImageError(event: Event) {
+    (event.target as HTMLImageElement).src = 'assets/images/gallery/01.jpg';
+  }
   // hotelList = {
   //   propertydetails: [
   //     {
@@ -109,7 +111,6 @@ export class ListcardComponent implements OnInit {
   //   //   this.hotelList = res;
   //   //   console.log(res)
   //   // })
-  //   debugger
   //   this.hotelSearchService.filter$.subscribe((filter: any) => {
   //     if (filter) {
   //      this.callApiWith(filter);
