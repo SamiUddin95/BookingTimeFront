@@ -57,8 +57,15 @@ export class Step3Component {
   }
   loadCurrencies(countryId: any) 
   {
+
     this.commonService.GetCurrencyBycountryId(countryId).subscribe((res) => {
+      debugger
       this.currencies=res
+      if (this.category.currencyId == null || this.category.currencyId === 0) {
+        this.category.currencyId = res.length > 0 ? res[0].id : 0;
+      }
+  
+      this.validateForm();
     })
   }
   currencies:any = [
@@ -86,13 +93,12 @@ export class Step3Component {
 
   validateForm() {
     this.isFormValid =
-      this.category.currencyId !== 0 &&
-      this.category.basePrice !== null &&
+      !!this.category.currencyId &&
       this.category.basePrice > 0 &&
-      this.category.discount !== null &&
       this.category.discount >= 0 &&
-      this.category.ratingId !== 0
+      !!this.category.ratingId;
   }
+  
 
   states: any[] = []
   rating: any[] = []
@@ -116,8 +122,8 @@ export class Step3Component {
     this.stepperInstance?.previous()
   }
   addDataStepThree() {
-    if (!this.isFormValid) return
     this.formDataService.updateFormData('page3', this.category)
+    if (!this.isFormValid) return
     const formData = this.prepareFormData()
     // for (const [key, value] of (formData as any).entries()) {
     //   console.log(`${key}:`, value);
@@ -130,7 +136,7 @@ export class Step3Component {
         if (res.success === true) {
           alert("Successfully Created"); 
           this.formDataService.resetFormData();
-          // this.router.navigate(['hotels/home']);
+          this.router.navigate(['hotels/home']);
         } else {
           alert(res.Message || "An unexpected issue occurred.");
         }
@@ -236,7 +242,7 @@ export class Step3Component {
 
     if (!this.validValue(requestData.RoomArea))
       this.errors.push({ step: 2, message: 'Room Area is required' });
-
+debugger
     if (!this.validValue(requestData.CurrencyId))
       this.errors.push({ step: 3, message: 'Currency is required' });
 
