@@ -14,7 +14,7 @@ import {
 import { Router,RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { ToastrService } from 'ngx-toastr';
-import * as jwt_decode from 'jwt-decode';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 interface JwtPayload {
   sub: string;
@@ -47,7 +47,7 @@ export class SignInComponent {
   public store = inject(Store);
   public toastr = inject(ToastrService);
 
-  constructor(private app:CommonService,private router: Router) {
+  constructor(private app:CommonService,private router: Router,private jwtHelper: JwtHelperService) {
     // this.signinForm = this.fb.group({
     //   Email: ['', [Validators.required, Validators.email]],
     //   Password: ['', [Validators.required]],
@@ -65,10 +65,11 @@ export class SignInComponent {
         localStorage.setItem('token', res.token);
         const token = localStorage.getItem('token');
         if (token) {
-          const decoded = (jwt_decode as any).default<JwtPayload>(token);
-          console.log('Email:', decoded.sub);
-          console.log('IsVerified:', decoded.IsVerified);
-          console.log('GroupId:', decoded.GroupId);
+          this.jwtHelper.decodeToken(token);
+          // const decoded = (jwt_decode as any).default<JwtPayload>(token);
+          // console.log('Email:', decoded.sub);
+          // console.log('IsVerified:', decoded.IsVerified);
+          // console.log('GroupId:', decoded.GroupId);
         }
         this.router.navigate(['hotels/home']);
         this.toastr.success("User logged in successfully!",'Login Success');

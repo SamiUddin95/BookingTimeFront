@@ -24,6 +24,7 @@ import { ErrorInterceptor } from './helpers/error.interceptor'
 import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
 import { provideToastr, ToastrModule } from 'ngx-toastr';
 import { LoadingInterceptor } from './core/interceptors/loading.interceptor'
+import { JwtModule } from '@auth0/angular-jwt';
 
 // Scroll
 const scrollConfig: InMemoryScrollingOptions = {
