@@ -104,7 +104,7 @@
 
       <div class="col">
         <small class="d-block d-lg-none">Room no:</small>
-        <h6 class="mb-0 fw-normal">{{ item.roomNo }}</h6>
+        <h6 class="mb-0 fw-normal">{{ item.verified }}</h6>
       </div>
 
       <div class="col">
@@ -118,7 +118,7 @@
       </div>
 
       <div class="col">
-        <a routerLink="/admin/users/detail" class="btn btn-sm btn-light mb-0">View</a>
+        <a [routerLink]="['/admin/users/detail', item.id]" class="btn btn-sm btn-light mb-0">View</a>
       </div>
     </div>
     }

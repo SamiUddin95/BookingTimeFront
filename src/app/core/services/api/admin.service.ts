@@ -4,10 +4,22 @@ import { Observable } from 'rxjs';
 import { PropertyDetail } from '../../models/property-detail.model';
 import { ReviewRequest, AddReviewRequest } from '../../models/requestModels/review.model';
 
+export interface UserRequest {
+    groupId: number,
+    userId: number,
+    name: string,
+    isVerified: boolean,
+    email:string,
+    fullName:string
+}
+
 @Injectable({
   providedIn: 'root'
 })
+
 export class AdminService extends BaseHttpService{
+
+  
 
     GetListingPropertyById(propertyId: number): Observable<PropertyDetail> {
       return this.get(`GetListingPropertyById?id=${propertyId}`);
@@ -16,9 +28,20 @@ export class AdminService extends BaseHttpService{
     GetAllUserList():Observable<any> {
       return this.get(`GetAllUserList`);
     }
+    GetAllGroupList():Observable<any> {
+      return this.get(`GetAllGroupList`);
+    }
+    GetUserDetailById(id:any):Observable<any> {
+      return this.get(`GetUserDetailById?id=${id}`);
+    }
 
     AddPropertyReview(reqBody: AddReviewRequest):Observable<any> {
       return this.post(`AddPropertyReview`, reqBody);
+    }
+
+    UpdateUser(reqBody: UserRequest):Observable<any> {
+      debugger
+      return this.post(`UpdateUser`, reqBody);
     }
 
     GetPropertyRatingPercentage(propertyId: number):Observable<any> {

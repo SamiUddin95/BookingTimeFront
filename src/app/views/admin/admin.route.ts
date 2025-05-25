@@ -39,7 +39,7 @@ export const ADMIN_ROUTES: Route[] = [
     data: { title: 'Admin Users List' },
   },
   {
-    path: 'users/detail',
+    path: 'users/detail/:id',
     component: UserDetailsComponent,
     data: { title: 'Admin Booking Detail' },
   },

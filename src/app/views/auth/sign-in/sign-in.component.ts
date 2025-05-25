@@ -4,14 +4,8 @@ import { AppServiceService } from '@/app/services/app-service.service';
 import { credits, currentYear } from '@/app/store';
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import {
-  FormsModule,
-  ReactiveFormsModule,
-  UntypedFormBuilder,
-  Validators,
-  UntypedFormGroup,
-} from '@angular/forms';
-import { Router,RouterModule } from '@angular/router';
+import {FormsModule,ReactiveFormsModule,UntypedFormBuilder,Validators,UntypedFormGroup} from '@angular/forms';
+import { ActivatedRoute, Router,RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { ToastrService } from 'ngx-toastr';
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -47,7 +41,8 @@ export class SignInComponent {
   public store = inject(Store);
   public toastr = inject(ToastrService);
 
-  constructor(private app:CommonService,private router: Router,private jwtHelper: JwtHelperService) {
+  constructor(private app:CommonService,private router: Router,
+    private jwtHelper: JwtHelperService,private route: ActivatedRoute,) {
     // this.signinForm = this.fb.group({
     //   Email: ['', [Validators.required, Validators.email]],
     //   Password: ['', [Validators.required]],
@@ -59,20 +54,22 @@ export class SignInComponent {
   // }
 
   userModel:any={}
-   onLogin() {
+  onLogin() {
     this.app.login(this.userModel).subscribe(res=>{
       if(res.code===200){
         localStorage.setItem('token', res.token);
         const token = localStorage.getItem('token');
         if (token) {
-          this.jwtHelper.decodeToken(token);
-          // const decoded = (jwt_decode as any).default<JwtPayload>(token);
-          // console.log('Email:', decoded.sub);
-          // console.log('IsVerified:', decoded.IsVerified);
-          // console.log('GroupId:', decoded.GroupId);
+          const decoded=this.jwtHelper.decodeToken(token);
+          console.log('Email:', decoded.sub);
+          console.log('IsVerified:', decoded.IsVerified);
+          console.log('GroupId:', decoded.GroupId);
+          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || 'admin/users/list';
+          this.router.navigateByUrl(returnUrl);
+          // this.router.navigate(['admin/users/list']);
+          // this.router.navigate(['hotels/home']);
+          this.toastr.success("User logged in successfully!",'Login Success');
         }
-        this.router.navigate(['hotels/home']);
-        this.toastr.success("User logged in successfully!",'Login Success');
       }else
       if(res.code!=200)
         this.toastr.error(res?.msg,'Login Error');
