@@ -12,4 +12,11 @@ export class AirportTaxiFilterService {
   updateFilter(model: AirportTaxiDetailsRequestModel): void {
     this.requestModelSubject.next(model);
   }
+
+  private cityNameSubject = new BehaviorSubject<string | null>(null);
+  cityName$ = this.cityNameSubject.asObservable();
+
+  updateCityName(cityName: string): void {
+    this.cityNameSubject.next(cityName);
+  }
 }

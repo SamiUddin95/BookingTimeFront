@@ -36,5 +36,16 @@ export class AirportTaxisService extends BaseHttpService {
     GetAirportTaxiList(reqBody: AirportTaxiDetailsRequestModel):Observable<any> {
       return this.post(`GetAirportTaxiList`, reqBody);
     }
+    
+    GetAirportTaxisList(cityName: string): Observable<any> {
+      const endpoint = `GetAirportTaxisList?cityName=${encodeURIComponent(cityName)}`;
+      return this.post(endpoint, {}); 
+    }
+    
+    
+
+    AddCitytaxiBasePrice(reqBody: any):Observable<any> {
+      return this.post(`AddCitytaxiBasePrice`, reqBody);
+    }
 
 }
