@@ -1,14 +1,14 @@
 <!-- <div class="vstack gap-4 p-3">
     <div class="rounded shadow bg-white p-3">
       <div class="row g-0"> -->
-  
-        <!-- Image -->
-        <!-- <div class="col-md-4 d-flex justify-content-center align-items-center">
+
+<!-- Image -->
+<!-- <div class="col-md-4 d-flex justify-content-center align-items-center">
           <img src="https://via.placeholder.com/250x150?text=Taxi+Thumbnail" alt="Taxi Thumbnail" class="img-fluid rounded">
         </div> -->
-  
-        <!-- Details -->
-        <!-- <div class="col-md-8 ps-md-3 mt-3 mt-md-0">
+
+<!-- Details -->
+<!-- <div class="col-md-8 ps-md-3 mt-3 mt-md-0">
           <div class="d-flex flex-column h-100 position-relative">
   
             <h5 class="mb-1">SkyRide Airport Taxi</h5>
@@ -24,15 +24,15 @@
               <li><strong>Bookings/Day:</strong> 50</li>
             </ul>
    -->
-            <!-- <div class="text-success mb-2">
+<!-- <div class="text-success mb-2">
               <i class="bi bi-patch-check-fill me-1"></i> Available for Online Booking
             </div>
   
             <div class="text-danger mb-2">
               <i class="bi bi-patch-exclamation-fill me-1"></i> Limited Availability on Holidays
             </div> -->
-  
-            <!-- <div class="d-flex justify-content-between align-items-center mt-auto pt-2">
+
+<!-- <div class="d-flex justify-content-between align-items-center mt-auto pt-2">
               <div>
                 <h5 class="fw-bold d-inline">$45</h5>
                 <span class="text-muted"> /trip</span>
@@ -46,7 +46,7 @@
       </div>
     </div>
    -->
-    <!-- <nav class="d-flex justify-content-center mt-4">
+<!-- <nav class="d-flex justify-content-center mt-4">
       <ul class="pagination pagination-primary-soft d-inline-block d-md-flex rounded mb-0">
         <li class="page-item disabled"><a class="page-link" href="#"><i class="fa-solid fa-angle-left"></i></a></li>
         <li class="page-item active"><a class="page-link" href="#">1</a></li>
@@ -57,7 +57,7 @@
     </nav>
   </div>
    -->
-   <!-- <div class="vstack gap-4 p-3">
+<!-- <div class="vstack gap-4 p-3">
     <ng-container *ngFor="let taxi of taxis">
       <div class="rounded shadow bg-white p-3">
         <div class="row g-0">
@@ -121,51 +121,107 @@
     </nav>
   </div> -->
 
-
-  <div class="vstack gap-4 p-3">
-    <ng-container *ngFor="let taxi of taxis">
-      <div class="rounded shadow bg-white p-3">
-        <div class="row g-0">
-  
-          <!-- Image -->
-          <div class="col-md-4 d-flex justify-content-center align-items-center">
-            <img [src]="getTaxiImageById(taxi.id)" 
-                 (error)="onImageError($event)" 
-                 alt="Taxi Thumbnail" 
-                 class="img-fluid rounded" />
-          </div>
-  
-          <!-- Details -->
-          <div class="col-md-8 ps-md-3 mt-3 mt-md-0">
-            <div class="d-flex flex-column h-100 position-relative">
-  
-              <h5 class="mb-1">{{ taxi.name }}</h5>
-  
-              <small class="text-muted mb-2">
-                <i class="bi bi-geo-alt me-2"></i> Operating at: {{ taxi.cityName }}
-              </small>
-  
-              <p class="small mb-2">{{ taxi.description }}</p>
-  
-              <ul class="list-unstyled small mb-2">
-                <li><strong>Capacity:</strong> {{ taxi.capacity }}</li>
-                <li><strong>Suitcase:</strong> {{ taxi.suitcase }}</li>
-              </ul>
-  
-              <!-- Price and Button -->
-              <div class="d-flex justify-content-between align-items-center mt-auto pt-2">
-                <div>
-                  <h5 class="fw-bold d-inline">{{ taxi.currencySymbol }} {{ taxi.basePrice }}</h5>
-                  <span class="text-muted"> /trip</span>
-                </div>
-                <a href="#" class="btn btn-sm btn-dark">Book Now</a>
+  <div class="row g-3">
+    <!-- Left: Taxis -->
+    <div class="col-md-7">
+      <div class="vstack gap-4 p-3">
+        <ng-container *ngFor="let taxi of taxis">
+          <div class="rounded shadow bg-white p-3">
+            <div class="row g-0">
+              <!-- Image -->
+              <div class="col-md-4 d-flex justify-content-center align-items-center">
+                <img [src]="getTaxiImageById(taxi.id)" (error)="onImageError($event)" alt="Taxi Thumbnail"
+                     class="img-fluid rounded" />
               </div>
   
+              <!-- Details -->
+              <div class="col-md-8 ps-md-3 mt-3 mt-md-0">
+                <div class="d-flex flex-column h-100 position-relative">
+                  <h5 class="mb-1">{{ taxi.name }}</h5>
+                  <small class="text-muted mb-2">
+                    <i class="bi bi-geo-alt me-2"></i> Operating at: {{ taxi.cityName }}
+                  </small>
+                  <p class="small mb-2">{{ taxi.description }}</p>
+                  <ul class="list-unstyled small mb-2">
+                    <li><strong>Capacity:</strong> {{ taxi.capacity }}</li>
+                    <li><strong>Suitcase:</strong> {{ taxi.suitcase }}</li>
+                    <!-- <li *ngIf="distance"><strong>Distance:</strong> {{ distance }}</li>
+                    <li *ngIf="duration"><strong>Duration:</strong> {{ duration }}</li> -->
+                  </ul>
+                  <div class="d-flex justify-content-between align-items-center mt-auto pt-2">
+                    <div>
+                      <h5 class="fw-bold d-inline">{{ taxi.currencySymbol }} {{ getFare(taxi) }}</h5>
+                      <span class="text-muted"> /trip</span>
+                    </div>
+                    <a href="#" class="btn btn-sm btn-dark">Book Now</a>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
+        </ng-container>
+      </div>
+    </div>
   
+    <!-- Right: Journey Details -->
+    <div class="col-md-5" *ngIf="this.taxis.length>0">
+        <div class="rounded shadow bg-white p-3 w-100 align-self-start">
+        <h5>Your journey</h5>
+  
+        <!-- Radio buttons -->
+        <div class="mt-3 d-flex gap-3">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="journeyType" id="outboundRadio"
+                   [(ngModel)]="selectedJourney" value="outbound">
+            <label class="form-check-label" for="outboundRadio">Outbound</label>
+          </div>
+  
+          <div class="form-check form-check-inline" *ngIf="this.isTripTypeReturn==true">
+            <input class="form-check-input" type="radio" name="journeyType" id="returnRadio"
+                   [(ngModel)]="selectedJourney" value="return">
+            <label class="form-check-label" for="returnRadio">Return</label>
+          </div>
+        </div>
+  
+        <!-- Outbound -->
+        <div class="mt-3" *ngIf="selectedJourney === 'outbound' && outbound">
+            <h6 class="black-text mb-2">Outbound</h6>
+          <div class="mb-3">
+            <div class="small">{{ outbound.date }} · {{ outbound.time }}</div>
+            <div class="fw-semibold">{{ outbound.pickup }}</div>
+        </div>
+        <div class="d-flex gap-3 mb-2 text-muted small">
+            <div><i class="bi bi-clock me-1"></i> {{ outbound.duration }}</div>
+            <div *ngIf="distance"><i class="bi bi-signpost me-1"></i> {{ distance }}</div>
+          </div>
+          <div>
+            <div class="small">{{ outbound.dropDate }} · {{ outbound.dropTime }}</div>
+            <div class="fw-semibold">{{ outbound.dropoff }}</div>
+          </div>
+        </div>
+  
+        <!-- Return -->
+        <div class="mt-3" *ngIf="selectedJourney === 'return' && returnTrip">
+          <h6 class="black-text mb-2">Return</h6>
+          <div class="mb-3">
+            <div class="small ">{{ returnTrip.date }} · {{ returnTrip.time }}</div>
+            <div class="fw-semibold">{{ returnTrip.pickup }}</div>
+        </div>
+        <div class="d-flex gap-3 mb-2 text-muted small">
+            <div><i class="bi bi-clock me-1"></i> {{ returnTrip.duration }}</div>
+            <div *ngIf="distance"><i class="bi bi-signpost me-1"></i> {{ distance }}</div>
+          </div>
+        
+          <div>
+            <div class="small">{{ returnTrip.dropDate }} · {{ returnTrip.dropTime }}</div>
+            <div class="fw-semibold">{{ returnTrip.dropoff }}</div>
+          </div>
+          <div class="mt-3">
+            <button type="button" class="btn btn-outline-danger btn-sm" (click)="removeReturnTrip()">Remove Return</button>
+          </div>
         </div>
       </div>
-    </ng-container>
+    </div>
   </div>
   
+

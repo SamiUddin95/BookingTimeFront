@@ -5,11 +5,12 @@ import { CommonService } from '@/app/core/services/api/common.service';
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-airport-taxi-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,FormsModule],
   templateUrl: './airport-taxi-list.component.html',
   styleUrl: './airport-taxi-list.component.scss'
 })
@@ -22,7 +23,32 @@ export class AirportTaxiListComponent  implements OnInit {
   currentPage = 1;
   totalCount = 0;
   pageSize = 10;
-
+  duration:any = null
+  distance:any = null
+  isTripTypeReturn:boolean=false
+  selectedJourney: 'outbound' | 'return' = 'outbound'
+  
+  outbound = {
+    date: '',
+    time: '',
+    pickup: '',
+    duration: '',
+    dropDate: '',
+    dropTime: '',
+    dropoff: ''
+  };
+  
+  returnTrip = {
+    date: '',
+    time: '',
+    pickup: '',
+    duration: '',
+    dropDate: '',
+    dropTime: '',
+    dropoff: ''
+  };
+  
+  
   // ngOnInit(): void {
   //   this.filterService.requestModel$.subscribe(model => {
   //     if (model) {
@@ -49,7 +75,33 @@ export class AirportTaxiListComponent  implements OnInit {
   loadTaxis(requestModel: any): void {
     this.taxiService.GetAirportTaxisList(requestModel).subscribe(response => {
       this.taxis = response;
-      // this.totalCount = response.totalCount;
+      const [duration, distance] = this.filterService.getDurationAndDistance();
+      this.duration=duration
+      this.distance=distance
+      this.isTripTypeReturn = this.filterService.getTripType() === "return";
+      const model = this.filterService.getModel();
+
+      this.outbound = {
+        date: this.formatDate(model.pickUpDateTime),
+        time: this.formatTime(model.pickUpDateTime),
+        pickup: model.cityId,
+        duration: this.duration,
+        dropDate: this.formatDate(model.pickUpDateTime),
+        dropTime: this.addMinutesToTime(model.pickUpDateTime,this.duration),
+        dropoff: model.dropCityId
+      };
+      
+      if (model.tripType === 'return' && model.returnDateTime) {
+        this.returnTrip = {
+          date: this.formatDate(model.returnDateTime),
+          time: this.formatTime(model.returnDateTime),
+          pickup: model.dropCityId,
+          duration: this.duration,
+          dropDate: this.formatDate(model.returnDateTime),
+          dropTime: this.addMinutesToTime(model.returnDateTime,this.duration),
+          dropoff: model.cityId
+        };
+      }
     });
   }
 
@@ -68,7 +120,53 @@ export class AirportTaxiListComponent  implements OnInit {
     return imageMap[taxiId] || 'assets/images/Cars/standard.jpg'; 
   }
 
+  vehicleTypeMultipliers: { [key: string]: number } = {
+    'Standard Sedan': 0.9,
+    'Executive Sedan': 1.0,
+    'Luxury Sedan': 1.4,
+    'People Carrier': 1.1,
+    'Large People Carrier': 1.2,
+    'Executive People Carrier': 1.5,
+    'Minibus': 1.3
+  };
   
+  
+  getFare(taxi: any): number {
+    const distance = parseFloat(this.distance); 
+    const baseRate = taxi.basePrice; 
+    const multiplier = this.vehicleTypeMultipliers[taxi.name] || 1;
+  
+    const oneWayFare = baseRate * distance * multiplier;
+
+    if (this.isTripTypeReturn) {
+      const returnFare = oneWayFare * 0.9; 
+      return Math.round(oneWayFare + returnFare);
+    }
+  
+    return Math.round(oneWayFare);
+  }
+  formatDate(datetime: string): string {
+    const date = new Date(datetime);
+    return date.toDateString(); 
+  }
+  
+  formatTime(datetime: string): string {
+    const date = new Date(datetime);
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); 
+  }
+  addMinutesToTime(datetime: string, duration: string): string {
+    const date = new Date(datetime);
+    const match = duration.match(/\d+/); // extract the number of minutes
+    const minutes = match ? parseInt(match[0], 10) : 0;
+    date.setMinutes(date.getMinutes() + minutes);
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+  
+  removeReturnTrip(): void {
+    this.filterService.setRemoveReturn(true);
+    
+    this.selectedJourney="outbound";
+  }
   goToPage(page: number) {
     this.currentPage = page;
     this.filterService.requestModel$.subscribe(model => {

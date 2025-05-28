@@ -31,9 +31,9 @@ export interface AirportTaxiDetailsRequestModel {
 
 export interface TaxiDetail {
   taxiId?: number
-  pickUpDate?: Date
+  pickUpDateTime?: Date
   returnDateTime?: Date
-  pickUpTime?: string
+  // pickUpTime?: string
   cityId?: number
   dropCityId?: number
   priceFrom?: number
