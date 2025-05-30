@@ -91,3 +91,13 @@ export interface TaxiResponseModel {
   currencySymbol: string
   id: number
 }
+
+export interface JourneyInfo {
+  date: string;
+  time: string;
+  pickup: string;
+  duration: string;
+  dropDate: string;
+  dropTime: string;
+  dropoff: string;
+}

@@ -1,10 +1,12 @@
 import { Route } from '@angular/router'
 import { HomeComponent } from './home/home.component'
 import { RegisterTaxiComponent } from './register-taxi/register-taxi.component'
+import { TaxiDetailComponent } from './taxi-detail/taxi-detail.component'
 
 export const AIRPORT_TAXI_ROUTES: Route[] = [
    { path: 'home', component: HomeComponent, data: { title: 'Airport Taxi - Home' } },
    { path: 'register-taxi', component: RegisterTaxiComponent, data: { title: 'Airport Taxi - Register' } },
+   { path: 'taxi-detail', component: TaxiDetailComponent, data: { title: 'Airport Taxi - Detail' } },
 //   {
 //     path: 'detail',
 //     component: DetailComponent,
