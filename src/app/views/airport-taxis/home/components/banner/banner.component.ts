@@ -70,7 +70,7 @@ export class BannerComponent implements AfterViewInit, OnInit {
     altInput: true,
     altFormat: 'd M Y H:i',
     minDate: new Date(),
-  }
+  } 
   ngOnInit(): void {
     this.loadCities()
     this.initializeRequestModel()
