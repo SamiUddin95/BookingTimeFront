@@ -1,8 +1,11 @@
 import {
+  AfterViewInit,
   Component,
+  ElementRef,
   inject,
   OnInit,
   QueryList,
+  ViewChild,
   ViewChildren,
 } from '@angular/core'
 import { Footer1Component } from '../../hotels/home/components/footer1/footer1.component'
@@ -28,6 +31,9 @@ import {
 
 import { RegisterTaxiForm } from '@/app/core/models/requestModels/register-airport-taxi.model'
 import { AirportTaxisService } from '@/app/core/services/api/airport-taxi.service'
+import { NgSelectModule } from '@ng-select/ng-select'
+declare var bootstrap: any;
+declare const google: any;
 
 @Component({
   selector: 'app-register-taxi',
@@ -37,14 +43,16 @@ import { AirportTaxisService } from '@/app/core/services/api/airport-taxi.servic
     CommonModule,
     DateFormInputDirective,
     ReactiveFormsModule,
+    NgSelectModule,
     FormsModule,
     DropzoneModule,
   ],
   templateUrl: './register-taxi.component.html',
   styleUrl: './register-taxi.component.scss',
 })
-export class RegisterTaxiComponent {
+export class RegisterTaxiComponent implements AfterViewInit,OnInit {
   @ViewChildren(NgModel) formFields!: QueryList<NgModel>
+  @ViewChild('modalRef') modalElementRef!: ElementRef;
 
   dropzoneConfig: DropzoneConfigInterface = {
     url: '#',
@@ -68,7 +76,6 @@ export class RegisterTaxiComponent {
 
   taxiRegistrationForm!: RegisterTaxiForm
 
-
   constructor(
     private router: Router,
     private route: ActivatedRoute
@@ -78,9 +85,9 @@ export class RegisterTaxiComponent {
     this.taxiRegistrationForm = {
       companyName: '',
       operatingAirport: '',
-      countryId: 0,
-      cityId: 0,
-      stateId: 0,
+      country: '',
+      city: '',
+      state: '',
       firstName: '',
       lastName: '',
       email: '',
@@ -112,8 +119,98 @@ export class RegisterTaxiComponent {
   states: any
   isSubmitted: boolean = false
 
+  cityPrice: any = {
+    CityName: '',
+    price: 0,
+    currencyId: 0,
+  }
+
   private commonService = inject(CommonService)
   private taxiService = inject(AirportTaxisService)
+
+  modalInstance: any;
+
+  ngAfterViewInit() {
+    if (this.modalElementRef) {
+      this.modalInstance = new bootstrap.Modal(this.modalElementRef.nativeElement);
+    }
+    
+      this.initAutocomplete();
+  }
+
+  initAutocomplete(): void {
+    const autocompleteInput = document.getElementById('autocomplete') as HTMLInputElement;
+
+    if (!autocompleteInput) return;
+
+    const autocomplete = new google.maps.places.Autocomplete(autocompleteInput, {
+      types: ['geocode'],
+      componentRestrictions: { country: [] } // optional country restriction
+    });
+
+    autocomplete.addListener('place_changed', () => {
+      const place = autocomplete.getPlace();
+      if (!place.address_components) return;
+
+      this.extractAddressComponents(place.address_components);
+    });
+  }
+
+  extractAddressComponents(components: any[]): void {
+    this.taxiRegistrationForm.country = '';
+    this.taxiRegistrationForm.state = '';
+    this.taxiRegistrationForm.city = '';
+
+    for (const component of components) {
+      const types = component.types;
+
+      if (types.includes('country')) {
+        this.taxiRegistrationForm.country = component.long_name;
+      } else if (types.includes('administrative_area_level_1')) {
+        this.taxiRegistrationForm.state = component.long_name;
+      } else if (types.includes('locality')) {
+        this.taxiRegistrationForm.city = component.long_name;
+      } else if (types.includes('administrative_area_level_2') && !this.taxiRegistrationForm.city) {
+        // Fallback if "locality" isn't available
+        this.taxiRegistrationForm.city = component.long_name;
+      }
+    }
+  }
+  saveCityPrice() {
+    if (!this.cityPrice.CityName || this.cityPrice.CityName.trim() === '') {
+      alert('City Name is required.');
+      return;
+    }
+  
+    if (!this.cityPrice.price || this.cityPrice.price <= 0) {
+      alert('Valid Price is required.');
+      return;
+    }
+  
+    if (!this.cityPrice.currencyId || this.cityPrice.currencyId === 0) {
+      alert('Please select a currency.');
+      return;
+    }
+    this.taxiService.AddCitytaxiBasePrice(this.cityPrice).subscribe({
+      next: (res) => {
+        alert(res.message);
+  
+        this.cityPrice = {
+          CityName: '',
+          price: 0,
+          currencyId: null
+        };
+  
+        if (this.modalInstance) {
+          this.modalInstance.hide();
+        }
+      },
+      error: (err) => {
+        console.error('Error saving data:', err);
+      }
+    });
+  }
+  
 
   nextStep() {
     if (this.currentStep < this.totalSteps) {
@@ -128,30 +225,34 @@ export class RegisterTaxiComponent {
       this.currentStep--
     }
   }
-  selectedVehicleTypes: number[] = [];
+  selectedVehicleTypes: number[] = []
   onVehicleTypeChange(event: Event, vehicleId: number) {
-    const isChecked = (event.target as HTMLInputElement).checked;
+    const isChecked = (event.target as HTMLInputElement).checked
     if (isChecked) {
-      this.selectedVehicleTypes.push(vehicleId);
+      this.selectedVehicleTypes.push(vehicleId)
     } else {
-      this.selectedVehicleTypes = this.selectedVehicleTypes.filter(id => id !== vehicleId);
+      this.selectedVehicleTypes = this.selectedVehicleTypes.filter(
+        (id) => id !== vehicleId
+      )
     }
-
   }
+
   submit() {
-   var vechileType=this.selectedVehicleTypes
-   this.taxiRegistrationForm.vehicleType=String(vechileType);
+    var vechileType = this.selectedVehicleTypes
+    this.taxiRegistrationForm.vehicleType = String(vechileType)
     console.log(this.taxiRegistrationForm)
 
     if (!this.isFormValid()) {
       this.isSubmitted = true
       return
     }
-    this.taxiService.registerTaxi(this.taxiRegistrationForm).subscribe((res) => {
+    this.taxiService
+      .registerTaxi(this.taxiRegistrationForm)
+      .subscribe((res) => {
         console.log(res)
         if (res.success) {
-          alert("Successfully added");
-          this.router.navigate(['/airport-taxi/home']);
+          alert('Successfully added')
+          this.router.navigate(['/airport-taxi/home'])
         }
       })
   }
@@ -159,6 +260,7 @@ export class RegisterTaxiComponent {
   ngOnInit(): void {
     this.loadDropdowns()
     this.initialiseForm()
+    this.loadCurrencies(0)
   }
 
   loadDropdowns() {
@@ -179,20 +281,19 @@ export class RegisterTaxiComponent {
     this.commonService.GetStateByCountryId(countryId).subscribe((res) => {
       this.states = res
     })
-    this.loadCurrencies(countryId);
+    this.loadCurrencies(countryId)
   }
   loadCity(stateId: number) {
     this.commonService.GetCityByStateId(stateId).subscribe((res) => {
       this.cities = res
     })
-
   }
 
   isFormValid(): boolean {
     const isValid =
-      this.taxiRegistrationForm.countryId > 0 &&
-      this.taxiRegistrationForm.stateId > 0 &&
-      this.taxiRegistrationForm.cityId > 0 &&
+      // this.taxiRegistrationForm.countryId > 0 &&
+      // this.taxiRegistrationForm.stateId > 0 &&
+      // this.taxiRegistrationForm.cityId > 0 &&
       this.taxiRegistrationForm.operatingAirport.trim() !== ''
 
     //add remaining validations here
@@ -232,14 +333,11 @@ export class RegisterTaxiComponent {
     { value: 'Inactive', label: 'Inactive' },
   ]
 
-  currencies:any = [
-    { id: 0, name: 'Select Currency' },
-    ]
-  loadCurrencies(countryId: any) 
-  {
-    this.commonService.GetCurrencyBycountryId(countryId).subscribe((res) => {
-      this.currencies=res
-    })
+  currencies: any = []
+  loadCurrencies(countryId: any) {
+    this.commonService.GetCurrencyBycountryId(countryId).subscribe((res: any[]) => {
+      this.currencies = [{ id: 0, name: 'Select Currency' }, ...res];
+    });
   }
   goToStep(stepId: number): void {
     this.currentStep = stepId

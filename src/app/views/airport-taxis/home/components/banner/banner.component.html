@@ -18,12 +18,25 @@
     <div class="bg-white shadow pb-0 rounded">
       <div class="card-body form-control-border p-3 p-sm-4 px-md-3 pt-md-3 pb-md-1">
 
+        <!-- Trip type radio buttons (stay above pickup) -->
+        <div class="mb-3">
+          <div class="btn-group" role="group" aria-label="Trip Type Toggle">
+            <input type="radio" class="btn-check" id="oneWay" name="tripType" value="oneWay"
+              [(ngModel)]="requestModel.detail.tripType" autocomplete="off" />
+            <label class="btn btn-outline-primary" for="oneWay">One-way</label>
 
-        <div class="row g-2 g-md-2 pb-3">
+            <input type="radio" class="btn-check" id="return" name="tripType" value="return"
+              [(ngModel)]="requestModel.detail.tripType" autocomplete="off" />
+            <label class="btn btn-outline-primary" for="return">Return</label>
+          </div>
+        </div>
 
-          <!-- pickup location plus flip button -->
-          <div class="col-md-3 position-relative">
 
+        <!-- Row Layout (preserving dropdown layout) -->
+        <div class="row g-2 g-md-2 pb-3 align-items-end">
+
+          <!-- Pickup Location -->
+          <!-- <div class="col-md-3 position-relative">
             <div class="form-fs-lg form-control-transparent">
               <label class="form-label small">Pickup</label>
               <select class="form-select custom-select" data-search-enabled="true"
@@ -36,17 +49,16 @@
             </div>
 
             <div class="btn-flip-icon z-index-9 mt-2 mt-md-1">
-              <button class="btn btn-secondary shadow btn-round mb-0 text-dark-green"  (click)="swapCities()" >
+              <button class="btn btn-secondary shadow btn-round mb-0 text-dark-green" (click)="swapCities()">
                 <i class="fa-solid fa-right-left"></i>
               </button>
             </div>
-
           </div>
 
-          <!-- dropoff location -->
-          <div class="col-md-3 text-md-end">
+
+          <div class="col-md-3">
             <div class="form-fs-lg form-control-transparent">
-              <label class="form-label small ms-3 ms-md-0 me-md-3">Drop</label>
+              <label class="form-label small">Drop</label>
               <select class="form-select custom-select" data-search-enabled="true"
                 [(ngModel)]="requestModel.detail.dropCityId" name="dropCity" [ngModelOptions]="{ standalone: true }">
                 <option value="-1" disabled selected>Select location</option>
@@ -55,32 +67,49 @@
                 </option>
               </select>
             </div>
+          </div> -->
+          <!-- Pickup Location -->
+          <div class="col-md-3 position-relative">
+            <div class="form-fs-lg form-control-transparent">
+              <label class="form-label small">Pickup</label>
+              <input type="text" class="form-control" #pickupInput placeholder="Enter pickup location" />
+            </div>
+            <div class="btn-flip-icon z-index-9 mt-2 mt-md-1">
+              <button class="btn btn-secondary shadow btn-round mb-0 text-dark-green" (click)="swapCities()">
+                <i class="fa-solid fa-right-left"></i>
+              </button>
+            </div>
           </div>
 
-          <!-- pickup date -->
+          <!-- Drop Location -->
           <div class="col-md-3">
             <div class="form-fs-lg form-control-transparent">
-              <label class="form-label small">Pickup Date</label>
-              <input mwlFlatpickr type="text" class="form-control flatpickr" [flatpickrOptions]="flatpickrOptions"
-                [(ngModel)]="requestModel.detail.pickUpDate" placeholder="Select date" />
+              <label class="form-label small">Drop</label>
+              <input type="text" class="form-control" #dropInput placeholder="Enter drop location" />
             </div>
           </div>
 
-          <!-- pickup time -->
-          <div class="col-md-2 text-md-end">
+          <!-- Pickup Date -->
+          <div class="col-md-2">
             <div class="form-fs-lg form-control-transparent">
-              <label class="form-label small ms-3 ms-md-0 me-md-3">Pickup time</label>
-              <input mwlFlatpickr [flatpickrOptions]="{
-                              enableTime: true,
-                              noCalendar: true,
-                              dateFormat: 'H:i'
-                            }" type="text" class="form-control flatpickr text-md-end" data-enableTime="true"
-                [(ngModel)]="requestModel.detail.pickUpTime" data-noCalendar="true" placeholder="Select time" />
+              <label class="form-label small">Pickup</label>
+              <input mwlFlatpickr type="text" class="form-control flatpickr" [flatpickrOptions]="flatpickrOptions"
+                [(ngModel)]="requestModel.detail.pickUpDateTime" placeholder="Select Pickup" />
             </div>
           </div>
 
-          <!-- search icon button -->
-          <div class="col-md-1 col-12 d-flex justify-content-end align-items-end d-none d-md-flex">
+          <!-- Return DateTime -->
+          <div class="col-md-3">
+            <div class="form-fs-lg form-control-transparent">
+              <label class="form-label small">Return</label>
+              <input mwlFlatpickr type="text" class="form-control flatpickr" [flatpickrOptions]="flatpickrOptionsReturn"
+                [(ngModel)]="requestModel.detail.returnDateTime" [disabled]="requestModel.detail.tripType !== 'return'"
+                placeholder="Select Return" />
+            </div>
+          </div>
+
+          <!-- Search Button -->
+          <div class="col-md-1 d-flex justify-content-end align-items-end">
             <button class="icon-lg btn btn-secondary mb-0 d-flex align-items-center justify-content-center"
               (click)="searchTaxis()">
               <i class="bi bi-search fa-fw fs-5 text-dark-green"></i>
@@ -90,6 +119,8 @@
         </div>
       </div>
     </div>
+
+
 
   </div>
 </section>
