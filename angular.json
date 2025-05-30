@@ -36,12 +36,15 @@
               "node_modules/@splidejs/splide/dist/css/themes/splide-default.min.css",
               "src/assets/fonts/bootstrap-icons/bootstrap-icons.css",
               "src/assets/fonts/font-awesome/css/all.min.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/@ng-select/ng-select/themes/default.theme.css",
               "src/styles.scss",
               "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": [
               "node_modules/@splidejs/splide/dist/js/splide.js",
-              "node_modules/apexcharts/dist/apexcharts.min.js"
+              "node_modules/apexcharts/dist/apexcharts.min.js",
+                "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
             ],
             "allowedCommonJsDependencies": [
               "bs-stepper",
