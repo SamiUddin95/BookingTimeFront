@@ -14,6 +14,10 @@ export class AirportTaxiFilterService {
   private isRemoveReturnSubject = new BehaviorSubject<boolean>(false);
 isRemoveReturn$ = this.isRemoveReturnSubject.asObservable();
 
+
+private taxiDataSource = new BehaviorSubject<any>(null);
+taxiData$ = this.taxiDataSource.asObservable();
+
   duration: any = null
   distance: any = null
   tripType: any = null
@@ -59,4 +63,13 @@ isRemoveReturn$ = this.isRemoveReturnSubject.asObservable();
     this.isRemoveReturnSubject.next(value);
   }
 
+
+
+  setTaxiData(data: any) {
+    this.taxiDataSource.next(data);
+  }
+
+  clearData() {
+    this.taxiDataSource.next(null);
+  }
 }

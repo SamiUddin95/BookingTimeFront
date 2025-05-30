@@ -128,7 +128,7 @@
     rxjs "^7.8.1"
     tslib "^2.3.0"
 
-"@angular/animations@^18.0.3", "@angular/animations@18.2.13":
+"@angular/animations@^18.0.3", "@angular/animations@^19.0.1", "@angular/animations@18.2.13":
   version "18.2.13"
   resolved "https://registry.npmjs.org/@angular/animations/-/animations-18.2.13.tgz"
   integrity sha512-rG5J5Ek5Hg+Tz2NjkNOaG6PupiNK/lPfophXpsR1t/nWujqnMWX2krahD/i6kgD+jNWNKCJCYSOVvCx/BHOtKA==
@@ -189,7 +189,7 @@
     symbol-observable "4.0.0"
     yargs "17.7.2"
 
-"@angular/common@^14.0.0", "@angular/common@^17.0.0", "@angular/common@^17.0.2", "@angular/common@^17.1.1", "@angular/common@^18.0.3", "@angular/common@^19.0.0", "@angular/common@>=13.0.0", "@angular/common@>=14.0.0", "@angular/common@>=16.0.0", "@angular/common@>=16.0.0-0", "@angular/common@>=17", "@angular/common@>=6.0.0", "@angular/common@>=9.0.0", "@angular/common@18.2.13":
+"@angular/common@^14.0.0", "@angular/common@^17.0.0", "@angular/common@^17.0.2", "@angular/common@^17.1.1", "@angular/common@^18.0.3", "@angular/common@^19.0.0", "@angular/common@^19.0.1", "@angular/common@>= 17.0.0", "@angular/common@>=13.0.0", "@angular/common@>=14.0.0", "@angular/common@>=16.0.0", "@angular/common@>=16.0.0-0", "@angular/common@>=17", "@angular/common@>=6.0.0", "@angular/common@>=9.0.0", "@angular/common@18.2.13":
   version "18.2.13"
   resolved "https://registry.npmjs.org/@angular/common/-/common-18.2.13.tgz"
   integrity sha512-4ZqrNp1PoZo7VNvW+sbSc2CB2axP1sCH2wXl8B0wdjsj8JY1hF1OhuugwhpAHtGxqewed2kCXayE+ZJqSTV4jw==
@@ -217,14 +217,14 @@
   dependencies:
     tslib "^2.3.0"
 
-"@angular/core@^14.0.0", "@angular/core@^17.0.0", "@angular/core@^17.0.2", "@angular/core@^17.1.1", "@angular/core@^18.0.3", "@angular/core@^19.0.0", "@angular/core@>=13.0.0", "@angular/core@>=14.0.0", "@angular/core@>=16.0.0", "@angular/core@>=16.0.0-0", "@angular/core@>=17", "@angular/core@>=5.0.0", "@angular/core@>=6.0.0", "@angular/core@>=9.0.0", "@angular/core@18.2.13":
+"@angular/core@^14.0.0", "@angular/core@^17.0.0", "@angular/core@^17.0.2", "@angular/core@^17.1.1", "@angular/core@^18.0.3", "@angular/core@^19.0.0", "@angular/core@^19.0.1", "@angular/core@>= 17.0.0", "@angular/core@>=13.0.0", "@angular/core@>=14.0.0", "@angular/core@>=16.0.0", "@angular/core@>=16.0.0-0", "@angular/core@>=17", "@angular/core@>=5.0.0", "@angular/core@>=6.0.0", "@angular/core@>=9.0.0", "@angular/core@18.2.13":
   version "18.2.13"
   resolved "https://registry.npmjs.org/@angular/core/-/core-18.2.13.tgz"
   integrity sha512-8mbWHMgO95OuFV1Ejy4oKmbe9NOJ3WazQf/f7wks8Bck7pcihd0IKhlPBNjFllbF5o+04EYSwFhEtvEgjMDClA==
   dependencies:
     tslib "^2.3.0"
 
-"@angular/forms@^17.0.0", "@angular/forms@^17.1.1", "@angular/forms@^18.0.3", "@angular/forms@^19.0.0", "@angular/forms@>=14.0.0", "@angular/forms@>=5.0.0":
+"@angular/forms@^17.0.0", "@angular/forms@^17.1.1", "@angular/forms@^18.0.3", "@angular/forms@^19.0.0", "@angular/forms@^19.0.1", "@angular/forms@>= 17.0.0", "@angular/forms@>=14.0.0", "@angular/forms@>=5.0.0":
   version "18.2.13"
   resolved "https://registry.npmjs.org/@angular/forms/-/forms-18.2.13.tgz"
   integrity sha512-A67D867fu3DSBhdLWWZl/F5pr7v2+dRM2u3U7ZJ0ewh4a+sv+0yqWdJW+a8xIoiHxS+btGEJL2qAKJiH+MCFfg==
@@ -3666,6 +3666,11 @@ globby@^14.0.0:
     slash "^5.1.0"
     unicorn-magic "^0.1.0"
 
+google-libphonenumber@^3.0.0, google-libphonenumber@^3.2.41:
+  version "3.2.41"
+  resolved "https://registry.npmjs.org/google-libphonenumber/-/google-libphonenumber-3.2.41.tgz"
+  integrity sha512-jJ97X9Qbp9ekgufJTOcrbAKsIg5Nw+89tcjiRa74hNSEM4zkoDGnO/7OKz0Og6uiH55816AoUvv3vAQE/Fw0Ow==
+
 gopd@^1.2.0:
   version "1.2.0"
   resolved "https://registry.npmjs.org/gopd/-/gopd-1.2.0.tgz"
@@ -3922,6 +3927,11 @@ ini@^4.1.3, ini@4.1.3:
   version "4.1.3"
   resolved "https://registry.npmjs.org/ini/-/ini-4.1.3.tgz"
   integrity sha512-X7rqawQBvfdjS10YU1y1YVreA3SsLrW9dX2CewP2EbBJM4ypVNLDkO5y04gejPwKIY9lR+7r9gn3rFPt/kmWFg==
+
+intl-tel-input@^19.0.0, intl-tel-input@^25.3.1:
+  version "25.3.1"
+  resolved "https://registry.npmjs.org/intl-tel-input/-/intl-tel-input-25.3.1.tgz"
+  integrity sha512-0Xls8/hnvPv6EqfDJ+cz6h/MGvEYiHkerrQBHMmRuuBPZ0MedDyzRqqdSkhFXXGt9YTihmBhXwtWoeHjdouIKA==
 
 ip-address@^9.0.5:
   version "9.0.5"
@@ -4846,6 +4856,13 @@ ng-otp-input@^1.9.3:
   dependencies:
     tslib "^2.3.0"
 
+"ngx-bootstrap@>= 12.0.0":
+  version "19.0.2"
+  resolved "https://registry.npmjs.org/ngx-bootstrap/-/ngx-bootstrap-19.0.2.tgz"
+  integrity sha512-DR5sA5e9k1bwtVeo8lQW4Yr8IgU7ba2pco5rlznnr7k91BJ3SNgrUSq+BQfigwARHGmgKCcw9lexu8ZWvefEXg==
+  dependencies:
+    tslib "^2.3.0"
+
 ngx-cookie-service@^17.1.0:
   version "17.1.0"
   resolved "https://registry.npmjs.org/ngx-cookie-service/-/ngx-cookie-service-17.1.0.tgz"
@@ -4867,6 +4884,13 @@ ngx-dropzone-wrapper@^16.0.0:
   integrity sha512-URcormA4mgsgcqASnch2GQ2MK+l6JAaHMvODPJUaKwaHQHHNbSkBL+HejjG3iPzlghDOTKiswrnKbPAFqjQzAg==
   dependencies:
     dropzone "^5.9.0"
+    tslib "^2.3.0"
+
+ngx-intl-tel-input@^17.0.0:
+  version "17.0.0"
+  resolved "https://registry.npmjs.org/ngx-intl-tel-input/-/ngx-intl-tel-input-17.0.0.tgz"
+  integrity sha512-yfxZ3N2h4w71I0w/OxEPaHwFMrrgnK9dG0HzRFfIL1uNELU5t3Fmp09Zr7YlclOfkHPzukwItKzerUWh4vlEBA==
+  dependencies:
     tslib "^2.3.0"
 
 ngx-mask@^17.0.7:

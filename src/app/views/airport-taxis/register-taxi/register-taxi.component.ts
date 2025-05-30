@@ -32,8 +32,8 @@ import {
 import { RegisterTaxiForm } from '@/app/core/models/requestModels/register-airport-taxi.model'
 import { AirportTaxisService } from '@/app/core/services/api/airport-taxi.service'
 import { NgSelectModule } from '@ng-select/ng-select'
-declare var bootstrap: any;
-declare const google: any;
+declare var bootstrap: any
+declare const google: any
 
 @Component({
   selector: 'app-register-taxi',
@@ -50,9 +50,9 @@ declare const google: any;
   templateUrl: './register-taxi.component.html',
   styleUrl: './register-taxi.component.scss',
 })
-export class RegisterTaxiComponent implements AfterViewInit,OnInit {
+export class RegisterTaxiComponent implements AfterViewInit, OnInit {
   @ViewChildren(NgModel) formFields!: QueryList<NgModel>
-  @ViewChild('modalRef') modalElementRef!: ElementRef;
+  @ViewChild('modalRef') modalElementRef!: ElementRef
 
   dropzoneConfig: DropzoneConfigInterface = {
     url: '#',
@@ -128,89 +128,98 @@ export class RegisterTaxiComponent implements AfterViewInit,OnInit {
   private commonService = inject(CommonService)
   private taxiService = inject(AirportTaxisService)
 
-  modalInstance: any;
+  modalInstance: any
 
   ngAfterViewInit() {
     if (this.modalElementRef) {
-      this.modalInstance = new bootstrap.Modal(this.modalElementRef.nativeElement);
+      this.modalInstance = new bootstrap.Modal(
+        this.modalElementRef.nativeElement
+      )
     }
-    
-      this.initAutocomplete();
+
+    this.initAutocomplete()
   }
 
   initAutocomplete(): void {
-    const autocompleteInput = document.getElementById('autocomplete') as HTMLInputElement;
+    const autocompleteInput = document.getElementById(
+      'autocomplete'
+    ) as HTMLInputElement
 
-    if (!autocompleteInput) return;
+    if (!autocompleteInput) return
 
-    const autocomplete = new google.maps.places.Autocomplete(autocompleteInput, {
-      types: ['geocode'],
-      componentRestrictions: { country: [] } // optional country restriction
-    });
+    const autocomplete = new google.maps.places.Autocomplete(
+      autocompleteInput,
+      {
+        types: ['geocode'],
+        componentRestrictions: { country: [] }, // optional country restriction
+      }
+    )
 
     autocomplete.addListener('place_changed', () => {
-      const place = autocomplete.getPlace();
-      if (!place.address_components) return;
+      const place = autocomplete.getPlace()
+      if (!place.address_components) return
 
-      this.extractAddressComponents(place.address_components);
-    });
+      this.extractAddressComponents(place.address_components)
+    })
   }
 
   extractAddressComponents(components: any[]): void {
-    this.taxiRegistrationForm.country = '';
-    this.taxiRegistrationForm.state = '';
-    this.taxiRegistrationForm.city = '';
+    this.taxiRegistrationForm.country = ''
+    this.taxiRegistrationForm.state = ''
+    this.taxiRegistrationForm.city = ''
 
     for (const component of components) {
-      const types = component.types;
+      const types = component.types
 
       if (types.includes('country')) {
-        this.taxiRegistrationForm.country = component.long_name;
+        this.taxiRegistrationForm.country = component.long_name
       } else if (types.includes('administrative_area_level_1')) {
-        this.taxiRegistrationForm.state = component.long_name;
+        this.taxiRegistrationForm.state = component.long_name
       } else if (types.includes('locality')) {
-        this.taxiRegistrationForm.city = component.long_name;
-      } else if (types.includes('administrative_area_level_2') && !this.taxiRegistrationForm.city) {
+        this.taxiRegistrationForm.city = component.long_name
+      } else if (
+        types.includes('administrative_area_level_2') &&
+        !this.taxiRegistrationForm.city
+      ) {
         // Fallback if "locality" isn't available
-        this.taxiRegistrationForm.city = component.long_name;
+        this.taxiRegistrationForm.city = component.long_name
       }
     }
   }
   saveCityPrice() {
     if (!this.cityPrice.CityName || this.cityPrice.CityName.trim() === '') {
-      alert('City Name is required.');
-      return;
+      alert('City Name is required.')
+      return
     }
-  
+
     if (!this.cityPrice.price || this.cityPrice.price <= 0) {
-      alert('Valid Price is required.');
-      return;
+      alert('Valid Price is required.')
+      return
     }
-  
+
     if (!this.cityPrice.currencyId || this.cityPrice.currencyId === 0) {
-      alert('Please select a currency.');
-      return;
+      alert('Please select a currency.')
+      return
     }
     this.taxiService.AddCitytaxiBasePrice(this.cityPrice).subscribe({
       next: (res) => {
-        alert(res.message);
-  
+        alert(res.message)
+
         this.cityPrice = {
           CityName: '',
           price: 0,
-          currencyId: null
-        };
-  
+          currencyId: null,
+        }
+
         if (this.modalInstance) {
-          this.modalInstance.hide();
+          this.modalInstance.hide()
         }
       },
       error: (err) => {
-        console.error('Error saving data:', err);
-      }
-    });
+        console.error('Error saving data:', err)
+      },
+    })
   }
-  
 
   nextStep() {
     if (this.currentStep < this.totalSteps) {
@@ -335,9 +344,11 @@ export class RegisterTaxiComponent implements AfterViewInit,OnInit {
 
   currencies: any = []
   loadCurrencies(countryId: any) {
-    this.commonService.GetCurrencyBycountryId(countryId).subscribe((res: any[]) => {
-      this.currencies = [{ id: 0, name: 'Select Currency' }, ...res];
-    });
+    this.commonService
+      .GetCurrencyBycountryId(countryId)
+      .subscribe((res: any[]) => {
+        this.currencies = [{ id: 0, name: 'Select Currency' }, ...res]
+      })
   }
   goToStep(stepId: number): void {
     this.currentStep = stepId

@@ -15,6 +15,7 @@ import {
   ViewChild,
   ElementRef,
   NgZone,
+  ChangeDetectorRef,
 } from '@angular/core'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap'
@@ -40,7 +41,7 @@ export class BannerComponent implements AfterViewInit, OnInit {
   dropPlace: google.maps.places.PlaceResult | null = null
   duration = null
   distance = null
-  constructor(private ngZone: NgZone) {}
+  constructor(private ngZone: NgZone,private cdr: ChangeDetectorRef) {}
 
   ngAfterViewInit() {
     this.initPickupAutocomplete()
@@ -67,8 +68,8 @@ export class BannerComponent implements AfterViewInit, OnInit {
   flatpickrOptionsReturn = {
     enableTime: true,
     dateFormat: 'Y-m-d H:i',
-    altInput: true,
-    altFormat: 'd M Y H:i',
+    // altInput: true,
+    // altFormat: 'd M Y H:i',
     minDate: new Date(),
   } 
   ngOnInit(): void {
@@ -85,10 +86,17 @@ export class BannerComponent implements AfterViewInit, OnInit {
       if (isRemoved) {
         this.requestModel.detail.tripType="oneWay";
         this.requestModel.detail.returnDateTime=undefined
+        this.cdr.detectChanges();
         this.searchTaxis();
       }
     })
   }
+
+  //"styles": [
+//   "node_modules/intl-tel-input/build/css/intlTelInput.css",
+//   "src/styles.css"
+// ]
+
 
   initPickupAutocomplete() {
     const autocomplete = new google.maps.places.Autocomplete(
@@ -243,17 +251,18 @@ export class BannerComponent implements AfterViewInit, OnInit {
       errors.push('Pick-up date cannot be in the past.')
     }
 
-    // if (detail.pickUpTime == undefined || detail.pickUpTime == '') {
-    //   errors.push('Please select valid time.');
-    // }
-    if (detail.returnDateTime) {
-      const pickupDateTime = new Date(detail.pickUpDateTime??'')
-      const returnDateTime = new Date(detail.returnDateTime)
-      const diffMs = returnDateTime.getTime() - pickupDateTime.getTime()
-      const diffHours = diffMs / (1000 * 60 * 60) // convert ms to hours
+    if (detail.tripType === 'return') {
+      if (!detail.returnDateTime) {
+        errors.push('The return time must be filled.')
+      } else {
+        const pickupDateTime = new Date(detail.pickUpDateTime ?? '')
+        const returnDateTime = new Date(detail.returnDateTime)
+        const diffMs = returnDateTime.getTime() - pickupDateTime.getTime()
+        const diffHours = diffMs / (1000 * 60 * 60)
   
-      if (diffHours < 1) {
-        errors.push('The return time must be at least one hour later than the pick-up time.')
+        if (diffHours < 1) {
+          errors.push('The return time must be at least one hour later than the pick-up time.')
+        }
       }
     }
     return errors

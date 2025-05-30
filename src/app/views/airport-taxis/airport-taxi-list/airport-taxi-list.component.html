@@ -153,7 +153,7 @@
                       <h5 class="fw-bold d-inline">{{ taxi.currencySymbol }} {{ getFare(taxi) }}</h5>
                       <span class="text-muted"> /trip</span>
                     </div>
-                    <a href="#" class="btn btn-sm btn-dark">Book Now</a>
+                    <button class="btn btn-sm btn-dark" (click)="onBookNow(taxi)">Book Now</button>
                   </div>
                 </div>
               </div>

@@ -1,0 +1,53 @@
+// Container to hold input and flags properly
+::ng-deep ngx-intl-tel-input .iti {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+  }
+  
+  // Style the flag container
+  ::ng-deep .iti__flag-container {
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-right: none;
+    border-radius: 0.375rem 0 0 0.375rem;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+  }
+  
+  // Ensure the flag is well-centered
+  ::ng-deep .iti__selected-flag {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  // Style the input field
+  ::ng-deep ngx-intl-tel-input input {
+    flex: 1;
+    border: 1px solid #ced4da;
+    border-left: none;
+    border-radius: 0 0.375rem 0.375rem 0;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    width: 100%;
+    box-shadow: none;
+    outline: none;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  }
+  
+  // Focus style
+  ::ng-deep ngx-intl-tel-input input:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+  }
+  
+  // ✨ LIMIT DROPDOWN HEIGHT ✨
+  ::ng-deep .iti__country-list {
+    max-height: 200px; // Adjust as needed
+    overflow-y: auto;
+    border-radius: 0 0 0.375rem 0.375rem;
+  }
+  
