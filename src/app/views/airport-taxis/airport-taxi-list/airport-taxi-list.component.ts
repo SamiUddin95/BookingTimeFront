@@ -61,13 +61,22 @@ export class AirportTaxiListComponent implements OnInit {
   //     }
   //   });
   // }
-
+  showNotFound: boolean = false
   ngOnInit(): void {
+    this.filterService.showNotFoundError$.subscribe((setshowNotFoundError) => {
+      if (setshowNotFoundError) {
+        this.showNotFound = true
+        
+      }
+    })
+    if(this.showNotFound==false){
     this.filterService.cityName$.subscribe((cityName: any) => {
       if (cityName) {
+        this.showNotFound = false
         this.loadTaxis(cityName)
       }
     })
+  }
   }
 
   onBookNow(taxi: any) {
@@ -78,7 +87,6 @@ export class AirportTaxiListComponent implements OnInit {
     this.filterService.setTaxiData({ taxi, outbound, returnTrip, fare })
     this.router.navigate(['/airport-taxi/taxi-detail'])
   }
-
 
   loadTaxis(requestModel: any): void {
     this.taxiService.GetAirportTaxisList(requestModel).subscribe((response) => {

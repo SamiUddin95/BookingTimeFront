@@ -57,6 +57,7 @@ export class BannerComponent implements AfterViewInit, OnInit {
   requestModel!: AirportTaxiDetailsRequestModel
   // requestModel!: AirportTaxiDetailsRequestModel
   cityName: any = ''
+  dropcityName: any = ''
 
   flatpickrOptions: Partial<Options> = {
     dateFormat: 'Y-m-d H:i',
@@ -138,6 +139,13 @@ export class BannerComponent implements AfterViewInit, OnInit {
         const place = autocomplete.getPlace()
         this.dropPlace = place
         this.requestModel.detail.dropCityId = place.formatted_address
+        const cityComponent = place.address_components?.find(
+          (component: { types: string[] }) =>
+            component.types.includes('locality') ||
+            component.types.includes('administrative_area_level_1')
+        )
+        const dropcityName = cityComponent ? cityComponent.long_name : place.formatted_address
+        this.dropcityName = dropcityName
       })
     })
 
@@ -150,6 +158,7 @@ export class BannerComponent implements AfterViewInit, OnInit {
         autocomplete.setBounds(bounds)
       }
     })
+    
   }
 
   getDistanceBetweenPickupAndDrop() {
@@ -240,7 +249,7 @@ export class BannerComponent implements AfterViewInit, OnInit {
     const pickupDate = new Date(detail.pickUpDateTime ?? '')
     today.setHours(0, 0, 0, 0)
     pickupDate.setHours(0, 0, 0, 0)
-
+    
     if (this.cityName == undefined) {
       errors.push('Both pickup and drop city are required.')
     }
@@ -274,12 +283,19 @@ export class BannerComponent implements AfterViewInit, OnInit {
       alert(errors.join('\n'))
       return
     }
-    // if (
+    if (this.cityName && this.dropcityName && this.cityName.toLowerCase() != this.dropcityName.toLowerCase()) {
+      this.filterService.setshowNotFoundError(true);
+        return
+      }{
+        this.filterService.setshowNotFoundError(false);
+      }
+    // if ( 
     //   this.requestModel.detail.pickUpDateTime &&
     //   this.requestModel.detail.pickUpTime.length === 5
     // ) {
     //   this.requestModel.detail.pickUpTime += ':00'
     // }
+    
     const city = String(this.cityName)
     this.filterService.updateCityName(city)
     this.filterService.setModel(this.requestModel.detail)

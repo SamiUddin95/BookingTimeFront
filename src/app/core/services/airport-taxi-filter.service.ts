@@ -10,19 +10,21 @@ export class AirportTaxiFilterService {
     new BehaviorSubject<AirportTaxiDetailsRequestModel | null>(null)
   requestModel$ = this.requestModelSubject.asObservable()
 
-  
-  private isRemoveReturnSubject = new BehaviorSubject<boolean>(false);
-isRemoveReturn$ = this.isRemoveReturnSubject.asObservable();
+  private isRemoveReturnSubject = new BehaviorSubject<boolean>(false)
+  isRemoveReturn$ = this.isRemoveReturnSubject.asObservable()
 
+  private showNotFoundErrorSubject = new BehaviorSubject<boolean>(false)
+  showNotFoundError$ = this.showNotFoundErrorSubject.asObservable()
 
-private taxiDataSource = new BehaviorSubject<any>(null);
-taxiData$ = this.taxiDataSource.asObservable();
+  private taxiDataSource = new BehaviorSubject<any>(null)
+  taxiData$ = this.taxiDataSource.asObservable()
 
   duration: any = null
   distance: any = null
   tripType: any = null
-  journeyRequestModel:any={}
-  isRemoveReturn:boolean=false
+  journeyRequestModel: any = {}
+  isRemoveReturn: boolean = false
+  showNotFoundError: boolean = false
   updateFilter(model: AirportTaxiDetailsRequestModel): void {
     this.requestModelSubject.next(model)
   }
@@ -51,25 +53,27 @@ taxiData$ = this.taxiDataSource.asObservable();
     return this.tripType
   }
 
-  setModel(model: any={}) {
+  setModel(model: any = {}) {
     this.journeyRequestModel = model
   }
 
   getModel() {
     return this.journeyRequestModel
   }
-  
+
   setRemoveReturn(value: boolean): void {
-    this.isRemoveReturnSubject.next(value);
+    this.isRemoveReturnSubject.next(value)
   }
 
-
+  setshowNotFoundError(value: boolean): void {
+    this.showNotFoundErrorSubject.next(value)
+  }
 
   setTaxiData(data: any) {
-    this.taxiDataSource.next(data);
+    this.taxiDataSource.next(data)
   }
 
   clearData() {
-    this.taxiDataSource.next(null);
+    this.taxiDataSource.next(null)
   }
 }
