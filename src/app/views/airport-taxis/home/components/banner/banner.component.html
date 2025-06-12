@@ -22,11 +22,13 @@
         <div class="mb-3">
           <div class="btn-group" role="group" aria-label="Trip Type Toggle">
             <input type="radio" class="btn-check" id="oneWay" name="tripType" value="oneWay"
-              [(ngModel)]="requestModel.detail.tripType" autocomplete="off" />
+              [(ngModel)]="requestModel.detail.tripType" autocomplete="off" 
+              (change)="onTripTypeChange()"/>
             <label class="btn btn-outline-primary" for="oneWay">One-way</label>
 
             <input type="radio" class="btn-check" id="return" name="tripType" value="return"
-              [(ngModel)]="requestModel.detail.tripType" autocomplete="off" />
+              [(ngModel)]="requestModel.detail.tripType" autocomplete="off" 
+              (change)="onTripTypeChange()"/>
             <label class="btn btn-outline-primary" for="return">Return</label>
           </div>
         </div>

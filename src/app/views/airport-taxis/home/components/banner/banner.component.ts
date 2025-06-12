@@ -41,7 +41,10 @@ export class BannerComponent implements AfterViewInit, OnInit {
   dropPlace: google.maps.places.PlaceResult | null = null
   duration = null
   distance = null
-  constructor(private ngZone: NgZone,private cdr: ChangeDetectorRef) {}
+  constructor(
+    private ngZone: NgZone,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngAfterViewInit() {
     this.initPickupAutocomplete()
@@ -72,7 +75,7 @@ export class BannerComponent implements AfterViewInit, OnInit {
     // altInput: true,
     // altFormat: 'd M Y H:i',
     minDate: new Date(),
-  } 
+  }
   ngOnInit(): void {
     this.loadCities()
     this.initializeRequestModel()
@@ -83,21 +86,24 @@ export class BannerComponent implements AfterViewInit, OnInit {
       this.dropInput.nativeElement.value = ''
     }
 
-    this.filterService.isRemoveReturn$.subscribe(isRemoved => {
+    this.filterService.isRemoveReturn$.subscribe((isRemoved) => {
       if (isRemoved) {
-        this.requestModel.detail.tripType="oneWay";
-        this.requestModel.detail.returnDateTime=undefined
-        this.cdr.detectChanges();
-        this.searchTaxis();
+        this.requestModel.detail.tripType = 'oneWay'
+        this.requestModel.detail.returnDateTime = undefined
+        this.cdr.detectChanges()
+        this.searchTaxis()
       }
+    })
+
+    this.filterService.returnJourney$.subscribe((date) => {
+      this.addreturnJourny(date)
     })
   }
 
   //"styles": [
-//   "node_modules/intl-tel-input/build/css/intlTelInput.css",
-//   "src/styles.css"
-// ]
-
+  //   "node_modules/intl-tel-input/build/css/intlTelInput.css",
+  //   "src/styles.css"
+  // ]
 
   initPickupAutocomplete() {
     const autocomplete = new google.maps.places.Autocomplete(
@@ -144,7 +150,9 @@ export class BannerComponent implements AfterViewInit, OnInit {
             component.types.includes('locality') ||
             component.types.includes('administrative_area_level_1')
         )
-        const dropcityName = cityComponent ? cityComponent.long_name : place.formatted_address
+        const dropcityName = cityComponent
+          ? cityComponent.long_name
+          : place.formatted_address
         this.dropcityName = dropcityName
       })
     })
@@ -158,7 +166,6 @@ export class BannerComponent implements AfterViewInit, OnInit {
         autocomplete.setBounds(bounds)
       }
     })
-    
   }
 
   getDistanceBetweenPickupAndDrop() {
@@ -249,7 +256,7 @@ export class BannerComponent implements AfterViewInit, OnInit {
     const pickupDate = new Date(detail.pickUpDateTime ?? '')
     today.setHours(0, 0, 0, 0)
     pickupDate.setHours(0, 0, 0, 0)
-    
+
     if (this.cityName == undefined) {
       errors.push('Both pickup and drop city are required.')
     }
@@ -268,34 +275,62 @@ export class BannerComponent implements AfterViewInit, OnInit {
         const returnDateTime = new Date(detail.returnDateTime)
         const diffMs = returnDateTime.getTime() - pickupDateTime.getTime()
         const diffHours = diffMs / (1000 * 60 * 60)
-  
+
         if (diffHours < 1) {
-          errors.push('The return time must be at least one hour later than the pick-up time.')
+          errors.push(
+            'The return time must be at least one hour later than the pick-up time.'
+          )
         }
       }
     }
     return errors
   }
 
+  addreturnJourny(returnDate: Date) {
+    debugger
+    if (returnDate != null) {
+      this.requestModel.detail.tripType = 'return'
+      this.requestModel.detail.returnDateTime =returnDate
+      const errors = this.validateRequestModel()
+      if (errors.length > 0) {
+        alert(errors.join('\n'))
+        return
+      }
+      this.searchTaxis()
+    }
+  }
+  onTripTypeChange() {
+    if (this.requestModel.detail.tripType === 'oneWay') {
+      this.requestModel.detail.returnDateTime = undefined;
+    }
+  }
+  
+
+  
   searchTaxis() {
     const errors = this.validateRequestModel()
     if (errors.length > 0) {
       alert(errors.join('\n'))
       return
     }
-    if (this.cityName && this.dropcityName && this.cityName.toLowerCase() != this.dropcityName.toLowerCase()) {
-      this.filterService.setshowNotFoundError(true);
-        return
-      }{
-        this.filterService.setshowNotFoundError(false);
-      }
-    // if ( 
+    if (
+      this.cityName &&
+      this.dropcityName &&
+      this.cityName.toLowerCase() != this.dropcityName.toLowerCase()
+    ) {
+      this.filterService.setshowNotFoundError(true)
+      return
+    }
+    {
+      this.filterService.setshowNotFoundError(false)
+    }
+    // if (
     //   this.requestModel.detail.pickUpDateTime &&
     //   this.requestModel.detail.pickUpTime.length === 5
     // ) {
     //   this.requestModel.detail.pickUpTime += ':00'
     // }
-    
+
     const city = String(this.cityName)
     this.filterService.updateCityName(city)
     this.filterService.setModel(this.requestModel.detail)

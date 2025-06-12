@@ -9,11 +9,12 @@ import { CommonModule } from '@angular/common'
 import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { FormsModule } from '@angular/forms'
+import { DateFormInputDirective } from '@/app/components/form/date-form-input.directive'
 
 @Component({
   selector: 'app-airport-taxi-list',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, DateFormInputDirective],
   templateUrl: './airport-taxi-list.component.html',
   styleUrl: './airport-taxi-list.component.scss',
 })
@@ -28,7 +29,10 @@ export class AirportTaxiListComponent implements OnInit {
   pageSize = 10
   duration: any = null
   distance: any = null
+  fromlocation: any = null
+  tolocation: any = null
   isTripTypeReturn: boolean = false
+  returnDate: any = null
   selectedJourney: 'outbound' | 'return' = 'outbound'
   fare1 = 0
   fare2 = 0
@@ -51,7 +55,13 @@ export class AirportTaxiListComponent implements OnInit {
     dropTime: '',
     dropoff: '',
   }
-
+  flatpickrOptionsReturn = {
+    enableTime: true,
+    dateFormat: 'Y-m-d H:i',
+    // altInput: true,
+    // altFormat: 'd M Y H:i',
+    minDate: new Date(),
+  }
   // ngOnInit(): void {
   //   this.filterService.requestModel$.subscribe(model => {
   //     if (model) {
@@ -66,17 +76,16 @@ export class AirportTaxiListComponent implements OnInit {
     this.filterService.showNotFoundError$.subscribe((setshowNotFoundError) => {
       if (setshowNotFoundError) {
         this.showNotFound = true
-        
       }
     })
-    if(this.showNotFound==false){
-    this.filterService.cityName$.subscribe((cityName: any) => {
-      if (cityName) {
-        this.showNotFound = false
-        this.loadTaxis(cityName)
-      }
-    })
-  }
+    if (this.showNotFound == false) {
+      this.filterService.cityName$.subscribe((cityName: any) => {
+        if (cityName) {
+          this.showNotFound = false
+          this.loadTaxis(cityName)
+        }
+      })
+    }
   }
 
   onBookNow(taxi: any) {
@@ -96,7 +105,9 @@ export class AirportTaxiListComponent implements OnInit {
       this.distance = distance
       this.isTripTypeReturn = this.filterService.getTripType() === 'return'
       const model = this.filterService.getModel()
-
+      console.log(model, 'model')
+      this.fromlocation = model.dropCityId
+      this.tolocation = model.cityId
       this.outbound = {
         date: this.formatDate(model.pickUpDateTime),
         time: this.formatTime(model.pickUpDateTime),
@@ -219,5 +230,15 @@ export class AirportTaxiListComponent implements OnInit {
 
   get pages(): number[] {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1)
+  }
+
+  onAddReturn() {
+    if(this.returnDate==null||this.returnDate==undefined){
+      alert("Please select the return date");
+      return
+    }
+    const parsedDate = this.returnDate;
+    this.filterService.sendReturnJourney(parsedDate);
+    this.returnDate=null
   }
 }

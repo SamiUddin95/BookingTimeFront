@@ -19,6 +19,9 @@ export class AirportTaxiFilterService {
   private taxiDataSource = new BehaviorSubject<any>(null)
   taxiData$ = this.taxiDataSource.asObservable()
 
+  private returnJourneySource = new BehaviorSubject<any>(null);
+  returnJourney$ = this.returnJourneySource.asObservable();
+
   duration: any = null
   distance: any = null
   tripType: any = null
@@ -75,5 +78,9 @@ export class AirportTaxiFilterService {
 
   clearData() {
     this.taxiDataSource.next(null)
+  }
+
+  sendReturnJourney(date: Date) {
+    this.returnJourneySource.next(date);
   }
 }

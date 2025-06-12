@@ -133,19 +133,34 @@
             </div>
         </div>
     </div>
+    
     <div class="col-md-7">
         <div class="vstack gap-4 p-3">
-            <ng-container *ngFor="let taxi of taxis">
+          <ng-container *ngFor="let taxi of taxis; let i = index">
 
+            <div *ngIf="i === 1&& this.isTripTypeReturn==false" class="rounded shadow bg-white p-3">
+              <p class="mb-2 fw-semibold text-dark">
+                Add a return journey from <span class="text-primary">{{this.fromlocation}}</span> to
+                <span class="text-primary">{{this.tolocation}}</span>
+              </p>
+              <div class="row g-2">
+                <div class="col-md-6">
+                  <label class="form-label small mb-1">Pick-up Date & Time</label>
+                  <input mwlFlatpickr type="text" class="form-control flatpickr" [flatpickrOptions]="flatpickrOptionsReturn"
+                  [(ngModel)]="returnDate"
+                  placeholder="Select Return" />
+                </div>
+                <div class="col-md-6 d-flex align-items-end">
+                  <button class="btn btn-outline-dark btn-sm w-100" (click)="onAddReturn()">Add Return</button>
+                </div>
+              </div>
+            </div>
                 <div class="rounded shadow bg-white p-3">
                     <div class="row g-0">
-                        <!-- Image -->
                         <div class="col-md-4 d-flex justify-content-center align-items-center">
                             <img [src]="getTaxiImageById(taxi.id)" (error)="onImageError($event)" alt="Taxi Thumbnail"
                                 class="img-fluid rounded" />
                         </div>
-
-                        <!-- Details -->
                         <div class="col-md-8 ps-md-3 mt-3 mt-md-0">
                             <div class="d-flex flex-column h-100 position-relative">
                                 <h5 class="mb-1">{{ taxi.name }}</h5>
@@ -156,8 +171,6 @@
                                 <ul class="list-unstyled small mb-2">
                                     <li><strong>Capacity:</strong> {{ taxi.capacity }}</li>
                                     <li><strong>Suitcase:</strong> {{ taxi.suitcase }}</li>
-                                    <!-- <li *ngIf="distance"><strong>Distance:</strong> {{ distance }}</li>
-                    <li *ngIf="duration"><strong>Duration:</strong> {{ duration }}</li> -->
                                 </ul>
                                 <div class="d-flex justify-content-between align-items-center mt-auto pt-2">
                                     <div>
@@ -170,6 +183,7 @@
                         </div>
                     </div>
                 </div>
+             
             </ng-container>
         </div>
     </div>
